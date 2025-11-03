@@ -1,0 +1,337 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  scroll-behavior: smooth;
+  background: linear-gradient(135deg, #0d0d1f, #2e2b8a, #4638d1);
+  font-family: "Roboto", sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  padding-top: 90px; 
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.logo .movie {
+  color: white;
+}
+
+.logo .go {
+  color: #ff3366;
+}
+
+/* Glass effect */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.08); 
+  backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 40px; 
+  padding: 10px 40px;
+}
+
+.glass-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+}
+
+.glass-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.glass-nav a:hover,
+.glass-nav a.active {
+  color: #ff3366;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.search-login {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.search-login input {
+  background: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  color: #000; 
+  outline: none;
+}
+
+.login-btn {
+  background: #ff3366;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Tabs header */
+.tabs {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 30px;
+  padding: 0px 180px; 
+}
+
+.tabs h2 {
+  font-size: 20px;
+  letter-spacing: 1px;
+  border-left: 4px solid #ff2d55;
+  padding-left: 10px; 
+}
+
+.tab-menu span {
+  margin-left: 30px;
+  font-size: 17px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.tab-menu span.active {
+  color: #ff2d55;
+  border-bottom: 2px solid #ff2d55;
+  padding-bottom: 4px;
+}
+
+.tab-menu span:hover {
+  color: #ff2d55;
+}
+
+/* PHIM ĐANG CHIẾU */
+#now-showing {
+  padding: 0px 100px;
+}
+
+.explore-btn {
+  display: inline-flex;
+  margin-top: 25px; 
+  align-items: center;
+  gap: 8px;
+  background: #ff3152; 
+  color: white;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 49, 82, 0.4);
+}
+
+.explore-btn span {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng hover */
+.explore-btn:hover {
+  background: #ff4f6a;
+  box-shadow: 0 0 20px rgba(255, 79, 106, 0.6);
+  transform: translateY(-2px);
+}
+
+.explore-btn:hover span {
+  transform: translateX(5px);
+}
+
+/* "Phim đang chiếu */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 0;
+}
+
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.section-header h2::before {
+  content: "•";
+  color: red;
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.section-header a {
+  color: #a89dfb;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.section-header a:hover {
+  text-decoration: underline;
+  color: #ff416c;
+}
+
+/* GRID PHIM */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 45px; 
+  padding: 0 80px 50px 80px;
+}
+
+/* CARD PHIM */
+.movie-card {
+  background-color: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-card img {
+  width: 100%;
+  height: 390px; 
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Rating */
+.movie-card .rating {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffd700; 
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Cảnh báo độ tuổi */
+.age-badge {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  background: red;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #fff3;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Lớp phủ */
+.movie-card .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+/* Nút mua vé */
+.movie-card .overlay .buy-btn {
+  background: white;
+  color: #ff416c;
+  border: none;
+  padding: 10px 10px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.movie-card .overlay .buy-btn:hover {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  color: white;
+
+  filter: brightness(90%);
+}
+
+/* Khi hover thì hiển thị và làm mờ ảnh */
+.movie-card:hover img {
+  filter: brightness(60%);
+  transform: scale(1.05);
+}
+
+.movie-card:hover .overlay {
+  opacity: 1;
+}
+
+.movie-info {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.8;
+  padding: 5px 0px;
+}
+
+.movie-info p {
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.movie-info h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.movie-info h3:hover {
+  color: #ff416c;
+  cursor: pointer;
+}
+
