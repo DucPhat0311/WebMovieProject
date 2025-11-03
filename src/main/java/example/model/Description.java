@@ -4,13 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Corresponds to table descriptions (id, producer, director, actor, release_date)
- */
 public class Description {
     private int id;
     private String producer;
-    private List<String> director; // or store as CSV in DB
+    private List<String> director; 
     private List<String> actor;
     private LocalDate releaseDate;
 
@@ -24,7 +21,6 @@ public class Description {
         this.releaseDate = releaseDate;
     }
 
-    // --- getters / setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

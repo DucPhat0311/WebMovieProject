@@ -4,19 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * Corresponds to table showtimes
- * Use LocalDateTime for show start time.
- * Keep both id references and optional nested movie/room objects.
- */
+
 public class Showtime {
     private int id;
     private int movieId;
-    private Movie movie;      // optional, fill when needed
+    private Movie movie;     
     private int roomId;
     private LocalDateTime startTime;
-    private BigDecimal price; // use BigDecimal for money
-    private String format;    // "2D", "IMAX", "3D", "Sub", etc.
+    private BigDecimal price; 
+    private String format;   
 
     public Showtime() {}
 
@@ -29,7 +25,6 @@ public class Showtime {
         this.format = format;
     }
 
-    // --- getters / setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

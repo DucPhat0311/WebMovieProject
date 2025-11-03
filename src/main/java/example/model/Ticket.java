@@ -3,16 +3,13 @@ package example.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Corresponds to table tickets.
- * Keep seatId and optional price snapshot.
- */
+
 public class Ticket {
     private int id;
     private int bookingId;
     private int seatId;
     private int showtimeId;
-    private BigDecimal price;    // price at purchase time
+    private BigDecimal price;    
 
     public Ticket() {}
 

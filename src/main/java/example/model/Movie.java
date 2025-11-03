@@ -3,22 +3,18 @@ package example.model;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Corresponds to table movies
- * Note: contains both descriptionId and Description object (optional)
- */
 public class Movie {
     private int id;
     private String title;
     private String genre;
-    private int duration; // minutes
+    private int duration; 
     private String country;
     private String content;
-    private int descriptionId;      // DB foreign key
-    private String posterUrl;       // filename or full URL
-    private Integer rating;         // nullable
+    private int descriptionId;      
+    private String posterUrl;       
+    private Integer rating;         
     private String ageWarning;
-    private String videoUrl;        // trailer link
+    private String videoUrl;        
 
     public Movie() {}
 
@@ -38,7 +34,6 @@ public class Movie {
         this.videoUrl = videoUrl;
     }
 
-    // --- getters / setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

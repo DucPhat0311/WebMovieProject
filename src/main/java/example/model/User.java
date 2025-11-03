@@ -3,17 +3,14 @@ package example.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * Corresponds to table users.
- * NOTE: store hashed password (bcrypt) in passwordHash.
- */
+
 public class User {
     private int id;
     private String username;
     private LocalDate birthDate;
-    private Boolean gender;         // nullable
+    private Boolean gender;       
     private String phoneNumber;
-    private String passwordHash;    // store hashed password
+    private String passwordHash;    
     private String email;
     private Role role;
 
@@ -31,7 +28,6 @@ public class User {
         this.role = role;
     }
 
-    // --- getters / setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
