@@ -11,7 +11,7 @@ body {
   font-family: "Roboto", sans-serif;
   color: #fff;
   min-height: 100vh;
-  padding-top: 90px; 
+  padding-top: 90px; /* chừa chỗ cho header */
 }
 
 /* Header */
@@ -34,19 +34,19 @@ header {
 }
 
 .logo .movie {
-  color: white;
+  color: white; /* phần “Movie” trắng */
 }
 
 .logo .go {
-  color: #ff3366;
+  color: #ff3366; /* phần “GO” hồng */
 }
 
 /* Glass effect */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.08); 
-  backdrop-filter: blur(10px); 
+  background: rgba(255, 255, 255, 0.08); /* lớp nền trong suốt */
+  backdrop-filter: blur(10px); /* hiệu ứng kính mờ */
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 40px; 
+  border-radius: 40px; /* bo tròn vùng bao quanh */
   padding: 10px 40px;
 }
 
@@ -85,7 +85,7 @@ nav {
   border: none;
   padding: 8px 12px;
   border-radius: 20px;
-  color: #000; 
+  color: #000; /* đổi thành đen hoặc xám */
   outline: none;
 }
 
@@ -106,14 +106,14 @@ nav {
   align-items: center;
   justify-content: left;
   margin-bottom: 30px;
-  padding: 0px 180px; 
+  padding: 0px 180px; /* lề trái/phải 80px */
 }
 
 .tabs h2 {
   font-size: 20px;
   letter-spacing: 1px;
   border-left: 4px solid #ff2d55;
-  padding-left: 10px; 
+  padding-left: 10px; /* cách chữ 20px */
 }
 
 .tab-menu span {
@@ -134,17 +134,17 @@ nav {
   color: #ff2d55;
 }
 
-/* PHIM ĐANG CHIẾU */
+/* ===== SECTION: PHIM ĐANG CHIẾU ===== */
 #now-showing {
-  padding: 0px 100px;
+  padding: 0px 100px; /* lề trái/phải 80px */
 }
 
 .explore-btn {
   display: inline-flex;
-  margin-top: 25px; 
+  margin-top: 25px; /* 👈 khoảng cách giữa nút và đoạn mô tả */
   align-items: center;
   gap: 8px;
-  background: #ff3152; 
+  background: #ff3152; /* màu đỏ hồng nổi bật */
   color: white;
   font-weight: 600;
   padding: 14px 28px;
@@ -171,13 +171,13 @@ nav {
   transform: translateX(5px);
 }
 
-/* "Phim đang chiếu */
+/* Tiêu đề "Phim đang chiếu" và "Xem tất cả" */
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding: 0 0;
+  padding: 0 0; /* để thẳng hàng với grid phía dưới */
 }
 
 .section-header h2 {
@@ -205,15 +205,15 @@ nav {
   color: #ff416c;
 }
 
-/* GRID PHIM */
+/* ===== GRID PHIM ===== */
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 45px; 
+  grid-template-columns: repeat(4, 1fr); /* cố định 4 cột */
+  gap: 45px; /* khoảng cách giữa các phim */
   padding: 0 80px 50px 80px;
 }
 
-/* CARD PHIM */
+/* ===== CARD PHIM ===== */
 .movie-card {
   background-color: transparent;
   border-radius: 12px;
@@ -228,7 +228,7 @@ nav {
 
 .movie-card img {
   width: 100%;
-  height: 390px; 
+  height: 390px; /* thấp hơn chút để đỡ bị cắt */
   object-fit: cover;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -236,13 +236,13 @@ nav {
   border-bottom-right-radius: 0;
 }
 
-/* Rating */
+/* --- Rating (sao) --- */
 .movie-card .rating {
   position: absolute;
   top: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.6);
-  color: #ffd700; 
+  color: #ffd700; /* vàng */
   font-size: 14px;
   font-weight: 600;
   padding: 4px 8px;
@@ -252,7 +252,7 @@ nav {
   gap: 4px;
 }
 
-/* Cảnh báo độ tuổi */
+/* --- Cảnh báo độ tuổi --- */
 .age-badge {
   position: absolute;
   top: 8px;
@@ -277,7 +277,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
+  opacity: 0; /* ẩn ban đầu */
   transition: 0.4s ease;
 }
 
@@ -301,7 +301,7 @@ nav {
   filter: brightness(90%);
 }
 
-/* Khi hover thì hiển thị và làm mờ ảnh */
+/* Khi hover thì hiển thị overlay và làm mờ ảnh */
 .movie-card:hover img {
   filter: brightness(60%);
   transform: scale(1.05);
@@ -335,3 +335,35 @@ nav {
   cursor: pointer;
 }
 
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  #now-showing {
+    padding: 60px 60px;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  #now-showing {
+    padding: 40px 40px;
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  #now-showing {
+    padding: 20px;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}

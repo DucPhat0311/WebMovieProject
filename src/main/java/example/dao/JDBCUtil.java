@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class JDBCUtil {
 	private static final String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-	private static final String USER = "root"; // thay bằng user MySQL của bạn
-	private static final String PASSWORD = "123456"; // mật khẩu MySQL
+	private static final String USER = "root"; 
+	private static final String PASSWORD = "123456"; 
 
 	public static Connection getConnection() {
 		Connection c = null;
