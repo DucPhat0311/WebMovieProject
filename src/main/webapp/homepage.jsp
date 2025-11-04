@@ -3,13 +3,11 @@
 <%@ page import="example.dao.MovieDAO"%>
 <%@ page import="example.model.Movie"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List, java.util.ArrayList"%>
 
 
-<%
-MovieDAO dao = MovieDAO.getInstance();
-ArrayList<Movie> list = dao.selectAll();
-%>
+
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -93,40 +91,72 @@ ArrayList<Movie> list = dao.selectAll();
 		</div>
 	</section>
 
-	<!-- 🔻 Phần phim đang chiếu -->
-	<section id="now-showing"></section>
+
+
+	<section id="now-showing">
 		<div class="section-header">
 			<h2>PHIM ĐANG CHIẾU</h2>
 			<a href="movies">Xem tất cả</a>
 		</div>
 
 		<div class="movie-grid">
-			<!-- CARD PHIM -->
 			<%
-			for (Movie m : list) {
+			List<Movie> nowShowingList = (List<Movie>) request.getAttribute("nowShowingList");
+			if (nowShowingList != null && !nowShowingList.isEmpty()) {
+				for (Movie m : nowShowingList) {
 			%>
+			<!-- CARD PHIM -->
 			<div class="movie-card">
-				<img src="<%=m.getPosterUrl()%>" alt="<%=m.getTitle()%>" />
-
-				<div class="age-badge"><%=m.getAgeWarning()%></div>
-				<div class="rating">
-					⭐
-					<%=m.getRating()%></div>
-
-				<div class="overlay">
-					<button class="buy-btn">Mua vé</button>
-				</div>
-
-				<div class="movie-info">
-					<h3><%=m.getTitle()%></h3>
-				</div>
+				<img src="<%=m.getPosterUrl()%>" alt="<%=m.getTitle()%>">
+				<h3><%=m.getTitle()%></h3>
+				<p>
+					Thể loại:
+					<%=m.getGenre()%></p>
 			</div>
 			<%
 			}
+			} else {
 			%>
+			<p>Hiện chưa có phim nào đang chiếu.</p>
+			<%
+			}
+			%>
+
+		</div>
+	</section>
+	
+	<section id="now-showing">
+		<div class="section-header">
+			<h2>PHIM SẮP CHIẾU</h2>
+			<a href="movies">Xem tất cả</a>
 		</div>
 
-		</section>
+		<div class="movie-grid">
+			<%
+			List<Movie> willShowList = (List<Movie>) request.getAttribute("willShowList");
+			if (willShowList != null && !willShowList.isEmpty()) {
+				for (Movie m : willShowList) {
+			%>
+			<!-- CARD PHIM -->
+			<div class="movie-card">
+				<img src="<%=m.getPosterUrl()%>" alt="<%=m.getTitle()%>">
+				<h3><%=m.getTitle()%></h3>
+				<p>
+					Thể loại:
+					<%=m.getGenre()%></p>
+			</div>
+			<%
+			}
+			} else {
+			%>
+			<p>Hiện chưa có phim nào đang chiếu.</p>
+			<%
+			}
+			%>
+
+		</div>
+	</section>
+
 
 	<!-- ===== FOOTER =====  -->
 	<footer>

@@ -1,5 +1,6 @@
 package example.model;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,13 +15,14 @@ public class Movie {
     private String posterUrl;       
     private Integer rating;         
     private String ageWarning;
-    private String videoUrl;        
+    private String videoUrl;  
+    private Date release_date;
 
     public Movie() {}
 
     public Movie(int id, String title, String genre, int duration, String country,
                  String content, int descriptionId, String posterUrl, Integer rating,
-                 String ageWarning, String videoUrl) {
+                 String ageWarning, String videoUrl, Date release_date) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -32,6 +34,7 @@ public class Movie {
         this.rating = rating;
         this.ageWarning = ageWarning;
         this.videoUrl = videoUrl;
+        this.release_date = release_date;
     }
 
     public int getId() { return id; }
@@ -67,8 +70,14 @@ public class Movie {
 
     public String getVideoUrl() { return videoUrl; }
     public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
+    
+    
 
-    @Override
+    public Date getRelease_date() {
+		return release_date;
+	}
+
+	@Override
     public String toString() {
         return "Movie{" + "id=" + id + ", title=" + title + ", genre=" + genre + '}';
     }

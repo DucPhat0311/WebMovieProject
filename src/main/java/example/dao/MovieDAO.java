@@ -1,6 +1,8 @@
 package example.dao;
 
 import java.sql.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import example.model.Movie;
@@ -158,10 +160,12 @@ public class MovieDAO implements DAOInterface<Movie> {
 			    int rating = rs.getInt("rating");
 			    String ageWarning = rs.getString("age_warning");
 			    String videoUrl = rs.getString("video_url");
+	            Date release_date = rs.getDate("release_date");
+
 
 			    Movie movie = new Movie(
 			        id, title, genre, duration, country, content,
-			        descriptionId, posterUrl, rating, ageWarning, videoUrl
+			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
 			    );
 
 			    result.add(movie);
@@ -175,4 +179,105 @@ public class MovieDAO implements DAOInterface<Movie> {
 		}
 		return result;
 	}
+	
+	public List<Movie> getNowShowingMovies()  {
+		ArrayList<Movie> result = new ArrayList<>();
+		try {
+			// Buoc 1: tao ket noi den CSDL
+			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
+			String user = "root"; 
+			String password = "123456"; 
+
+			Connection conn = JDBCUtil.getConnection();
+			
+			// Buoc 2: tao ra doi tuong statement
+			Statement st = conn.createStatement();
+			
+			// Buoc 3: thuc thi cau lenh SQL
+			String sql = "SELECT * FROM movies WHERE release_date <= CURDATE() ORDER BY release_date DESC LIMIT 7";
+			ResultSet rs = st.executeQuery(sql);
+			
+			// Buoc 4: 
+			while (rs.next()) {
+			    int id = rs.getInt("id");
+			    String title = rs.getString("title");
+			    String genre = rs.getString("genre");
+			    int duration = rs.getInt("duration");
+			    String country = rs.getString("country");
+			    String content = rs.getString("content");
+			    int descriptionId = rs.getInt("description_id");
+			    String posterUrl = rs.getString("poster_url");
+			    int rating = rs.getInt("rating");
+			    String ageWarning = rs.getString("age_warning");
+			    String videoUrl = rs.getString("video_url");
+	            Date release_date = rs.getDate("release_date");
+
+
+			    Movie movie = new Movie(
+			        id, title, genre, duration, country, content,
+			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
+			    );
+
+			    result.add(movie);
+			}
+
+			// Buoc 5:
+			JDBCUtil.closeConnection(conn);
+		}	
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public List<Movie> willShowMovies()  {
+		ArrayList<Movie> result = new ArrayList<>();
+		try {
+			// Buoc 1: tao ket noi den CSDL
+			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
+			String user = "root"; 
+			String password = "123456"; 
+
+			Connection conn = JDBCUtil.getConnection();
+			
+			// Buoc 2: tao ra doi tuong statement
+			Statement st = conn.createStatement();
+			
+			// Buoc 3: thuc thi cau lenh SQL
+			String sql = "SELECT * FROM movies WHERE release_date > CURDATE() ORDER BY release_date DESC LIMIT 7";
+			ResultSet rs = st.executeQuery(sql);
+			
+			// Buoc 4: 
+			while (rs.next()) {
+			    int id = rs.getInt("id");
+			    String title = rs.getString("title");
+			    String genre = rs.getString("genre");
+			    int duration = rs.getInt("duration");
+			    String country = rs.getString("country");
+			    String content = rs.getString("content");
+			    int descriptionId = rs.getInt("description_id");
+			    String posterUrl = rs.getString("poster_url");
+			    int rating = rs.getInt("rating");
+			    String ageWarning = rs.getString("age_warning");
+			    String videoUrl = rs.getString("video_url");
+	            Date release_date = rs.getDate("release_date");
+
+
+			    Movie movie = new Movie(
+			        id, title, genre, duration, country, content,
+			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
+			    );
+
+			    result.add(movie);
+			}
+
+			// Buoc 5:
+			JDBCUtil.closeConnection(conn);
+		}	
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }
