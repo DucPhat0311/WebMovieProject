@@ -11,7 +11,7 @@ body {
   font-family: "Roboto", sans-serif;
   color: #fff;
   min-height: 100vh;
-  padding-top: 90px; /* chừa chỗ cho header */
+  padding-top: 90px; 
 }
 
 /* Header */
@@ -34,19 +34,19 @@ header {
 }
 
 .logo .movie {
-  color: white; /* phần “Movie” trắng */
+  color: white;
 }
 
 .logo .go {
-  color: #ff3366; /* phần “GO” hồng */
+  color: #ff3366;
 }
 
 /* Glass effect */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.08); /* lớp nền trong suốt */
-  backdrop-filter: blur(10px); /* hiệu ứng kính mờ */
+  background: rgba(255, 255, 255, 0.08); 
+  backdrop-filter: blur(10px); 
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 40px; /* bo tròn vùng bao quanh */
+  border-radius: 40px; 
   padding: 10px 40px;
 }
 
@@ -85,7 +85,7 @@ nav {
   border: none;
   padding: 8px 12px;
   border-radius: 20px;
-  color: #000; /* đổi thành đen hoặc xám */
+  color: #000; 
   outline: none;
 }
 
@@ -106,14 +106,14 @@ nav {
   align-items: center;
   justify-content: left;
   margin-bottom: 30px;
-  padding: 0px 180px; /* lề trái/phải 80px */
+  padding: 0px 180px; 
 }
 
 .tabs h2 {
   font-size: 20px;
   letter-spacing: 1px;
   border-left: 4px solid #ff2d55;
-  padding-left: 10px; /* cách chữ 20px */
+  padding-left: 10px; 
 }
 
 .tab-menu span {
@@ -134,17 +134,17 @@ nav {
   color: #ff2d55;
 }
 
-/* ===== SECTION: PHIM ĐANG CHIẾU ===== */
+/* PHIM ĐANG CHIẾU */
 #now-showing {
-  padding: 0px 100px; /* lề trái/phải 80px */
+  padding: 0px 100px;
 }
 
 .explore-btn {
   display: inline-flex;
-  margin-top: 25px; /* 👈 khoảng cách giữa nút và đoạn mô tả */
+  margin-top: 25px; 
   align-items: center;
   gap: 8px;
-  background: #ff3152; /* màu đỏ hồng nổi bật */
+  background: #ff3152; 
   color: white;
   font-weight: 600;
   padding: 14px 28px;
@@ -171,13 +171,13 @@ nav {
   transform: translateX(5px);
 }
 
-/* Tiêu đề "Phim đang chiếu" và "Xem tất cả" */
+/* "Phim đang chiếu */
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding: 0 0; /* để thẳng hàng với grid phía dưới */
+  padding: 0 0;
 }
 
 .section-header h2 {
@@ -205,15 +205,15 @@ nav {
   color: #ff416c;
 }
 
-/* ===== GRID PHIM ===== */
+/* GRID PHIM */
 .movie-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* cố định 4 cột */
-  gap: 45px; /* khoảng cách giữa các phim */
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 45px; 
   padding: 0 80px 50px 80px;
 }
 
-/* ===== CARD PHIM ===== */
+/* CARD PHIM */
 .movie-card {
   background-color: transparent;
   border-radius: 12px;
@@ -228,7 +228,7 @@ nav {
 
 .movie-card img {
   width: 100%;
-  height: 390px; /* thấp hơn chút để đỡ bị cắt */
+  height: 390px; 
   object-fit: cover;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -236,13 +236,13 @@ nav {
   border-bottom-right-radius: 0;
 }
 
-/* --- Rating (sao) --- */
+/* Rating */
 .movie-card .rating {
   position: absolute;
   top: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.6);
-  color: #ffd700; /* vàng */
+  color: #ffd700; 
   font-size: 14px;
   font-weight: 600;
   padding: 4px 8px;
@@ -252,7 +252,7 @@ nav {
   gap: 4px;
 }
 
-/* --- Cảnh báo độ tuổi --- */
+/* Cảnh báo độ tuổi */
 .age-badge {
   position: absolute;
   top: 8px;
@@ -277,7 +277,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0; /* ẩn ban đầu */
+  opacity: 0;
   transition: 0.4s ease;
 }
 
@@ -301,7 +301,7 @@ nav {
   filter: brightness(90%);
 }
 
-/* Khi hover thì hiển thị overlay và làm mờ ảnh */
+/* Khi hover thì hiển thị và làm mờ ảnh */
 .movie-card:hover img {
   filter: brightness(60%);
   transform: scale(1.05);
@@ -335,35 +335,125 @@ nav {
   cursor: pointer;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1024px) {
-  #now-showing {
-    padding: 60px 60px;
-  }
-
-  .movie-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-  }
+/* ===== FOOTER ===== */
+footer {
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-top: 80px;
+  background-color: #000000;
 }
 
-@media (max-width: 768px) {
-  #now-showing {
-    padding: 40px 40px;
-  }
-
-  .movie-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-  }
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 12px;
 }
 
-@media (max-width: 480px) {
-  #now-showing {
-    padding: 20px;
-  }
-
-  .movie-grid {
-    grid-template-columns: 1fr;
-  }
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
+
+.wrapper .footer-widget {
+  width: calc(15% - 10px);
+  margin: 0 15px 50px;
+  padding: 0 12px;
+}
+
+.wrapper .footer-widget:nth-child(1) {
+  width: calc(40% - 50px);
+  margin-right: 15px;
+}
+
+.wrapper .footer-widget .logo {
+  margin-bottom: 30px;
+  vertical-align: middle;
+}
+
+.wrapper .footer-widget p {
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.wrapper .footer-widget .socials {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.wrapper .footer-widget .socials li {
+  list-style: none;
+}
+
+.wrapper .footer-widget .socials li a {
+  width: 44px;
+  height: 44px;
+  margin-right: 10px;
+  color: #ffffff;
+  background-color: #ff3366;
+  border-radius: 50%;
+  font-size: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-out;
+}
+
+.wrapper .footer-widget .socials li a:hover {
+  background-color: #ff3366;
+}
+
+.wrapper .footer-widget h6 {
+  color: #585978;
+  margin: 10px 0 35px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.wrapper .footer-widget .links li {
+  list-style: none;
+}
+
+.wrapper .footer-widget .links li a {
+  color: #585978;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: capitalize;
+  line-height: 32px;
+  transition: all 0.3s ease-out;
+}
+
+.wrapper .footer-widget .links li a:hover {
+  color: #ff3366;
+}
+
+.copyright-wrapper {
+  padding: 20px 0;
+  border-top: 1px solid rgba(88, 89, 120, 0.4);
+}
+
+.copyright-wrapper p {
+  color: rgba(88, 89, 120, 0.6);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.copyright-wrapper p a {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease-out;
+}
+
+.copyright-wrapper p a:hover {
+  color: #ff3366;
+}
+
+
