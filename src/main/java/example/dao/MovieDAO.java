@@ -25,7 +25,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 		Statement st = conn.createStatement();
 		
 		// Buoc 3: thuc thi cau lenh SQL
-		String sql = "INSERT INTO test (id, title, genre, duration, country, content, "
+		String sql = "INSERT INTO movies (id, title, genre, duration, country, content, "
 		        + "description_id, poster_url, rating, age_warning, video_url) "
 		        + "VALUES (" 
 		        + t.getId() + ", "
@@ -70,7 +70,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			Statement st = conn.createStatement();
 			
 			// Buoc 3: thuc thi cau lenh SQL
-			String sql =  "UPDATE test SET "
+			String sql =  "UPDATE movies SET "
 			        + "title = '" + t.getTitle() + "', "
 			        + "genre = '" + t.getGenre() + "', "
 			        + "duration = " + t.getDuration() + ", "
@@ -111,7 +111,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			Statement st = conn.createStatement();
 			
 			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "DELETE FROM test WHERE id = " + t.getId();
+			String sql = "DELETE FROM movies WHERE id = " + t.getId();
 			System.out.println(sql);
 			int result = st.executeUpdate(sql);
 			
@@ -142,7 +142,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			Statement st = conn.createStatement();
 			
 			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "SELECT * FROM test";
+			String sql = "SELECT * FROM movies";
 			ResultSet rs = st.executeQuery(sql);
 			
 			// Buoc 4: 
