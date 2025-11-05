@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Outfit&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link href="SeatAndCheck.css" rel="stylesheet" />
+    <title>Thanh toán - QuickShow</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <img src="images\logofake.jpg" alt="QuickShow Logo" />
+          </div>
+          <nav class="navigation">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Movies</a>
+            <a href="#" class="nav-link">Theaters</a>
+            <a href="#" class="nav-link">Releases</a>
+          </nav>
+          <div class="header-actions">
+            <button class="login-btn">Login</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="payment-main-content">
+        <div class="payment-layout">
+          <div class="left-column">
+            <!-- Thông tin phim -->
+            <section class="movie-info">
+              <h2 class="section-title">Thông tin phim</h2>
+              <div class="info-card">
+                <div class="info-row">
+                  <span class="info-label">Phim:</span>
+                  <span class="info-value">QUY AN TANG 3 - T16</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Ngày giờ chiếu:</span>
+                  <span class="info-value">
+                    <span class="time">17:30</span>
+                    <span class="date">- 23/10/2025</span>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Ghế:</span>
+                  <span class="info-value">A1</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Định dạng:</span>
+                  <span class="info-value">2D</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Phòng chiếu:</span>
+                  <span class="info-value">11</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Thông tin thanh toán -->
+            <section class="payment-info">
+              <h2 class="section-title">Thông tin thanh toán</h2>
+              <div class="payment-card">
+                <table class="payment-table">
+                  <thead>
+                    <tr>
+                      <th>Danh mục</th>
+                      <th>Số lượng</th>
+                      <th>Đơn giá</th>
+                      <th>Tổng tiền</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="payment-item">
+                      <td>Ghế (A1)</td>
+                      <td>1</td>
+                      <td>80.000đ</td>
+                      <td class="item-total">80.000đ</td>
+                    </tr>
+
+                    <tr class="payment-item combo-item">
+                      <td>Combo Bắp Nước Nhỏ</td>
+                      <td>1</td>
+                      <td>65.000đ</td>
+                      <td class="item-total">65.000đ</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Phần chọn bắp nước -->
+                <div class="combo-section">
+                  <h3 class="combo-title">Combo ăn uống</h3>
+                  <div class="combo-options">
+                    <div class="combo-option">
+                      <input
+                        type="checkbox"
+                        id="combo1"
+                        class="combo-checkbox"
+                        name="combo"
+                        value="65000"
+                      />
+                      <label for="combo1" class="combo-label">
+                        <span class="combo-name">Combo Bắp Nước Nhỏ</span>
+                        <span class="combo-price">65.000đ</span>
+                      </label>
+                    </div>
+                    <div class="combo-option">
+                      <input
+                        type="checkbox"
+                        id="combo2"
+                        class="combo-checkbox"
+                        name="combo"
+                        value="85000"
+                      />
+                      <label for="combo2" class="combo-label">
+                        <span class="combo-name">Combo Bắp Nước Lớn</span>
+                        <span class="combo-price">85.000đ</span>
+                      </label>
+                    </div>
+                    <div class="combo-option">
+                      <input
+                        type="checkbox"
+                        id="combo3"
+                        class="combo-checkbox"
+                        name="combo"
+                        value="120000"
+                      />
+                      <label for="combo3" class="combo-label">
+                        <span class="combo-name">Combo Gia Đình</span>
+                        <span class="combo-price">120.000đ</span>
+                      </label>
+                    </div>
+                    <div class="combo-option">
+                      <input
+                        type="checkbox"
+                        id="water"
+                        class="combo-checkbox"
+                        name="combo"
+                        value="15000"
+                      />
+                      <label for="water" class="combo-label">
+                        <span class="combo-name">Nước Suối</span>
+                        <span class="combo-price">15.000đ</span>
+                      </label>
+                    </div>
+                    <div class="combo-option">
+                      <input
+                        type="checkbox"
+                        id="popcorn"
+                        class="combo-checkbox"
+                        name="combo"
+                        value="45000"
+                      />
+                      <label for="popcorn" class="combo-label">
+                        <span class="combo-name">Bắp Ngọt</span>
+                        <span class="combo-price">45.000đ</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="right-column">
+            <!-- Phương thức thanh toán -->
+            <section class="payment-methods">
+              <h2 class="section-title">Phương thức thanh toán</h2>
+              <div class="methods-container">
+                <div class="payment-method">
+                  <input
+                    type="radio"
+                    id="vietqr"
+                    name="payment"
+                    class="method-radio"
+                    checked
+                  />
+                  <label for="vietqr" class="method-label">
+                    <div class="method-icon vietqr">
+                      <span class="method-logo">VietQR</span>
+                    </div>
+                    <span class="method-name">VietQR</span>
+                  </label>
+                </div>
+
+                <div class="payment-method">
+                  <input
+                    type="radio"
+                    id="vnpay"
+                    name="payment"
+                    class="method-radio"
+                  />
+                  <label for="vnpay" class="method-label">
+                    <div class="method-icon vnpay">
+                      <span class="method-logo">VNPAY</span>
+                    </div>
+                    <span class="method-name">VNPAY</span>
+                  </label>
+                </div>
+
+                <div class="payment-method">
+                  <input
+                    type="radio"
+                    id="viettel"
+                    name="payment"
+                    class="method-radio"
+                  />
+                  <label for="viettel" class="method-label">
+                    <div class="method-icon viettel">
+                      <span class="method-logo">Money</span>
+                    </div>
+                    <span class="method-name">Viettel Money</span>
+                  </label>
+                </div>
+
+                <div class="payment-method">
+                  <input
+                    type="radio"
+                    id="momo"
+                    name="payment"
+                    class="method-radio"
+                  />
+                  <label for="momo" class="method-label">
+                    <div class="method-icon momo">
+                      <span class="method-logo">MoMo</span>
+                    </div>
+                    <span class="method-name">Ví MoMo</span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <!-- Tổng chi phí -->
+            <section class="total-cost">
+              <h2 class="cost-title">Chi phí</h2>
+              <div class="cost-breakdown">
+                <div class="cost-row">
+                  <span class="cost-label">Vé xem phim:</span>
+                  <span class="cost-value">80.000đ</span>
+                </div>
+                <div class="cost-row">
+                  <span class="cost-label">Combo ăn uống:</span>
+                  <span class="cost-value">65.000đ</span>
+                </div>
+                <div class="cost-row">
+                  <span class="cost-label">Phí dịch vụ:</span>
+                  <span class="cost-value">0đ</span>
+                </div>
+                <div class="cost-divider"></div>
+                <div class="cost-row total">
+                  <span class="cost-label">Tổng cộng:</span>
+                  <span class="cost-value">145.000đ</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Điều khoản và xác nhận -->
+            <section class="terms-section">
+              <div class="terms-agreement">
+                <input type="checkbox" id="terms" class="terms-checkbox" />
+                <div class="checkbox-custom"></div>
+                <label for="terms" class="terms-label">
+                  <span class="terms-text"
+                    >Tôi xác nhận các thông tin đã chính xác và</span
+                  >
+                  <span class="terms-text"
+                    >đồng ý với các
+                    <a href="#" class="terms-link"
+                      >điều khoản & chính sách</a
+                    ></span
+                  >
+                </label>
+              </div>
+            </section>
+
+            <!-- Nút hành động -->
+            <section class="action-buttons">
+              <a href="SignIn.html" class="pay-btn">
+                <span class="btn-text">Thanh toán</span>
+              </a>
+              <button class="back-btn">Quay lại</button>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="#" class="footer-link">Chính sách</a>
+            <a href="#" class="footer-link">Lịch chiếu</a>
+            <a href="#" class="footer-link">Tin tức</a>
+            <a href="#" class="footer-link">Giá vé</a>
+            <a href="#" class="footer-link">Hỏi đáp</a>
+            <a href="#" class="footer-link">Đặt vé nhóm, tập thể</a>
+            <a href="#" class="footer-link">Liên hệ</a>
+          </div>
+          <div class="footer-social-download">
+            <div class="social-icons">
+              <a href="#" class="social-icon">
+                <img src="images\fb.png" alt="Facebook" />
+              </a>
+              <a href="#" class="social-icon">
+                <img src="images\zl.png" alt="Zalo" />
+              </a>
+              <a href="#" class="social-icon">
+                <img src="images\yt.png" alt="YouTube" />
+              </a>
+            </div>
+
+            <div class="app-downloads">
+              <a href="#" class="download-btn">
+                <img src="images/ggplay.png" alt="Google Play" />
+              </a>
+              <a href="#" class="download-btn">
+                <img src="images/appstore.png" alt="App Store" />
+              </a>
+              <a href="#" class="download-btn">
+                <img src="images/thongbao.png" alt="Da Thong Bao" />
+              </a>
+            </div>
+          </div>
+          <div class="contact-info">
+            <p>Cơ quan chủ quản: BỘ VĂN HÓA, THỂ THAO VÀ DU LỊCH</p>
+            <p>Bản quyền thuộc Trung tâm Chiếu phim Quốc gia.</p>
+            <p>
+              Giấy phép số: 224/GP- TTĐT ngày 31/8/2010 - Chịu trách nhiệm: Vũ
+              Đức Tùng – Giám đốc.
+            </p>
+            <p>
+              Địa chỉ: Số 87 Láng Hạ, Phường Ô Chợ Dừa, TP.Hà Nội - Điện thoại:
+              024.35141791
+            </p>
+          </div>
+
+          <div class="copyright">
+            <p>Copyright 2023. NCC All Rights Reservered. Dev by Anvui.vn</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
