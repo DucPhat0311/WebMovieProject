@@ -13,7 +13,11 @@ public class TestMovieDAO {
 		
 
 
-
+//		MovieDAO.getInstance().add(m1);
+//		MovieDAO.getInstance().add(m2);
+//		MovieDAO.getInstance().add(m3);
+//		MovieDAO.getInstance().add(m4);
+//		MovieDAO.getInstance().add(m5);
 
 			ArrayList<Movie> list = MovieDAO.getInstance().selectAll();
 			for (Movie movie : list) {

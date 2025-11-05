@@ -7,8 +7,6 @@
 <%@ page import="java.util.List, java.util.ArrayList"%>
 
 
-
-
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MovieGO!</title>
@@ -91,9 +89,9 @@
 		</div>
 	</section>
 
-
-
 	<section id="now-showing">
+	<!-- 🔻 Phần phim đang chiếu -->
+	<section id="now-showing"></section>
 		<div class="section-header">
 			<h2>PHIM ĐANG CHIẾU</h2>
 			<a href="movies">Xem tất cả</a>
@@ -157,7 +155,7 @@
 		</div>
 	</section>
 
-
+			
 	<!-- ===== FOOTER =====  -->
 	<footer>
 		<div class="container">
