@@ -5,7 +5,7 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List, java.util.ArrayList"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,25 +15,65 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+	<!-- WELCOME MESSAGE -->
+	<c:if test="${not empty sessionScope.username}">
+		<div class="welcome-message" id="welcomeMessage">
+			<div class="welcome-content">
+				🎉 Chào mừng <strong>${sessionScope.username}</strong> đã quay trở
+				lại! <span class="user-role">(${sessionScope.role})</span> 
+			</div>
+		</div>
+	</c:if>
+	<!-- THÊM SCRIPT AUTO-HIDE -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const welcomeMessage = document.getElementById('welcomeMessage');
+			if (welcomeMessage) {
+				// Tự động ẩn sau 2 giây
+				setTimeout(function() {
+					welcomeMessage.style.opacity = '0';
+					welcomeMessage.style.transition = 'opacity 0.5s ease';
+
+					// Xóa hoàn toàn sau khi fade out
+					setTimeout(function() {
+						welcomeMessage.remove();
+					}, 500);
+
+				}, 2000); // 2 giây
+			}
+		});
+	</script>
+
 	<header>
-		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-		</div>
+    <div class="logo">
+        <span class="movie">Movie</span><b><span class="go">GO!</span></b>
+    </div>
 
-		<nav class="glass-nav">
-			<ul>
-				<li><a href="#" class="active">Trang chủ</a></li>
-				<li><a href="#">Phim</a></li>
-				<li><a href="#">Rạp</a></li>
-				<li><a href="#">Giới thiệu</a></li>
-			</ul>
-		</nav>
+    <nav class="glass-nav">
+        <ul>
+            <li><a href="#" class="active">Trang chủ</a></li>
+            <li><a href="#">Phim</a></li>
+            <li><a href="#">Rạp</a></li>
+            <li><a href="#">Giới thiệu</a></li>
+        </ul>
+    </nav>
 
-		<div class="search-login">
-			<input type="text" placeholder="Tìm kiếm" />
-			<button class="login-btn">Đăng nhập</button>
-		</div>
-	</header>
+    <div class="search-login">
+        <input type="text" placeholder="Tìm kiếm" />
+        <!-- USER INFO VỚI MÀU TRẮNG -->
+        <c:choose>
+            <c:when test="${not empty sessionScope.username}">
+                <div class="user-info">
+                    <span class="username">👤 ${sessionScope.username}</span>
+                    <a href="logout" class="logout-btn-header">Đăng xuất</a>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <button class="login-btn">Đăng nhập</button>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</header>
 
 	<section class="hero">
 		<div class="hero-content">
@@ -90,8 +130,8 @@
 	</section>
 
 	<section id="now-showing">
-	<!-- 🔻 Phần phim đang chiếu -->
-	<section id="now-showing"></section>
+		<!-- 🔻 Phần phim đang chiếu -->
+		<section id="now-showing"></section>
 		<div class="section-header">
 			<h2>PHIM ĐANG CHIẾU</h2>
 			<a href="movies">Xem tất cả</a>
@@ -122,7 +162,7 @@
 
 		</div>
 	</section>
-	
+
 	<section id="now-showing">
 		<div class="section-header">
 			<h2>PHIM SẮP CHIẾU</h2>
@@ -155,7 +195,7 @@
 		</div>
 	</section>
 
-			
+
 	<!-- ===== FOOTER =====  -->
 	<footer>
 		<div class="container">
