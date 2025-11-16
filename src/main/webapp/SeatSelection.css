@@ -122,422 +122,6 @@ ol {
   background: #d63854;
 }
 
-/*  LAYOUT TRANG THANH TOÁN  */
-.payment-main-content {
-  padding: 120px 0 60px;
-}
-
-.payment-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.payment-left-column {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.payment-right-column {
-  background: rgba(25, 28, 34, 0.8);
-  border-radius: 15px;
-  padding: 30px;
-  height: fit-content;
-  position: sticky;
-  top: 140px;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: #e6e6e6;
-}
-
-/* Movie Info */
-.movie-info .info-card {
-  background: rgba(25, 28, 34, 1);
-  border: 3px solid rgba(19, 23, 30, 1);
-  border-radius: 20px;
-  padding: 30px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.info-row:last-child {
-  border-bottom: none;
-}
-
-.info-label {
-  color: rgba(149, 152, 151, 1);
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.info-value {
-  color: rgba(177, 178, 179, 1);
-  font-weight: 700;
-  font-size: 16px;
-  text-align: right;
-}
-
-.time {
-  color: rgba(195, 86, 26, 1);
-  font-weight: 800;
-}
-
-.date {
-  color: rgba(173, 175, 175, 1);
-  font-weight: 700;
-}
-
-/* Payment Info */
-.payment-info .payment-card {
-  background: rgba(26, 29, 35, 1);
-  border: 2px solid rgba(42, 49, 60, 1);
-  border-radius: 10px;
-  padding: 25px;
-}
-
-.payment-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 25px;
-}
-
-.payment-table th {
-  color: rgba(163, 170, 168, 1);
-  font-weight: 700;
-  font-size: 15px;
-  text-align: left;
-  padding: 15px 10px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.payment-table td {
-  color: rgba(150, 154, 153, 1);
-  font-weight: 700;
-  font-size: 14px;
-  padding: 15px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.item-total {
-  color: rgba(134, 137, 139, 1);
-  font-weight: 700;
-  text-align: right;
-}
-
-.combo-item {
-  background: rgba(248, 69, 101, 0.05);
-}
-
-/* Combo Section */
-.combo-section {
-  border-top: 2px solid rgba(255, 255, 255, 0.1);
-  padding-top: 25px;
-}
-
-.combo-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: rgba(182, 187, 185, 1);
-  margin-bottom: 20px;
-}
-
-.combo-options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.combo-option {
-  position: relative;
-}
-
-.combo-checkbox {
-  position: absolute;
-  opacity: 0;
-}
-
-.combo-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(35, 38, 45, 1);
-  border: 1px solid rgba(42, 49, 61, 1);
-  border-radius: 8px;
-  padding: 15px 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.combo-checkbox:checked + .combo-label {
-  border-color: #f84565;
-  background: rgba(248, 69, 101, 0.1);
-}
-
-.combo-checkbox:checked + .combo-label::before {
-  content: "✓";
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #f84565;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.combo-name {
-  color: rgba(200, 200, 200, 1);
-  font-weight: 600;
-  font-size: 14px;
-  margin-left: 25px;
-}
-
-.combo-price {
-  color: rgba(248, 69, 101, 1);
-  font-weight: 700;
-  font-size: 14px;
-}
-
-/* Payment Methods */
-.methods-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.payment-method {
-  position: relative;
-}
-
-.method-radio {
-  position: absolute;
-  opacity: 0;
-}
-
-.method-label {
-  display: flex;
-  align-items: center;
-  background: rgba(26, 28, 34, 1);
-  border: 1px solid rgba(42, 49, 61, 1);
-  border-radius: 8px;
-  padding: 18px 20px;
-  cursor: pointer;
-  transition: all 0.3s;
-  min-height: 65px;
-}
-
-.method-radio:checked + .method-label {
-  border-color: #f84565;
-  background: rgba(248, 69, 101, 0.1);
-}
-
-.method-icon {
-  width: 50px;
-  height: 30px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 15px;
-  font-weight: 700;
-  font-size: 12px;
-}
-
-.method-icon.vietqr {
-  background: linear-gradient(135deg, #d32f2f, #f44336);
-  border: 1px solid rgba(149, 52, 54, 1);
-}
-
-.method-icon.vnpay {
-  background: linear-gradient(135deg, #0d47a1, #1976d2);
-  border: 1px solid rgba(47, 52, 65, 1);
-}
-
-.method-icon.viettel {
-  background: linear-gradient(135deg, #e65100, #ff9800);
-  border: 1px solid rgba(42, 49, 61, 1);
-}
-
-.method-icon.momo {
-  background: linear-gradient(135deg, #880e4f, #ad1457);
-  border: 1px solid rgba(94, 15, 66, 1);
-}
-
-.method-logo {
-  color: white;
-  font-weight: 700;
-}
-
-.method-name {
-  color: rgba(151, 152, 154, 1);
-  font-weight: 700;
-  font-size: 14px;
-}
-
-/* Total Cost */
-.cost-title {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: rgba(166, 170, 169, 1);
-}
-
-.cost-breakdown {
-  background: rgba(26, 29, 35, 1);
-  border-radius: 10px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
-
-.cost-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-}
-
-.cost-row.total {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  margin-top: 10px;
-  padding-top: 15px;
-  font-weight: 800;
-}
-
-.cost-label {
-  color: rgba(135, 139, 140, 1);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.cost-value {
-  color: rgba(185, 190, 192, 1);
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.cost-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 10px 0;
-}
-
-/* Terms Section */
-.terms-agreement {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: rgba(26, 29, 35, 1);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 25px;
-}
-
-.terms-checkbox {
-  display: none;
-}
-
-.checkbox-custom {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(142, 146, 146, 1);
-  border-radius: 3px;
-  margin-top: 2px;
-  position: relative;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.terms-checkbox:checked + .checkbox-custom {
-  background: #f84565;
-  border-color: #f84565;
-}
-
-.terms-checkbox:checked + .checkbox-custom::after {
-  content: "✓";
-  position: absolute;
-  color: white;
-  font-size: 12px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.terms-label {
-  color: rgba(142, 146, 146, 1);
-  font-size: 14px;
-  line-height: 1.5;
-  cursor: pointer;
-}
-
-.terms-text {
-  display: block;
-  margin-bottom: 4px;
-}
-
-.terms-link {
-  color: rgba(40, 81, 163, 1);
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.terms-link:hover {
-  text-decoration: underline;
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.pay-btn {
-  background: rgba(248, 69, 101, 1);
-  color: rgba(137, 99, 103, 1);
-  border: none;
-  padding: 18px 40px;
-  border-radius: 25px;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-align: center;
-}
-
-.pay-btn:hover {
-  background: #d63854;
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-.back-btn {
-  background: transparent;
-  color: rgba(148, 151, 155, 1);
-  border: none;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 12px;
-  text-align: center;
-  transition: color 0.3s;
-}
-
-.back-btn:hover {
-  color: #fff;
-}
-
 /*  LAYOUT TRANG CHỌN GHẾ  */
 .seat-main-container {
   padding: 120px 24px 0;
@@ -640,7 +224,7 @@ ol {
   right: 0;
 }
 
-.seat-section-title {
+.section-title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 16px;
@@ -842,6 +426,7 @@ ol {
 .footer-link:hover {
   color: #f84565;
 }
+
 .footer-social-download {
   display: flex;
   justify-content: center;
@@ -863,7 +448,6 @@ ol {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-
   transition: all 0.3s ease;
 }
 
@@ -963,24 +547,7 @@ ol {
   }
 }
 
-/* Responsive cho trang thanh toán */
-@media (max-width: 1024px) {
-  .payment-layout {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .payment-right-column {
-    position: static;
-    order: -1;
-  }
-
-  .navigation {
-    gap: 25px;
-    padding: 10px 25px;
-  }
-}
-
+/* Responsive cho trang chọn ghế */
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -996,10 +563,6 @@ ol {
     padding: 10px 20px;
   }
 
-  .payment-main-content {
-    padding: 160px 0 40px;
-  }
-
   .seat-main-container {
     padding: 160px 20px 0;
   }
@@ -1008,35 +571,6 @@ ol {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-  }
-
-  .info-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-  }
-
-  .info-value {
-    text-align: left;
-  }
-
-  .combo-label {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .combo-name {
-    margin-left: 20px;
-  }
-
-  .payment-table {
-    font-size: 12px;
-  }
-
-  .payment-table th,
-  .payment-table td {
-    padding: 10px 5px;
   }
 
   .seats-grid {
@@ -1048,4 +582,85 @@ ol {
     flex-direction: column;
     gap: 15px;
   }
+}
+/* Selected timing item */
+.timing-item.selected-timing {
+    background-color: rgba(248, 69, 101, 0.3);
+}
+
+/* Showtime info in sidebar */
+.showtime-info {
+    margin-top: 20px;
+    padding: 0 24px;
+}
+
+.info-item {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.info-item strong {
+    color: #f84565;
+}
+
+/* Selection summary */
+.selection-summary {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 30px 0 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.summary-text {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.summary-price {
+    color: #f84565;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Booked seat state */
+.seat-btn.booked {
+    background-color: #3d3a39de;
+    border-color: #3d3a39de;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.seat-btn.booked:hover {
+    background-color: #3d3a39de;
+    transform: none;
+}
+
+/* Selected seat state */
+.seat-btn.selected {
+    background-color: #f84565;
+    color: white;
+    border-color: #f84565;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .selection-summary {
+        margin: 20px 0 15px;
+        padding: 12px 15px;
+    }
+    
+    .summary-text {
+        font-size: 14px;
+    }
+    
+    .summary-price {
+        font-size: 16px;
+    }
 }
