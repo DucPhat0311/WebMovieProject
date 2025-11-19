@@ -157,7 +157,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			    String content = rs.getString("content");
 			    int descriptionId = rs.getInt("description_id");
 			    String posterUrl = rs.getString("poster_url");
-			    int rating = rs.getInt("rating");
+			    double rating = rs.getDouble("rating");
 			    String ageWarning = rs.getString("age_warning");
 			    String videoUrl = rs.getString("video_url");
 	            Date release_date = rs.getDate("release_date");
@@ -207,7 +207,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			    String content = rs.getString("content");
 			    int descriptionId = rs.getInt("description_id");
 			    String posterUrl = rs.getString("poster_url");
-			    int rating = rs.getInt("rating");
+			    double rating = rs.getDouble("rating");
 			    String ageWarning = rs.getString("age_warning");
 			    String videoUrl = rs.getString("video_url");
 	            Date release_date = rs.getDate("release_date");
@@ -257,7 +257,7 @@ public class MovieDAO implements DAOInterface<Movie> {
 			    String content = rs.getString("content");
 			    int descriptionId = rs.getInt("description_id");
 			    String posterUrl = rs.getString("poster_url");
-			    int rating = rs.getInt("rating");
+			    double rating = rs.getDouble("rating");
 			    String ageWarning = rs.getString("age_warning");
 			    String videoUrl = rs.getString("video_url");
 	            Date release_date = rs.getDate("release_date");

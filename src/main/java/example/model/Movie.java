@@ -1,42 +1,48 @@
 package example.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class Movie {
+
     private int id;
     private String title;
     private String genre;
-    private int duration; 
+    private int duration;
     private String country;
+    private String producer;
+    private List<String> directors;
+    private List<String> actors;
+    private LocalDate releaseDate;
     private String content;
-    private int descriptionId;      
-    private String posterUrl;       
-    private Integer rating;         
+    private String posterUrl;
+    private String videoUrl;
+    private double rating;
     private String ageWarning;
-    private String videoUrl;  
-    private Date release_date;
 
     public Movie() {}
 
     public Movie(int id, String title, String genre, int duration, String country,
-                 String content, int descriptionId, String posterUrl, Integer rating,
-                 String ageWarning, String videoUrl, Date release_date) {
+                 String producer, List<String> directors, List<String> actors,
+                 LocalDate releaseDate, String content, String posterUrl,
+                 String videoUrl, double rating, String ageWarning) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.duration = duration;
         this.country = country;
+        this.producer = producer;
+        this.directors = directors;
+        this.actors = actors;
+        this.releaseDate = releaseDate;
         this.content = content;
-        this.descriptionId = descriptionId;
         this.posterUrl = posterUrl;
+        this.videoUrl = videoUrl;
         this.rating = rating;
         this.ageWarning = ageWarning;
-        this.videoUrl = videoUrl;
-        this.release_date = release_date;
     }
 
+    // Getter & Setter
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -52,47 +58,30 @@ public class Movie {
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
 
+    public String getProducer() { return producer; }
+    public void setProducer(String producer) { this.producer = producer; }
+
+    public List<String> getDirectors() { return directors; }
+    public void setDirectors(List<String> directors) { this.directors = directors; }
+
+    public List<String> getActors() { return actors; }
+    public void setActors(List<String> actors) { this.actors = actors; }
+
+    public LocalDate getReleaseDate() { return releaseDate; }
+    public void setReleaseDate(LocalDate releaseDate) { this.releaseDate = releaseDate; }
+
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
-
-    public int getDescriptionId() { return descriptionId; }
-    public void setDescriptionId(int descriptionId) { this.descriptionId = descriptionId; }
-
 
     public String getPosterUrl() { return posterUrl; }
     public void setPosterUrl(String posterUrl) { this.posterUrl = posterUrl; }
 
-    public Integer getRating() { return rating; }
-    public void setRating(Integer rating) { this.rating = rating; }
+    public String getVideoUrl() { return videoUrl; }
+    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
+
+    public double getRating() { return rating; }
+    public void setRating(double rating) { this.rating = rating; }
 
     public String getAgeWarning() { return ageWarning; }
     public void setAgeWarning(String ageWarning) { this.ageWarning = ageWarning; }
-
-    public String getVideoUrl() { return videoUrl; }
-    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
-    
-    
-
-    public Date getRelease_date() {
-		return release_date;
-	}
-
-	@Override
-    public String toString() {
-        return "Movie{" + "id=" + id + ", title=" + title + ", genre=" + genre + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Movie movie = (Movie) o;
-        return id == movie.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
