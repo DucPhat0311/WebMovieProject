@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	version="4.0">
-
+	
 	<servlet>
 		<servlet-name>HomeServlet</servlet-name>
 		<servlet-class>example.controller.HomeServlet</servlet-class>
@@ -30,4 +30,5 @@
 		<welcome-file>home</welcome-file>
 	</welcome-file-list>
 
+</web-app>
 </web-app>
