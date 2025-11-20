@@ -12,9 +12,7 @@ public class User {
     private String phoneNumber;
     private String password;     
     private String email;
-    private Role role;
-    
-    
+    private Role role;    
 
     public int getId() {
 		return id;
