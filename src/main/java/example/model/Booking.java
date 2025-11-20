@@ -28,6 +28,7 @@ public class Booking {
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
         ticket.setBooking(this);
+        calculateTotalAmount();
     }
 
     public int getId() { return id; }
@@ -48,8 +49,12 @@ public class Booking {
 	
 	// tính lại tổng tiền
 	public void calculateTotalAmount() {
-	    this.totalAmount = tickets.stream()
-	        .map(Ticket::getPrice)
-	        .reduce(BigDecimal.ZERO, BigDecimal::add);
+		if (showtime == null) {
+	        totalAmount = BigDecimal.ZERO;
+	        return;
+	    }
+
+	    BigDecimal pricePerTicket = showtime.getPrice();
+	    totalAmount = pricePerTicket.multiply(BigDecimal.valueOf(tickets.size()));
 	}
 }

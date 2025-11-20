@@ -9,20 +9,18 @@ public class Showtime {
     private Movie movie;
     private Room room;
     private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private BigDecimal price;
-    private String format;
+    private Format format;
 
     public Showtime() {}
 
     public Showtime(int id, Movie movie, Room room,
-                    LocalDateTime startTime, LocalDateTime endTime,
-                    BigDecimal price, String format) {
+                    LocalDateTime startTime,
+                    BigDecimal price, Format format) {
         this.id = id;
         this.movie = movie;
         this.room = room;
         this.startTime = startTime;
-        this.endTime = endTime;
         this.price = price;
         this.format = format;
     }
@@ -39,12 +37,15 @@ public class Showtime {
     public LocalDateTime getStartTime() { return startTime; }
     public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
 
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
-
+    public LocalDateTime getEndTime() {
+        if (movie == null || startTime == null) {
+            return null; 
+        }
+        return startTime.plusMinutes(movie.getDuration());
+    }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
 
-    public String getFormat() { return format; }
-    public void setFormat(String format) { this.format = format; }
+    public Format getFormat() { return format; }
+    public void setFormat(Format format) { this.format = format; }
 }

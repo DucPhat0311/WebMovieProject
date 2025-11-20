@@ -7,15 +7,13 @@ public class Ticket {
     private int id;
     private Booking booking;
     private Seat seat;
-    private BigDecimal price;
 
     public Ticket() {}
 
-    public Ticket(int id, Booking booking, Seat seat, BigDecimal price) {
+    public Ticket(int id, Booking booking, Seat seat) {
         this.id = id;
         this.booking = booking;
         this.seat = seat;
-        this.price = price;
     }
 
     public int getId() { return id; }
@@ -27,6 +25,4 @@ public class Ticket {
     public Seat getSeat() { return seat; }
     public void setSeat(Seat seat) { this.seat = seat; }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
 }

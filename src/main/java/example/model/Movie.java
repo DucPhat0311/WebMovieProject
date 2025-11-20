@@ -8,15 +8,18 @@ public class Movie {
     private int id;
     private String title;
     private String genre;
-    private int duration;
+    private int duration; // minutes  
     private String country;
+    
     private String producer;
     private List<String> directors;
     private List<String> actors;
     private LocalDate releaseDate;
+    
     private String content;
     private String posterUrl;
     private String videoUrl;
+    
     private double rating;
     private String ageWarning;
 
