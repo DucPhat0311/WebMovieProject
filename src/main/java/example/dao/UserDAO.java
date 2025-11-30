@@ -2,195 +2,119 @@ package example.dao;
 
 import example.model.User;
 import example.model.Role;
+
 import java.sql.*;
+import java.time.LocalDate;
 
 public class UserDAO {
 
-	/**
-	 * ĐĂNG NHẬP: Kiểm tra thông tin đăng nhập B1: Kết nối database B2: Tạo câu SQL
-	 * SELECT với tham số email và password B3: Thực thi query và xử lý kết quả B4:
-	 * Map dữ liệu từ ResultSet sang User object B5: Đóng tất cả resources và trả về
-	 * user
-	 */
-	public User login(String email, String password) {
-		User user = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+    // Đăng nhập
+    public static User login(String emailOrUsername, String password) {
+        String sql = "SELECT * FROM users WHERE (email = ? OR username = ?) AND password = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-		try {
-			// B1: Lấy connection từ JDBCUtil
-			conn = JDBCUtil.getConnection();
+            ps.setString(1, emailOrUsername);
+            ps.setString(2, emailOrUsername);
+            ps.setString(3, password); // trong thực tế phải dùng BCrypt!
 
-			// B2: Tạo câu SQL với tham số để tránh SQL Injection
-			String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-			// B3: Tạo PreparedStatement và set tham số
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, email);
-			stmt.setString(2, password);
+    // Lấy user theo ID (dùng cho booking history, profile...)
+    public static User getById(int userId) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			// B4: Thực thi query và nhận ResultSet
-			rs = stmt.executeQuery();
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-			// B5: Kiểm tra và xử lý kết quả
-			if (rs.next()) {
-				user = new User();
-				// B6: Map dữ liệu từ database sang User object
-				user.setId(rs.getInt("id"));
-				user.setUsername(rs.getString("username"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
+    // Đăng ký tài khoản mới
+    public static boolean register(User user) {
+        String sql = """
+            INSERT INTO users (username, email, password, phone_number, birth_date, gender, role)
+            VALUES (?, ?, ?, ?, ?, ?, 'CUSTOMER')
+            """;
 
-				// B7: Xử lý các field có thể null
-				java.sql.Date birthDate = rs.getDate("birth_date");
-				if (birthDate != null) {
-					user.setBirthDate(birthDate.toLocalDate());
-				}
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-				user.setGender(rs.getBoolean("gender"));
-				user.setPhoneNumber(rs.getString("phone_number"));
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword()); // nên hash trước khi lưu
+            ps.setString(4, user.getPhoneNumber());
 
-				// B8: Xử lý role - quan trọng cho phân quyền
-				String roleString = rs.getString("role");
-				if (roleString != null) {
-					user.setRole(Role.valueOf(roleString));
-				} else {
-					System.err.println("WARNING: Role is null for user: " + email);
-					user.setRole(Role.CUSTOMER); // Default role
-				}
+            if (user.getBirthDate() != null) {
+                ps.setDate(5, Date.valueOf(user.getBirthDate()));
+            } else {
+                ps.setNull(5, Types.DATE);
+            }
 
-				System.out.println("LOGIN SUCCESS: " + user.getUsername());
-			}
+            ps.setObject(6, user.getGender(), Types.BOOLEAN);
 
-		} catch (SQLException e) {
-			// B9: Xử lý lỗi SQL
-			System.err.println("LOGIN ERROR: " + e.getMessage());
-		} finally {
-			// B10: LUÔN đóng resources trong finally block
-			try {
-				if (rs != null)
-					rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			JDBCUtil.closeConnection(conn);
-		}
-		return user;
-	}
+            int affected = ps.executeUpdate();
+            if (affected > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    user.setId(rs.getInt(1));
+                }
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-	/**
-	 * ĐĂNG KÝ: Thêm user mới vào database B1: Kiểm tra email/username đã tồn tại
-	 * chưa B2: Tạo câu SQL INSERT với đúng thứ tự cột B3: Set các tham số cho
-	 * PreparedStatement B4: Xử lý các giá trị có thể null B5: Thực thi update và
-	 * trả về kết quả
-	 */
-	public boolean register(User user) {
-		Connection conn = null;
-		PreparedStatement stmt = null;
+    // Kiểm tra email hoặc username đã tồn tại chưa
+    public static boolean isExists(String email, String username) {
+        String sql = "SELECT 1 FROM users WHERE email = ? OR username = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-		try {
-			// B1: Kết nối database
-			conn = JDBCUtil.getConnection();
+            ps.setString(1, email);
+            ps.setString(2, username);
+            return ps.executeQuery().next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-			// B2: Kiểm tra trùng email và username
-			if (isEmailExists(conn, user.getEmail()) || isUsernameExists(conn, user.getUsername())) {
-				System.out.println("REGISTER FAILED: Email or username already exists - " + user.getEmail());
-				return false;
-			}
+    // Helper: chuyển ResultSet → User object
+    private static User mapUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setPhoneNumber(rs.getString("phone_number"));
 
-			// B3: Tạo câu SQL INSERT - QUAN TRỌNG: đúng thứ tự cột trong database
-			String sql = "INSERT INTO users (username, birth_date, gender, phone_number, email, password, role) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        Date birth = rs.getDate("birth_date");
+        user.setBirthDate(birth != null ? birth.toLocalDate() : null);
 
-			// B4: Tạo PreparedStatement
-			stmt = conn.prepareStatement(sql);
+        Integer gender = (Integer) rs.getObject("gender");
+        user.setGender(gender != null ? gender == 1 : null);
 
-			// B5: Set các tham số theo đúng thứ tự trong SQL
-			stmt.setString(1, user.getUsername());
+        String roleStr = rs.getString("role");
+        user.setRole(roleStr != null ? Role.valueOf(roleStr) : Role.CUSTOMER);
 
-			// B6: Xử lý birth_date - có thể null
-			if (user.getBirthDate() != null) {
-				stmt.setDate(2, java.sql.Date.valueOf(user.getBirthDate()));
-			} else {
-				stmt.setNull(2, java.sql.Types.DATE);
-			}
-
-			// B7: Xử lý gender - có thể null
-			if (user.getGender() != null) {
-				stmt.setBoolean(3, user.getGender());
-			} else {
-				stmt.setNull(3, java.sql.Types.BOOLEAN);
-			}
-
-			// B8: Set các tham số còn lại
-			stmt.setString(4, user.getPhoneNumber());
-			stmt.setString(5, user.getEmail());
-			stmt.setString(6, user.getPassword());
-			stmt.setString(7, user.getRole().name());
-
-			// B9: Thực thi INSERT và nhận số dòng bị ảnh hưởng
-			int rowsAffected = stmt.executeUpdate();
-
-			// B10: Log kết quả thành công
-			if (rowsAffected > 0) {
-				System.out.println("REGISTER SUCCESS: " + user.getUsername());
-			}
-
-			// B11: Trả về true nếu insert thành công (1 dòng được thêm)
-			return rowsAffected > 0;
-
-		} catch (SQLException e) {
-			// B12: Xử lý lỗi SQL
-			System.err.println("REGISTER ERROR: " + e.getMessage());
-			return false;
-		} finally {
-			// B13: Đóng resources
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			JDBCUtil.closeConnection(conn);
-		}
-	}
-
-	/**
-	 * KIỂM TRA EMAIL TỒN TẠI B1: Tạo query đếm số user có email trùng B2: Thực thi
-	 * query và trả về kết quả
-	 */
-	private boolean isEmailExists(Connection conn, String email) throws SQLException {
-		String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, email);
-		ResultSet rs = stmt.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		stmt.close();
-		return count > 0;
-	}
-
-	/**
-	 * KIỂM TRA USERNAME TỒN TẠI B1: Tạo query đếm số user có username trùng B2:
-	 * Thực thi query và trả về kết quả
-	 */
-	private boolean isUsernameExists(Connection conn, String username) throws SQLException {
-		String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, username);
-		ResultSet rs = stmt.executeQuery();
-		rs.next();
-		int count = rs.getInt(1);
-		rs.close();
-		stmt.close();
-		return count > 0;
-	}
+        return user;
+    }
 }

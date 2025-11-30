@@ -1,63 +1,77 @@
 package example.dao;
 
 import example.model.Booking;
+import example.model.Showtime;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
 public class BookingDAO {
+	public static boolean createBooking(int userId, int showtimeId, List<Integer> seatIds) {
+		Connection conn = null;
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
 
-	public int createBooking(Booking booking) throws SQLException {
-		String sql = "INSERT INTO bookings (user_id, showtime_id, booking_date) VALUES (?, ?, ?)";
+			// 1. Tạo booking
+			String sqlBooking = "INSERT INTO bookings (user_id, showtime_id, total_amount, status) VALUES (?, ?, 0, 'PENDING')";
+			PreparedStatement psb = conn.prepareStatement(sqlBooking, Statement.RETURN_GENERATED_KEYS);
+			psb.setInt(1, userId);
+			psb.setInt(2, showtimeId);
+			psb.executeUpdate();
 
-		try (Connection conn = JDBCUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+			ResultSet rs = psb.getGeneratedKeys();
+			int bookingId = rs.next() ? rs.getInt(1) : 0;
 
-			stmt.setInt(1, booking.getUserId());
-			stmt.setInt(2, booking.getShowtimeId());
-
-			// Convert LocalDateTime to Timestamp
-			if (booking.getBookingDate() != null) {
-				stmt.setTimestamp(3, Timestamp.valueOf(booking.getBookingDate()));
-			} else {
-				stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+			// 2. Tạo tickets + kiểm tra trùng
+			String sqlTicket = "INSERT IGNORE INTO tickets (booking_id, seat_id, showtime_id) VALUES (?, ?, ?)";
+			PreparedStatement pst = conn.prepareStatement(sqlTicket);
+			for (int seatId : seatIds) {
+				pst.setInt(1, bookingId);
+				pst.setInt(2, seatId);
+				pst.setInt(3, showtimeId);
+				pst.addBatch();
 			}
+			int[] results = pst.executeBatch();
 
-			int affectedRows = stmt.executeUpdate();
-
-			if (affectedRows > 0) {
-				ResultSet rs = stmt.getGeneratedKeys();
-				if (rs.next()) {
-					return rs.getInt(1);
+			// Nếu có ghế bị trùng → rollback
+			for (int r : results) {
+				if (r == 0) { // INSERT IGNORE trả về 0 nếu bị unique key vi phạm
+					conn.rollback();
+					return false;
 				}
 			}
-		}
-		return -1;
-	}
 
-	public Booking getBookingById(int bookingId) throws SQLException {
-		String sql = "SELECT * FROM bookings WHERE id = ?";
+			// Cập nhật total_amount
+			Showtime st = ShowtimeDAO.getByIdFull(showtimeId);
+			BigDecimal total = st.getPrice().multiply(BigDecimal.valueOf(seatIds.size()));
+			String update = "UPDATE bookings SET total_amount = ?, status = 'PAID' WHERE id = ?";
+			PreparedStatement psu = conn.prepareStatement(update);
+			psu.setBigDecimal(1, total);
+			psu.setInt(2, bookingId);
+			psu.executeUpdate();
 
-		try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			conn.commit();
+			return true;
 
-			stmt.setInt(1, bookingId);
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				Booking booking = new Booking();
-				booking.setId(rs.getInt("id"));
-				booking.setUserId(rs.getInt("user_id"));
-				booking.setShowtimeId(rs.getInt("showtime_id"));
-
-				Timestamp timestamp = rs.getTimestamp("booking_date");
-				if (timestamp != null) {
-					booking.setBookingDate(timestamp.toLocalDateTime());
+		} catch (SQLException e) {
+			if (conn != null)
+				try {
+					conn.rollback();
+				} catch (SQLException ex) {
 				}
-
-				return booking;
-			}
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (conn != null)
+				try {
+					conn.setAutoCommit(true);
+					conn.close();
+				} catch (SQLException e) {
+				}
 		}
-		return null;
 	}
 }

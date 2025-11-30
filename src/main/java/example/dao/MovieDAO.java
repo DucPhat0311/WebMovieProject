@@ -1,283 +1,135 @@
 package example.dao;
 
+import example.model.*;
 import java.sql.*;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import example.model.Movie;
 
-public class MovieDAO implements DAOInterface<Movie> {
+public class MovieDAO {
 
-	public static MovieDAO getInstance() {
-		return new MovieDAO();
-	}
+    // Lấy phim + toàn bộ thể loại, đạo diễn, diễn viên (có vai)
+    public static Movie getByIdFull(int movieId) {
+        Movie movie = null;
+        String sql = """
+            SELECT m.*, ar.description as age_desc
+            FROM movies m
+            LEFT JOIN age_ratings ar ON m.age_rating_code = ar.code
+            WHERE m.id = ?
+            """;
 
-	@Override
-	public void add(Movie t) {
-	try {
-		// Buoc 1: tao ket noi den CSDL
-		String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-		String user = "root";
-		String password = "123456"; 
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-		Connection conn = JDBCUtil.getConnection();
-		
-		// Buoc 2: tao ra doi tuong statement
-		Statement st = conn.createStatement();
-		
-		// Buoc 3: thuc thi cau lenh SQL
-		String sql = "INSERT INTO movies (id, title, genre, duration, country, content, "
-		        + "description_id, poster_url, rating, age_warning, video_url) "
-		        + "VALUES (" 
-		        + t.getId() + ", "
-		        + "'" + t.getTitle() + "', "
-		        + "'" + t.getGenre() + "', "
-		        + t.getDuration() + ", "
-		        + "'" + t.getCountry() + "', "
-		        + "'" + t.getContent() + "', "
-		        + t.getDescriptionId() + ", "
-		        + "'" + t.getPosterUrl() + "', "
-		        + t.getRating() + ", "
-		        + "'" + t.getAgeWarning() + "', "
-		        + "'" + t.getVideoUrl() + "'"
-		        + ")";
-		System.out.println(sql);	
-		int result = st.executeUpdate(sql);
-		
-		// Buoc 4: 
-		System.out.println("Ban da thuc thi: "+sql);
-		System.out.println("Co "+result+" dong bi thay doi");
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                movie = new Movie();
+                movie.setId(rs.getInt("id"));
+                movie.setTitle(rs.getString("title"));
+                movie.setDuration(rs.getInt("duration"));
+                movie.setCountry(rs.getString("country"));
+                movie.setProducer(rs.getString("producer"));
+                movie.setReleaseDate(rs.getDate("release_date") != null ? 
+                    rs.getDate("release_date").toLocalDate() : null);
+                movie.setContent(rs.getString("content"));
+                movie.setPosterUrl(rs.getString("poster_url"));
+                movie.setVideoUrl(rs.getString("video_url"));
+                movie.setRating(rs.getDouble("rating"));
+                movie.setAgeRatingCode(rs.getString("age_rating_code"));
 
-		// Buoc 5:
-		JDBCUtil.closeConnection(conn);
-	}
-	catch (SQLException e) {
-		e.printStackTrace();
-	}
+                // Load genres
+                movie.setGenres(loadGenres(movieId, conn));
+                // Load directors
+                movie.setDirectors(loadDirectors(movieId, conn));
+                // Load actors + role
+                movie.setActors(loadMovieActors(movieId, conn));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return movie;
+    }
 
-	}
+    // Phim đang chiếu
+    public static List<Movie> getNowShowing() {
+        return getMoviesByStatus("NOW");
+    }
 
-	@Override
-	public void update(Movie t) {
-		try {
-			// Buoc 1: tao ket noi den CSDL
-			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-			String user = "root"; 
-			String password = "123456"; 
+    // Phim sắp chiếu
+    public static List<Movie> getComingSoon() {
+        return getMoviesByStatus("SOON");
+    }
 
-			Connection conn = JDBCUtil.getConnection();
-			
-			// Buoc 2: tao ra doi tuong statement
-			Statement st = conn.createStatement();
-			
-			// Buoc 3: thuc thi cau lenh SQL
-			String sql =  "UPDATE movies SET "
-			        + "title = '" + t.getTitle() + "', "
-			        + "genre = '" + t.getGenre() + "', "
-			        + "duration = " + t.getDuration() + ", "
-			        + "country = '" + t.getCountry() + "', "
-			        + "content = '" + t.getContent() + "', "
-			        + "description_id = " + t.getDescriptionId() + ", "
-			        + "poster_url = '" + t.getPosterUrl() + "', "
-			        + "rating = " + t.getRating() + ", "
-			        + "age_warning = '" + t.getAgeWarning() + "', "
-			        + "video_url = '" + t.getVideoUrl() + "' "
-			        + "WHERE id = " + t.getId();;
-			System.out.println(sql);	
-			int result = st.executeUpdate(sql);
-			
-			// Buoc 4: 
-			System.out.println("Ban da thuc thi: "+sql);
-			System.out.println("Co "+result+" dong bi thay doi");
+    private static List<Movie> getMoviesByStatus(String type) {
+        List<Movie> list = new ArrayList<>();
+        String sql = type.equals("NOW") ?
+            "SELECT DISTINCT m.* FROM movies m JOIN showtimes s ON m.id = s.movie_id WHERE s.start_time >= CURDATE()" :
+            "SELECT m.* FROM movies m WHERE m.release_date > CURDATE() AND NOT EXISTS (SELECT 1 FROM showtimes s WHERE s.movie_id = m.id)";
 
-			// Buoc 5:
-			JDBCUtil.closeConnection(conn);
-		}	
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-	@Override
-	public void delete(Movie t) {
-		try {
-			// Buoc 1: tao ket noi den CSDL
-			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-			String user = "root"; 
-			String password = "123456"; 
+            while (rs.next()) {
+                Movie m = new Movie();
+                m.setId(rs.getInt("id"));
+                m.setTitle(rs.getString("title"));
+                m.setPosterUrl(rs.getString("poster_url"));
+                m.setReleaseDate(rs.getDate("release_date").toLocalDate());
+                m.setAgeRatingCode(rs.getString("age_rating_code"));
+                list.add(m);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
-			Connection conn = JDBCUtil.getConnection();
-			
-			// Buoc 2: tao ra doi tuong statement
-			Statement st = conn.createStatement();
-			
-			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "DELETE FROM movies WHERE id = " + t.getId();
-			System.out.println(sql);
-			int result = st.executeUpdate(sql);
-			
-			// Buoc 4: 
-			System.out.println("Ban da thuc thi: "+sql);
-			System.out.println("Co "+result+" dong bi thay doi");
+    // Helper methods
+    private static List<Genre> loadGenres(int movieId, Connection conn) throws SQLException {
+        List<Genre> genres = new ArrayList<>();
+        String sql = "SELECT g.id, g.name FROM genres g JOIN movie_genres mg ON g.id = mg.genre_id WHERE mg.movie_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                genres.add(new Genre(rs.getInt("id"), rs.getString("name")));
+            }
+        }
+        return genres;
+    }
 
-			// Buoc 5:
-			JDBCUtil.closeConnection(conn);
-		}	
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+    private static List<Director> loadDirectors(int movieId, Connection conn) throws SQLException {
+        List<Director> dirs = new ArrayList<>();
+        String sql = "SELECT d.id, d.name FROM directors d JOIN movie_directors md ON d.id = md.director_id WHERE md.movie_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                dirs.add(new Director(rs.getInt("id"), rs.getString("name")));
+            }
+        }
+        return dirs;
+    }
 
-	@Override
-	public ArrayList<Movie> selectAll() {
-		ArrayList<Movie> result = new ArrayList<>();
-		try {
-			// Buoc 1: tao ket noi den CSDL
-			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-			String user = "root"; 
-			String password = "123456"; 
-
-			Connection conn = JDBCUtil.getConnection();
-			
-			// Buoc 2: tao ra doi tuong statement
-			Statement st = conn.createStatement();
-			
-			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "SELECT * FROM movies";
-			ResultSet rs = st.executeQuery(sql);
-			
-			// Buoc 4: 
-			while (rs.next()) {
-			    int id = rs.getInt("id");
-			    String title = rs.getString("title");
-			    String genre = rs.getString("genre");
-			    int duration = rs.getInt("duration");
-			    String country = rs.getString("country");
-			    String content = rs.getString("content");
-			    int descriptionId = rs.getInt("description_id");
-			    String posterUrl = rs.getString("poster_url");
-			    double rating = rs.getDouble("rating");
-			    String ageWarning = rs.getString("age_warning");
-			    String videoUrl = rs.getString("video_url");
-	            Date release_date = rs.getDate("release_date");
-
-
-			    Movie movie = new Movie(
-			        id, title, genre, duration, country, content,
-			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
-			    );
-
-			    result.add(movie);
-			}
-
-			// Buoc 5:
-			JDBCUtil.closeConnection(conn);
-		}	
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public List<Movie> getNowShowingMovies()  {
-		ArrayList<Movie> result = new ArrayList<>();
-		try {
-			// Buoc 1: tao ket noi den CSDL
-			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-			String user = "root"; 
-			String password = "123456"; 
-
-			Connection conn = JDBCUtil.getConnection();
-			
-			// Buoc 2: tao ra doi tuong statement
-			Statement st = conn.createStatement();
-			
-			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "SELECT * FROM movies WHERE release_date <= CURDATE() ORDER BY release_date DESC LIMIT 7";
-			ResultSet rs = st.executeQuery(sql);
-			
-			// Buoc 4: 
-			while (rs.next()) {
-			    int id = rs.getInt("id");
-			    String title = rs.getString("title");
-			    String genre = rs.getString("genre");
-			    int duration = rs.getInt("duration");
-			    String country = rs.getString("country");
-			    String content = rs.getString("content");
-			    int descriptionId = rs.getInt("description_id");
-			    String posterUrl = rs.getString("poster_url");
-			    double rating = rs.getDouble("rating");
-			    String ageWarning = rs.getString("age_warning");
-			    String videoUrl = rs.getString("video_url");
-	            Date release_date = rs.getDate("release_date");
-
-
-			    Movie movie = new Movie(
-			        id, title, genre, duration, country, content,
-			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
-			    );
-
-			    result.add(movie);
-			}
-
-			// Buoc 5:
-			JDBCUtil.closeConnection(conn);
-		}	
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public List<Movie> willShowMovies()  {
-		ArrayList<Movie> result = new ArrayList<>();
-		try {
-			// Buoc 1: tao ket noi den CSDL
-			String url = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC";
-			String user = "root"; 
-			String password = "123456"; 
-
-			Connection conn = JDBCUtil.getConnection();
-			
-			// Buoc 2: tao ra doi tuong statement
-			Statement st = conn.createStatement();
-			
-			// Buoc 3: thuc thi cau lenh SQL
-			String sql = "SELECT * FROM movies WHERE release_date > CURDATE() ORDER BY release_date DESC LIMIT 7";
-			ResultSet rs = st.executeQuery(sql);
-			
-			// Buoc 4: 
-			while (rs.next()) {
-			    int id = rs.getInt("id");
-			    String title = rs.getString("title");
-			    String genre = rs.getString("genre");
-			    int duration = rs.getInt("duration");
-			    String country = rs.getString("country");
-			    String content = rs.getString("content");
-			    int descriptionId = rs.getInt("description_id");
-			    String posterUrl = rs.getString("poster_url");
-			    double rating = rs.getDouble("rating");
-			    String ageWarning = rs.getString("age_warning");
-			    String videoUrl = rs.getString("video_url");
-	            Date release_date = rs.getDate("release_date");
-
-
-			    Movie movie = new Movie(
-			        id, title, genre, duration, country, content,
-			        descriptionId, posterUrl, rating, ageWarning, videoUrl, release_date
-			    );
-
-			    result.add(movie);
-			}
-
-			// Buoc 5:
-			JDBCUtil.closeConnection(conn);
-		}	
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
+    private static List<MovieActor> loadMovieActors(int movieId, Connection conn) throws SQLException {
+        List<MovieActor> actors = new ArrayList<>();
+        String sql = """
+            SELECT a.id, a.name, ma.role_name 
+            FROM actors a 
+            JOIN movie_actors ma ON a.id = ma.actor_id 
+            WHERE ma.movie_id = ?
+            """;
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Actor actor = new Actor(rs.getInt("id"), rs.getString("name"));
+                MovieActor ma = new MovieActor(movieId, actor.getId(), rs.getString("role_name"));
+                ma.setActor(actor);
+                actors.add(ma);
+            }
+        }
+        return actors;
+    }
 }

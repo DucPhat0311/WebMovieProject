@@ -1,88 +1,56 @@
 package example.dao;
 
-import example.composite.Seat;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import example.model.Cinema;
+import example.model.Room;
+import example.model.Seat;
+
 public class SeatDAO {
-
-	public List<Seat> getSeatsByRoomId(int roomId) throws SQLException {
+	public static List<Seat> getSeatsByShowtime(int showtimeId) {
 		List<Seat> seats = new ArrayList<>();
-		String sql = "SELECT * FROM seats WHERE room_id = ?";
+		String sql = """
+				SELECT s.*, r.id as room_id, r.name as room_name, c.id as cinema_id,
+				       t.id as ticket_id
+				FROM seats s
+				JOIN rooms r ON s.room_id = r.id
+				JOIN cinemas c ON r.cinema_id = c.id
+				LEFT JOIN tickets t ON t.seat_id = s.id AND t.showtime_id = ?
+				WHERE r.id = (SELECT room_id FROM showtimes WHERE id = ?)
+				ORDER BY s.row_char, s.number
+				""";
 
-		try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-			stmt.setInt(1, roomId);
-			ResultSet rs = stmt.executeQuery();
+			ps.setInt(1, showtimeId);
+			ps.setInt(2, showtimeId);
+			ResultSet rs = ps.executeQuery();
 
+			Room currentRoom = null;
 			while (rs.next()) {
-				Seat seat = new Seat(rs.getInt("id"), rs.getString("seat_code"), rs.getInt("seat_row"),
-						rs.getInt("seat_col"));
-
-				if (rs.getBoolean("is_booked")) {
-					seat.book();
+				if (currentRoom == null) {
+					Cinema cinema = new Cinema(rs.getInt("cinema_id"), "", "");
+					currentRoom = new Room(rs.getInt("room_id"), cinema, rs.getString("room_name"), 0);
 				}
 
+				Seat seat = new Seat();
+				seat.setId(rs.getInt("id"));
+				seat.setRoom(currentRoom);
+				seat.setRow(rs.getString("row_char").charAt(0));
+				seat.setNumber(rs.getInt("number"));
+				seat.setType(rs.getString("type"));
+
+				// Nếu có ticket_id → ghế đã đặt
+				if (rs.getObject("ticket_id") != null) {
+					// có thể thêm thuộc tính booked = true nếu cần
+				}
 				seats.add(seat);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return seats;
-	}
-
-	public List<Seat> getBookedSeatsByShowtime(int showtimeId) throws SQLException {
-		List<Seat> bookedSeats = new ArrayList<>();
-		String sql = "SELECT s.* FROM seats s " + "JOIN tickets t ON s.id = t.seat_id " + "WHERE t.showtime_id = ?";
-
-		try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-			stmt.setInt(1, showtimeId);
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				Seat seat = new Seat(rs.getInt("id"), rs.getString("seat_code"), rs.getInt("seat_row"),
-						rs.getInt("seat_col"));
-				seat.book();
-				bookedSeats.add(seat);
-			}
-		}
-		return bookedSeats;
-	}
-
-	public boolean isSeatAvailable(int seatId, int showtimeId) throws SQLException {
-		String sql = "SELECT COUNT(*) FROM tickets WHERE seat_id = ? AND showtime_id = ?";
-
-		try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-			stmt.setInt(1, seatId);
-			stmt.setInt(2, showtimeId);
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				return rs.getInt(1) == 0;
-			}
-		}
-		return false;
-	}
-
-	public Seat getSeatById(int seatId) throws SQLException {
-		String sql = "SELECT * FROM seats WHERE id = ?";
-
-		try (Connection conn = JDBCUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-			stmt.setInt(1, seatId);
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				Seat seat = new Seat(rs.getInt("id"), rs.getString("seat_code"), rs.getInt("seat_row"),
-						rs.getInt("seat_col"));
-
-				if (rs.getBoolean("is_booked")) {
-					seat.book();
-				}
-				return seat;
-			}
-		}
-		return null;
 	}
 }
