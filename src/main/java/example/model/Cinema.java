@@ -1,49 +1,34 @@
 package example.model;
 
 public class Cinema {
-    private int cinemaId;
-    private String cinemaName;
-    private int cityId;
-    private String address;
-    
-    public Cinema() {}
-    
-    public Cinema(String cinemaName, int cityId, String address) {
-        this.cinemaName = cinemaName;
-        this.cityId = cityId;
-        this.address = address;
-    }
-    
-	public Cinema(int cinemaId, String cinemaName, int cityId, String address) {
-		super();
-		this.cinemaId = cinemaId;
-		this.cinemaName = cinemaName;
-		this.cityId = cityId;
+
+	private int id;
+	private String name;
+	private String address;
+
+	public Cinema() {
+	}
+
+	public Cinema(int id, String name, String address) {
+		this.id = id;
+		this.name = name;
 		this.address = address;
 	}
 
-	public int getCinemaId() {
-		return cinemaId;
+	public int getId() {
+		return id;
 	}
 
-	public void setCinemaId(int cinemaId) {
-		this.cinemaId = cinemaId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getCinemaName() {
-		return cinemaName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCinemaName(String cinemaName) {
-		this.cinemaName = cinemaName;
-	}
-
-	public int getCityId() {
-		return cityId;
-	}
-
-	public void setCityId(int cityId) {
-		this.cityId = cityId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getAddress() {
@@ -53,7 +38,5 @@ public class Cinema {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-    
-	
-    
+
 }

@@ -1,5 +1,10 @@
 package example.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Booking {
 
 	private int id;
@@ -7,10 +12,17 @@ public class Booking {
 	private Showtime showtime;
 	private LocalDateTime bookingDateTime;
 	private BigDecimal totalAmount;
-	private String status = "PENDING"; // PENDING, PAID, CANCELLED
 	private List<Ticket> tickets = new ArrayList<>();
 
 	public Booking() {
+	}
+
+	public Booking(int id, User user, Showtime showtime, LocalDateTime bookingDateTime, BigDecimal totalAmount) {
+		this.id = id;
+		this.user = user;
+		this.showtime = showtime;
+		this.bookingDateTime = bookingDateTime;
+		this.totalAmount = totalAmount;
 	}
 
 	public void addTicket(Ticket ticket) {
@@ -19,15 +31,6 @@ public class Booking {
 		calculateTotalAmount();
 	}
 
-	public void calculateTotalAmount() {
-		if (showtime == null || tickets.isEmpty()) {
-			totalAmount = BigDecimal.ZERO;
-			return;
-		}
-		totalAmount = showtime.getPrice().multiply(BigDecimal.valueOf(tickets.size()));
-	}
-
-	// Getters & Setters
 	public int getId() {
 		return id;
 	}
@@ -60,28 +63,18 @@ public class Booking {
 		this.bookingDateTime = bookingDateTime;
 	}
 
-	public BigDecimal getTotalAmount() {
-		return totalAmount;
-	}
-
-	public void setTotalAmount(BigDecimal totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public List<Ticket> getTickets() {
 		return tickets;
 	}
 
-	public void setTickets(List<Ticket> tickets) {
-		this.tickets = tickets;
-	}
+	// tính lại tổng tiền
+	public void calculateTotalAmount() {
+		if (showtime == null) {
+			totalAmount = BigDecimal.ZERO;
+			return;
+		}
 
+		BigDecimal pricePerTicket = showtime.getPrice();
+		totalAmount = pricePerTicket.multiply(BigDecimal.valueOf(tickets.size()));
+	}
 }

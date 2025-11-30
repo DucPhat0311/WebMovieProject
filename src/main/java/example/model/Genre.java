@@ -1,28 +1,23 @@
 package example.model;
 
 public class Genre {
-	private int genreId;
+	private int id;
 	private String name;
-	
-	public Genre() {}
-	
-	public Genre(String name) {
-		super();
-		this.name = name;
+
+	public Genre() {
 	}
-	
-	public Genre(int genreId, String name) {
-		super();
-		this.genreId = genreId;
+
+	public Genre(int id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
-	public int getGenreId() {
-		return genreId;
+	public int getId() {
+		return id;
 	}
 
-	public void setGenreId(int genreId) {
-		this.genreId = genreId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -32,6 +27,4 @@ public class Genre {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 }

@@ -1,7 +1,9 @@
 package example.model;
 
-public class Showtime {
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+public class Showtime {
 	private int id;
 	private Movie movie;
 	private Room room;
@@ -68,13 +70,8 @@ public class Showtime {
 		this.formatCode = formatCode;
 	}
 
-	public String getFormatDisplayName() {
-		return Format.fromCode(formatCode).getDisplayName();
-	}
-
 	// Helper method để lấy Format enum
 	public Format getFormat() {
 		return Format.fromCode(formatCode);
 	}
-
 }

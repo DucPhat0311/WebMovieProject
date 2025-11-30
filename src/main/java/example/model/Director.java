@@ -1,31 +1,30 @@
 package example.model;
 
 public class Director {
-	private int movieId;
-    private int artistId;
-    
-    public Director() {}
-    
-    public Director(int movieId, int artistId) {
-        this.movieId = movieId;
-        this.artistId = artistId;
-    }
+	private int id;
+	private String name;
 
-	public int getMovieId() {
-		return movieId;
+	public Director() {
 	}
 
-	public void setMovieId(int movieId) {
-		this.movieId = movieId;
+	public Director(int id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 
-	public int getArtistId() {
-		return artistId;
+	public int getId() {
+		return id;
 	}
 
-	public void setArtistId(int artistId) {
-		this.artistId = artistId;
+	public void setId(int id) {
+		this.id = id;
 	}
-    
-    
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

@@ -1,25 +1,24 @@
 package example.model;
 
-
 public class Seat {
+
 	private int id;
 	private Room room;
 	private char row;
 	private int number;
-	private SeatType type;
+	private String type;
 
 	public Seat() {
 	}
 
-	public Seat(int id, Room room, char row, int number, String typeStr) {
+	public Seat(int id, Room room, char row, int number, String type) {
 		this.id = id;
 		this.room = room;
 		this.row = row;
 		this.number = number;
-		this.type = SeatType.valueOf(typeStr.toLowerCase());
+		this.type = type;
 	}
 
-	// Getters & Setters
 	public int getId() {
 		return id;
 	}
@@ -52,20 +51,15 @@ public class Seat {
 		this.number = number;
 	}
 
-	public SeatType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(SeatType type) {
-		this.type = type;
-	}
-
 	public void setType(String type) {
-		this.type = SeatType.valueOf(type.toLowerCase());
+		this.type = type;
 	}
 
 	public String getLabel() {
 		return row + String.valueOf(number);
 	}
-
 }

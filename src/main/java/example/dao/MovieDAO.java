@@ -1,17 +1,13 @@
 package example.dao;
 
-
-
 import example.model.Movie;
 import example.dao.DBConnection;
-
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDAO {
-
 
     public List<Movie> getShowingMovies() throws Exception {
         List<Movie> list = new ArrayList<>();
@@ -60,6 +56,5 @@ public class MovieDAO {
             }
         }
         return null;
-
     }
 }

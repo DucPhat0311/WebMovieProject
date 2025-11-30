@@ -6,55 +6,39 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/cinema_booking?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASS = "voduti05**"; 
+	private static final String URL = "jdbc:mysql://localhost:3306/cinema_booking?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+	private static final String USER = "root";
+	private static final String PASS = "voduti05**";
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
-    }
-
-	private static final String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
-	private static final String USER = "root"; 
-	private static final String PASSWORD = "123456"; 
+	static {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Không tìm thấy MySQL Connector/J! Thêm file JAR vào WEB-INF/lib!", e);
+		}
+	}
 
 	public static Connection getConnection() {
-		Connection c = null;
 		try {
-			// Dang ky MySQL Driver voi DriverManager
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			if (conn != null) {
+				System.out.println("Kết nối database thành công! DB: cinema_booking");
+			}
+			return conn;
+		} catch (SQLException e) {
+			System.err.println("LỖI KẾT NỐI DATABASE:");
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-			// Cac thong so
-			String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
-			String USER = "root"; 
-			String PASSWORD = "123456"; 
-			
-			// Tao ket noi 
-			c = DriverManager.getConnection(URL,USER,PASSWORD);
-
+	public static void closeConnection(Connection c) {
+		try {
+			if (c != null && !c.isClosed()) {
+				c.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return c;
 	}
-	
-	public static void closeConnection(Connection c) {
-		try {
-			if(c!=null) {
-				c.close();
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }
