@@ -1,11 +1,7 @@
 package example.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Booking {
+
 	private int id;
 	private User user;
 	private Showtime showtime;
@@ -87,4 +83,5 @@ public class Booking {
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
 	}
+
 }

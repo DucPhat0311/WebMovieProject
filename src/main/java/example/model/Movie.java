@@ -1,37 +1,50 @@
 package example.model;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Movie {
-	private int id;
-	private String title;
-	private int duration;
-	private String country;
-	private String producer;
-	private LocalDate releaseDate;
-	private String content;
-	private String posterUrl;
-	private String videoUrl;
-	private double rating;
-	private String ageRatingCode;
 
-	private List<Genre> genres = new ArrayList<>();
-	private List<Director> directors = new ArrayList<>();
-	private List<MovieActor> actors = new ArrayList<>();
+	
+	private int movieId;
+    private String title;
+    private String description;
+    private int genreId;
+    private int duration;
+    private Date releaseDate;
+    private String ageWarning;
+    private String posterUrl;
+    private String trailerUrl;
+    private String status;
+    
+    public Movie() {}
 
-	public Movie() {
+   
+    
+	public Movie(int movieId, String title, String description, int genreId, int duration, Date releaseDate,
+			String ageWarning, String posterUrl, String trailerUrl, String status) {
+		super();
+		this.movieId = movieId;
+		this.title = title;
+		this.description = description;
+		this.genreId = genreId;
+		this.duration = duration;
+		this.releaseDate = releaseDate;
+		this.ageWarning = ageWarning;
+		this.posterUrl = posterUrl;
+		this.trailerUrl = trailerUrl;
+		this.status = status;
 	}
 
-	// === GETTER & SETTER CƠ BẢN ===
-	public int getId() {
-		return id;
+	public int getMovieId() {
+		return movieId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
 	public String getTitle() {
@@ -42,6 +55,22 @@ public class Movie {
 		this.title = title;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getGenreId() {
+		return genreId;
+	}
+
+	public void setGenreId(int genreId) {
+		this.genreId = genreId;
+	}
+
 	public int getDuration() {
 		return duration;
 	}
@@ -50,37 +79,22 @@ public class Movie {
 		this.duration = duration;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getProducer() {
-		return producer;
-	}
-
-	public void setProducer(String producer) {
-		this.producer = producer;
-	}
-
-	public LocalDate getReleaseDate() {
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(LocalDate releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
-	public String getContent() {
-		return content;
+	public String getAgeWarning() {
+		return ageWarning;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setAgeWarning(String ageWarning) {
+		this.ageWarning = ageWarning;
 	}
+
 
 	public String getPosterUrl() {
 		return posterUrl;
@@ -89,6 +103,7 @@ public class Movie {
 	public void setPosterUrl(String posterUrl) {
 		this.posterUrl = posterUrl;
 	}
+
 
 	public String getVideoUrl() {
 		return videoUrl;
@@ -114,60 +129,23 @@ public class Movie {
 		this.ageRatingCode = code;
 	}
 
-	// === QUAN HỆ N-N ===
-	public List<Genre> getGenres() {
-		return genres;
+
+	public String getTrailerUrl() {
+		return trailerUrl;
 	}
 
-	public void setGenres(List<Genre> genres) {
-		this.genres = genres;
+	public void setTrailerUrl(String trailerUrl) {
+		this.trailerUrl = trailerUrl;
 	}
 
-	public void addGenre(Genre g) {
-		genres.add(g);
+	public String getStatus() {
+		return status;
 	}
 
-	public List<Director> getDirectors() {
-		return directors;
-	}
-
-	public void setDirectors(List<Director> directors) {
-		this.directors = directors;
-	}
-
-	public void addDirector(Director d) {
-		directors.add(d);
-	}
-
-	public List<MovieActor> getActors() {
-		return actors;
-	}
-
-	public void setActors(List<MovieActor> actors) {
-		this.actors = actors;
-	}
-
-	public void addActor(MovieActor ma) {
-		actors.add(ma);
-	}
-
-	// === HELPER CHO JSP ===
-	public String getGenreNames() {
-		if (genres.isEmpty())
-			return "Chưa xác định";
-		return genres.stream().map(Genre::getName).collect(Collectors.joining(", "));
-	}
-
-	public String getDirectorNames() {
-		if (directors.isEmpty())
-			return "Chưa xác định";
-		return directors.stream().map(Director::getName).collect(Collectors.joining(", "));
-	}
-
-	public String getActorWithRoles() {
-		if (actors.isEmpty())
-			return "Chưa có thông tin";
-		return actors.stream().map(MovieActor::getDisplay).collect(Collectors.joining(", "));
-	}
-	
+	public void setStatus(String status) {
+		this.status = status;
+	}      
+    
+    
 }
+

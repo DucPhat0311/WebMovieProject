@@ -1,3 +1,4 @@
+
 package example.dao;
 
 import example.model.User;
@@ -16,7 +17,7 @@ public class UserDAO {
 
             ps.setString(1, emailOrUsername);
             ps.setString(2, emailOrUsername);
-            ps.setString(3, password); // trong thực tế phải dùng BCrypt!
+            ps.setString(3, password); 
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

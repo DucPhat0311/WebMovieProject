@@ -1,5 +1,6 @@
 package example.model;
 
+
 public class Seat {
 	private int id;
 	private Room room;
@@ -66,4 +67,5 @@ public class Seat {
 	public String getLabel() {
 		return row + String.valueOf(number);
 	}
+
 }

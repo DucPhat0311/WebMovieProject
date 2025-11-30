@@ -1,3 +1,4 @@
+
 package example.dao;
 
 import java.sql.*;
@@ -54,3 +55,4 @@ public class SeatDAO {
 		return seats;
 	}
 }
+
