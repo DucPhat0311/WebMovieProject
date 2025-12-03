@@ -21,7 +21,7 @@ public class DescriptionDAO implements DAOInterface<Description> {
 		String user = "root";
 		String password = "123456"; 
 
-		Connection conn = JDBCUtil.getConnection();
+		Connection conn = DBConnection.getConnection();
 		
 		// Buoc 2: tao ra doi tuong statement
 		Statement st = conn.createStatement();
@@ -42,7 +42,7 @@ public class DescriptionDAO implements DAOInterface<Description> {
 		System.out.println("Co "+result+" dong bi thay doi");
 
 		// Buoc 5:
-		JDBCUtil.closeConnection(conn);
+		DBConnection.closeConnection(conn);
 	}
 	catch (SQLException e) {
 		e.printStackTrace();
