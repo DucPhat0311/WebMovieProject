@@ -1,58 +1,44 @@
 package example.model;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-
 
 public class Ticket {
-    private int id;
-    private int bookingId;
-    private int seatId;
-    private int showtimeId;
-    private BigDecimal price;    
 
-    public Ticket() {}
+	private int id;
+	private Booking booking;
+	private Seat seat;
 
-    public Ticket(int id, int bookingId, int seatId, int showtimeId, BigDecimal price) {
-        this.id = id;
-        this.bookingId = bookingId;
-        this.seatId = seatId;
-        this.showtimeId = showtimeId;
-        this.price = price;
-    }
+	public Ticket() {
+	}
 
-    // --- getters / setters ---
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    
-    public int getShowtimeId() { return showtimeId; }
-    public void setShowtimeId(int showtimeId) { this.showtimeId = showtimeId; }
+	public Ticket(int id, Booking booking, Seat seat) {
+		this.id = id;
+		this.booking = booking;
+		this.seat = seat;
+	}
 
-    public int getBookingId() { return bookingId; }
-    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+	public int getId() {
+		return id;
+	}
 
-    public int getSeatId() { return seatId; }
-    public void setSeatId(int seatId) { this.seatId = seatId; }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+	public Booking getBooking() {
+		return booking;
+	}
 
+	public void setBooking(Booking booking) {
+		this.booking = booking;
+	}
 
-    @Override
-    public String toString() {
-        return "Ticket{" + "id=" + id + ", bookingId=" + bookingId + ", seatId=" + seatId + ", price=" + price + '}';
-    }
+	public Seat getSeat() {
+		return seat;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Ticket)) return false;
-        Ticket ticket = (Ticket) o;
-        return id == ticket.id;
-    }
+	public void setSeat(Seat seat) {
+		this.seat = seat;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

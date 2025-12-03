@@ -28,13 +28,27 @@ public class DBConnection {
 		}
 		return c;
 	}
+		
+	public static Connection getConnection() {
+		try {
+			Connection conn = DriverManager.getConnection(URL, USER, PASS);
+			if (conn != null) {
+				System.out.println("Kết nối database thành công! DB: cinema_booking");
+			}
+			return conn;
+		} catch (SQLException e) {
+			System.err.println("LỖI KẾT NỐI DATABASE:");
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static void closeConnection(Connection c) {
 		try {
-			if (c != null) {
+			if (c != null && !c.isClosed()) {
 				c.close();
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
