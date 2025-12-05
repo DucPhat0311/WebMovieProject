@@ -16,20 +16,41 @@ public class Movie {
     
     public Movie() {}
     
-	public Movie(int movieId, String title, String description, int duration, Date releaseDate, String ageWarning,
-			String posterUrl, String trailerUrl, boolean isActive) {
-		super();
-		this.movieId = movieId;
-		this.title = title;
-		this.description = description;
-		this.duration = duration;
-		this.releaseDate = releaseDate;
-		this.ageWarning = ageWarning;
-		this.posterUrl = posterUrl;
-		this.trailerUrl = trailerUrl;
-		this.isActive = true;
-		this.status = Constant.MOVIE_COMING_SOON;
-	}
+ // --- CONSTRUCTOR 1: Dùng cho INSERT (Tạo phim mới) ---
+    // Không có movieId (vì tự tăng), mặc định isActive = true, status = Coming Soon
+    public Movie(String title, String description, int duration, Date releaseDate, String ageWarning,
+            String posterUrl, String trailerUrl) {
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.ageWarning = ageWarning;
+        this.posterUrl = posterUrl;
+        this.trailerUrl = trailerUrl;
+        
+        // Giá trị mặc định khi tạo mới
+        this.isActive = true; 
+        this.status = Constant.MOVIE_COMING_SOON; 
+    }
+    
+ // --- CONSTRUCTOR 2: Dùng cho SELECT (Lấy từ DB lên) ---
+    // Phải nhận ĐẦY ĐỦ tham số, không được gán mặc định sai lệch dữ liệu gốc
+    public Movie(int movieId, String title, String description, int duration, Date releaseDate, String ageWarning,
+            String posterUrl, String trailerUrl, boolean isActive, String status) {
+        super();
+        this.movieId = movieId;
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.releaseDate = releaseDate;
+        this.ageWarning = ageWarning;
+        this.posterUrl = posterUrl;
+        this.trailerUrl = trailerUrl;
+        
+        // Quan trọng: Nhận giá trị từ DB
+        this.isActive = isActive; 
+        this.status = status;     
+    }
 
 
 
