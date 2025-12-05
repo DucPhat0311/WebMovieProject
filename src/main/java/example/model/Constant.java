@@ -16,7 +16,15 @@ public class Constant {
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_USER = "user";
     
+    public static final String SEAT_STANDARD = "Standard";
+    public static final String SEAT_VIP = "VIP";
+    
     public static final String MOVIE_COMING_SOON = "Coming Soon";
     public static final String MOVIE_NOW_SHOWING = "Now Showing";
     public static final String MOVIE_ENDED = "Ended";
+    
+    public static final String Language_Dub = "Dub";
+    public static final String Language_Sub = "Sub";
+
+
 }
