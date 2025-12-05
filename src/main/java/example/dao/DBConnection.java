@@ -5,19 +5,30 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-
-	private static final String URL = "jdbc:mysql://localhost:3306/cinema_booking?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+	private static final String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
 	private static final String USER = "root";
-	private static final String PASS = "voduti05**";
+	private static final String PASSWORD = "123456";// moi ne
 
-	static {
+	public static Connection getConnection() {
+		Connection c = null;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Không tìm thấy MySQL Connector/J! Thêm file JAR vào WEB-INF/lib!", e);
-		}
-	}
+			// Dang ky MySQL Driver voi DriverManager
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 
+			// Cac thong so
+			String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
+			String USER = "root";
+			String PASSWORD = "123456";
+
+			// Tao ket noi
+			c = DriverManager.getConnection(URL, USER, PASSWORD);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return c;
+	}
+		
 	public static Connection getConnection() {
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASS);
