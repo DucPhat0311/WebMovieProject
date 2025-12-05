@@ -23,8 +23,8 @@ public class Constant {
     public static final String MOVIE_NOW_SHOWING = "Now Showing";
     public static final String MOVIE_ENDED = "Ended";
     
-    public static final String Language_Dub = "Dub";
-    public static final String Language_Sub = "Sub";
+    public static final String Language_Dub = "Long tieng";
+    public static final String Language_Sub = "Phu de";
 
 
 }
