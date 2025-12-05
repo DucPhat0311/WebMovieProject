@@ -12,13 +12,12 @@ public class Movie {
 	private String posterUrl;
 	private String trailerUrl;
 	private boolean isActive;
-	private String status; // Coming Soon, Now Showing, Ended
 
 	public Movie() {
 	}
 
-	// Dùng cho INSERT (Tạo phim mới) ---
-	// Không có movieId (vì tự tăng), mặc định isActive = true, status = Coming Soon
+	// Dùng cho INSERT (Tạo phim mới) 
+	// Không có movieId (vì tự tăng), mặc định isActive = true
 	public Movie(String title, String description, int duration, Date releaseDate, String ageWarning, String posterUrl,
 			String trailerUrl) {
 		this.title = title;
@@ -31,13 +30,12 @@ public class Movie {
 
 		// Giá trị mặc định khi tạo mới
 		this.isActive = true;
-		this.status = Constant.MOVIE_COMING_SOON;
 	}
 
-	// Dùng cho SELECT (Lấy từ DB lên) ---
+	// Dùng cho SELECT (Lấy từ DB lên)
 	// Phải nhận ĐẦY ĐỦ tham số, không được gán mặc định sai lệch dữ liệu gốc
 	public Movie(int movieId, String title, String description, int duration, Date releaseDate, String ageWarning,
-			String posterUrl, String trailerUrl, boolean isActive, String status) {
+			String posterUrl, String trailerUrl, boolean isActive) {
 		super();
 		this.movieId = movieId;
 		this.title = title;
@@ -47,10 +45,7 @@ public class Movie {
 		this.ageWarning = ageWarning;
 		this.posterUrl = posterUrl;
 		this.trailerUrl = trailerUrl;
-
-		// Quan trọng: Nhận giá trị từ DB
 		this.isActive = isActive;
-		this.status = status;
 	}
 
 	public int getMovieId() {
@@ -123,14 +118,6 @@ public class Movie {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 }
