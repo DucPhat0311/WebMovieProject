@@ -48,16 +48,16 @@ public class MovieDetailServlet extends HttpServlet {
                 selectedDate = showDates.get(0);
             }
             
-            // 5. Lấy danh sách suất chiếu của NGÀY ĐÃ CHỌN
+            // Lấy danh sách suất chiếu của NGÀY ĐÃ CHỌN
             List<Showtime> showtimes = null;
             if (selectedDate != null) {
                 showtimes = showtimeDAO.getShowtimesByDate(movieId, selectedDate);
             }
             
-            // 6. Đẩy dữ liệu sang JSP
+            // đẩy dữ liệu sang JSP
             request.setAttribute("movie", movie);
             request.setAttribute("showDates", showDates);     // danh sách các ngày
-            request.setAttribute("selectedDate", selectedDate); // Ngày đang active
+            request.setAttribute("selectedDate", selectedDate); // Ngày đang dc click vào
             request.setAttribute("showtimes", showtimes);     // Danh sách giờ chiếu
             
             request.getRequestDispatcher("movie_detail.jsp").forward(request, response);
