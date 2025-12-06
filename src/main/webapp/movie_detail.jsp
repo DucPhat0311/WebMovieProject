@@ -55,7 +55,7 @@
 					<p class="desc">${movie.description}</p>
 					<p>
 					
-								<p>
+					<p>
 						<strong>Thể loại: </strong>
 						<c:if test="${empty movie.genres}">
 							<span>Đang cập nhật</span>
@@ -65,8 +65,8 @@
         ${genre.name}${!status.last ? ', ' : ''}
     </c:forEach>
 					</p>
-					
-						<strong>Đạo diễn: </strong>
+
+					<strong>Đạo diễn: </strong>
 						<c:if test="${empty movie.directors}">
 							<span>Đang cập nhật</span>
 						</c:if>
