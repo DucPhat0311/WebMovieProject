@@ -48,13 +48,24 @@
 				<div class="movie-info">
 					<h1>${movie.title}</h1>
 					<div class="meta-data">
-						<span>${movie.ageWarning}</span> 
-						<span>${movie.duration} phút</span> 
-						<span><fmt:formatDate value="${movie.releaseDate}"
+						<span>${movie.ageWarning}</span> <span>${movie.duration}
+							phút</span> <span><fmt:formatDate value="${movie.releaseDate}"
 								pattern="dd/MM/yyyy" /></span>
 					</div>
 					<p class="desc">${movie.description}</p>
 					<p>
+					
+								<p>
+						<strong>Thể loại: </strong>
+						<c:if test="${empty movie.genres}">
+							<span>Đang cập nhật</span>
+						</c:if>
+
+						<c:forEach items="${movie.genres}" var="genre" varStatus="status">
+        ${genre.name}${!status.last ? ', ' : ''}
+    </c:forEach>
+					</p>
+					
 						<strong>Đạo diễn: </strong>
 						<c:if test="${empty movie.directors}">
 							<span>Đang cập nhật</span>
@@ -76,7 +87,7 @@
         </c:forEach>
 
 						<%-- Trailer --%>
-						
+
 						<c:if test="${movie.actors.size() > 5}">...</c:if>
 					</p>
 					<c:set var="embedUrl"
