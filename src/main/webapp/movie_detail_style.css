@@ -110,7 +110,12 @@ nav {
 	margin-top: 0;
 }
 
+.movie-info p {
+    margin-bottom: 15px; 
+}
+
 .meta-data {
+	margin-top: 15px;
 	color: #94a3b8;
 	margin-bottom: 20px;
 	font-size: 0.9em;
@@ -124,7 +129,7 @@ nav {
 }
 
 .desc {
-	line-height: 1.6;
+	line-height: 1.8;
 	color: #cbd5e1;
 }
 

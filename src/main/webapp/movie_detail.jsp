@@ -48,8 +48,9 @@
 				<div class="movie-info">
 					<h1>${movie.title}</h1>
 					<div class="meta-data">
-						<span>${movie.ageWarning}</span> <span>${movie.duration}
-							phút</span> <span><fmt:formatDate value="${movie.releaseDate}"
+						<span>${movie.ageWarning}</span> 
+						<span>${movie.duration} phút</span> 
+						<span><fmt:formatDate value="${movie.releaseDate}"
 								pattern="dd/MM/yyyy" /></span>
 					</div>
 					<p class="desc">${movie.description}</p>
