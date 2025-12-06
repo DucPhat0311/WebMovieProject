@@ -199,15 +199,6 @@
 						<li><a href="#">Câu Hỏi Thường Gặp (FAQ)</a></li>
 					</ul>
 				</div>
-
-				<div class="copyright-wrapper">
-					<p>
-						© 2025 MovieGO! - Design and Developed by <a href="#"
-							target="_blank">MovieGO Team</a>. All rights reserved.
-					</p>
-					<p>Giấy phép kinh doanh số: 1234/GP-STTTT - Cấp bởi Sở Thông
-						tin và Truyền thông TP.HCM</p>
-				</div>
 			</div>
 	</footer>
 </body>
