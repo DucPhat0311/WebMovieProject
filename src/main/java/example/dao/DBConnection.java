@@ -10,38 +10,15 @@ public class DBConnection {
 	private static final String PASSWORD = "123456";// moi ne
 
 	public static Connection getConnection() {
-		Connection c = null;
-		try {
-			// Dang ky MySQL Driver voi DriverManager
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-
-			// Cac thong so
-			String URL = "jdbc:mysql://localhost:3306/movie?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
-			String USER = "root";
-			String PASSWORD = "123456";
-
-			// Tao ket noi
-			c = DriverManager.getConnection(URL, USER, PASSWORD);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return c;
-	}
-		
-	public static Connection getConnection() {
-		try {
-			Connection conn = DriverManager.getConnection(URL, USER, PASS);
-			if (conn != null) {
-				System.out.println("Kết nối database thành công! DB: cinema_booking");
-			}
-			return conn;
-		} catch (SQLException e) {
-			System.err.println("LỖI KẾT NỐI DATABASE:");
-			e.printStackTrace();
-			return null;
-		}
-	}
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
 
 	public static void closeConnection(Connection c) {
 		try {

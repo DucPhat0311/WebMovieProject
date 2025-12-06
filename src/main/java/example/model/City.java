@@ -1,18 +1,19 @@
 package example.model;
 
 public class City {
-	private int cityId;
-	private String name;
-
-	public City() {}
-	
-	public City(String name) {
-        this.name = name;
-    }
-	
+    private int cityId;
+    private String name;
+    
+    public City() {
+	}
+    
 	public City(int cityId, String name) {
 		super();
 		this.cityId = cityId;
+		this.name = name;
+	}
+	
+	public City(String name) {
 		this.name = name;
 	}
 
@@ -32,5 +33,7 @@ public class City {
 		this.name = name;
 	}
 	
-
+	
+    
+    
 }

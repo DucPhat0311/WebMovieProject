@@ -1,37 +1,64 @@
 package example.model;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Movie {
-	private int id;
+	private int movieId;
 	private String title;
+	private String description;
 	private int duration;
-	private String country;
-	private String producer;
-	private LocalDate releaseDate;
-	private String content;
+	private Date releaseDate;
+	private String ageWarning; // P, T13, T16, T18
 	private String posterUrl;
-	private String videoUrl;
-	private double rating;
-	private String ageRatingCode; // Thay ageWarning bằng ageRatingCode
-
-	// Quan hệ N-N mới
+	private String trailerUrl;
+	private boolean isActive;
+	
 	private List<Genre> genres = new ArrayList<>();
-	private List<Director> directors = new ArrayList<>();
-	private List<Actor> actors = new ArrayList<>();
+    private List<Artist> actors = new ArrayList<>();
+    private List<Artist> directors = new ArrayList<>();
 
 	public Movie() {
 	}
 
-	// Getter & Setter
-	public int getId() {
-		return id;
+	// Dùng cho INSERT (Tạo phim mới) 
+	// Không có movieId (vì tự tăng)
+	public Movie(String title, String description, int duration, Date releaseDate, String ageWarning, String posterUrl,
+			String trailerUrl) {
+		this.title = title;
+		this.description = description;
+		this.duration = duration;
+		this.releaseDate = releaseDate;
+		this.ageWarning = ageWarning;
+		this.posterUrl = posterUrl;
+		this.trailerUrl = trailerUrl;
+
+		this.isActive = true;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	// Dùng cho SELECT (Lấy từ DB lên)
+	// Phải nhận ĐẦY ĐỦ tham số, không được gán mặc định sai lệch dữ liệu gốc
+	public Movie(int movieId, String title, String description, int duration, Date releaseDate, String ageWarning,
+			String posterUrl, String trailerUrl, boolean isActive) {
+		super();
+		this.movieId = movieId;
+		this.title = title;
+		this.description = description;
+		this.duration = duration;
+		this.releaseDate = releaseDate;
+		this.ageWarning = ageWarning;
+		this.posterUrl = posterUrl;
+		this.trailerUrl = trailerUrl;
+		this.isActive = isActive;
+	}
+
+	public int getMovieId() {
+		return movieId;
+	}
+
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
 	public String getTitle() {
@@ -42,6 +69,14 @@ public class Movie {
 		this.title = title;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public int getDuration() {
 		return duration;
 	}
@@ -50,36 +85,20 @@ public class Movie {
 		this.duration = duration;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getProducer() {
-		return producer;
-	}
-
-	public void setProducer(String producer) {
-		this.producer = producer;
-	}
-
-	public LocalDate getReleaseDate() {
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(LocalDate releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
-	public String getContent() {
-		return content;
+	public String getAgeWarning() {
+		return ageWarning;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setAgeWarning(String ageWarning) {
+		this.ageWarning = ageWarning;
 	}
 
 	public String getPosterUrl() {
@@ -90,72 +109,29 @@ public class Movie {
 		this.posterUrl = posterUrl;
 	}
 
-	public String getVideoUrl() {
-		return videoUrl;
+	public String getTrailerUrl() {
+		return trailerUrl;
 	}
 
-	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
+	public void setTrailerUrl(String trailerUrl) {
+		this.trailerUrl = trailerUrl;
 	}
 
-	public double getRating() {
-		return rating;
+	public boolean isActive() {
+		return isActive;
 	}
 
-	public void setRating(double rating) {
-		this.rating = rating;
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
+	
+	public List<Genre> getGenres() { return genres; }
+    public void setGenres(List<Genre> genres) { this.genres = genres; }
 
-	public String getAgeRatingCode() {
-		return ageRatingCode;
-	}
+    public List<Artist> getActors() { return actors; }
+    public void setActors(List<Artist> actors) { this.actors = actors; }
 
-	public void setAgeRatingCode(String ageRatingCode) {
-		this.ageRatingCode = ageRatingCode;
-	}
+    public List<Artist> getDirectors() { return directors; }
+    public void setDirectors(List<Artist> directors) { this.directors = directors; }
 
-	public List<Genre> getGenres() {
-		return genres;
-	}
-
-	public void setGenres(List<Genre> genres) {
-		this.genres = genres;
-	}
-
-	public List<Director> getDirectors() {
-		return directors;
-	}
-
-	public void setDirectors(List<Director> directors) {
-		this.directors = directors;
-	}
-
-	public List<Actor> getActors() {
-		return actors;
-	}
-
-	public void setActors(List<Actor> actors) {
-		this.actors = actors;
-	}
-
-	// Helper methods
-	public String getGenreNames() {
-		if (genres == null || genres.isEmpty())
-			return "";
-		List<String> names = new ArrayList<>();
-		for (Genre genre : genres) {
-			names.add(genre.getName());
-		}
-		return String.join(", ", names);
-	}
-
-	public String getDirectorNames() {
-		if (directors == null || directors.isEmpty())
-			return "";
-		List<String> names = new ArrayList<>();
-		for (Director director : directors) {
-			names.add(director.getName());
-		}
-		return String.join(", ", names);
-	}
 }

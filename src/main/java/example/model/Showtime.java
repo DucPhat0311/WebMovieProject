@@ -1,77 +1,114 @@
 package example.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
 
 public class Showtime {
-	private int id;
-	private Movie movie;
-	private Room room;
-	private LocalDateTime startTime;
-	private BigDecimal price;
-	private String formatCode; // Thay Format enum bằng String
+	private int showtimeId;
+	private int movieId;
+	private int roomId;
+	private Date showDate;
+	private Time startTime;
+	private Time endTime;
+	private double basePrice;
+	private String optionType; // Long tieng, Phu De
+	private boolean isActive;
 
-	public Showtime() {
+	// dung de hien thi only, ko luu trong DB
+	private String cinemaName;
+
+	public Showtime(int showtimeId, int movieId, int roomId, Date showDate, Time startTime, Time endTime,
+			double basePrice, String optionType) {
+		super();
+		this.showtimeId = showtimeId;
+		this.movieId = movieId;
+		this.roomId = roomId;
+		this.showDate = showDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.basePrice = basePrice;
+		this.optionType = Constant.Language_Sub;
+		this.isActive = true;
 	}
 
-	// Getter & Setter
-	public int getId() {
-		return id;
+	public int getShowtimeId() {
+		return showtimeId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setShowtimeId(int showtimeId) {
+		this.showtimeId = showtimeId;
 	}
 
-	public Movie getMovie() {
-		return movie;
+	public int getMovieId() {
+		return movieId;
 	}
 
-	public void setMovie(Movie movie) {
-		this.movie = movie;
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
-	public Room getRoom() {
-		return room;
+	public int getRoomId() {
+		return roomId;
 	}
 
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
-	public LocalDateTime getStartTime() {
+	public Date getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(Date showDate) {
+		this.showDate = showDate;
+	}
+
+	public Time getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(LocalDateTime startTime) {
+	public void setStartTime(Time startTime) {
 		this.startTime = startTime;
 	}
 
-	public LocalDateTime getEndTime() {
-		if (movie == null || startTime == null) {
-			return null;
-		}
-		return startTime.plusMinutes(movie.getDuration());
+	public Time getEndTime() {
+		return endTime;
 	}
 
-	public BigDecimal getPrice() {
-		return price;
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
 	}
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
+	public double getBasePrice() {
+		return basePrice;
 	}
 
-	public String getFormatCode() {
-		return formatCode;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
 	}
 
-	public void setFormatCode(String formatCode) {
-		this.formatCode = formatCode;
+	public String getOptionType() {
+		return optionType;
 	}
 
-	// Helper method để lấy Format enum
-	public Format getFormat() {
-		return Format.fromCode(formatCode);
+	public void setOptionType(String optionType) {
+		this.optionType = optionType;
 	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getCinemaName() {
+		return cinemaName;
+	}
+
+	public void setCinemaName(String cinemaName) {
+		this.cinemaName = cinemaName;
+	}
+
 }

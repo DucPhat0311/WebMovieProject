@@ -13,14 +13,14 @@
 //import javax.servlet.http.HttpServletResponse;
 //
 //public class MovieServlet extends HttpServlet {
-////	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-////			throws ServletException, IOException {
-////
-////		MovieDAO dao = MovieDAO.getInstance();
-////		ArrayList<Movie> list = dao.selectAll();
-////
-////		request.setAttribute("movieList", list);
-////
-////		request.getRequestDispatcher("all_movies.jsp").forward(request, response);
-////	}
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//
+//		MovieDAO dao = MovieDAO.getInstance();
+//		ArrayList<Movie> list = dao.selectAll();
+//
+//		request.setAttribute("movieList", list);
+//
+//		request.getRequestDispatcher("all_movies.jsp").forward(request, response);
+//	}
 //}

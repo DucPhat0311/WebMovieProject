@@ -15,18 +15,19 @@ import java.io.IOException;
 import java.util.List;
 
 
-
+@WebServlet("/home")
 public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		MovieDAO dao = MovieDAO.getInstance();
-
+		MovieDAO dao = new MovieDAO();
+		
 		List<Movie> nowShowingList = dao.getNowShowingMovies();
-		List<Movie> willShowList = dao.willShowMovies();
+		
+		List<Movie> comingSoonList = dao.getComingSoonMovies();
 
 		request.setAttribute("nowShowingList", nowShowingList);
-		request.setAttribute("willShowList", willShowList);
+        request.setAttribute("comingSoonList", comingSoonList);
 
 		request.getRequestDispatcher("homepage.jsp").forward(request, response);
 	}

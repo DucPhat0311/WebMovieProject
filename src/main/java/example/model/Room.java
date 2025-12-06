@@ -1,51 +1,49 @@
 package example.model;
 
 public class Room {
-
-	private int id;
-	private Cinema cinema;
-	private String name;
-	private int totalSeats;
-
-	public Room() {
+	private int roomId;
+    private int cinemaId;
+    private String roomName;
+    
+    public Room() {}
+    
+    public Room(int cinemaId, String roomName) {
+		this.cinemaId = cinemaId;
+		this.roomName = roomName;
+	}
+    
+	public Room(int roomId, int cinemaId, String roomName) {
+		super();
+		this.roomId = roomId;
+		this.cinemaId = cinemaId;
+		this.roomName = roomName;
 	}
 
-	public Room(int id, Cinema cinema, String name, int totalSeats) {
-		this.id = id;
-		this.cinema = cinema;
-		this.name = name;
-		this.totalSeats = totalSeats;
+	public int getRoomId() {
+		return roomId;
 	}
 
-	public int getId() {
-		return id;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public int getCinemaId() {
+		return cinemaId;
 	}
 
-	public Cinema getCinema() {
-		return cinema;
+	public void setCinemaId(int cinemaId) {
+		this.cinemaId = cinemaId;
 	}
 
-	public void setCinema(Cinema cinema) {
-		this.cinema = cinema;
+	public String getRoomName() {
+		return roomName;
 	}
 
-	public String getName() {
-		return name;
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getTotalSeats() {
-		return totalSeats;
-	}
-
-	public void setTotalSeats(int totalSeats) {
-		this.totalSeats = totalSeats;
-	}
+	
+	
+    
+    
 }

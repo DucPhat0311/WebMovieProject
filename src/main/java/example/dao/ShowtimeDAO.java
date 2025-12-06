@@ -1,61 +1,70 @@
-
 package example.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import example.model.Cinema;
-import example.model.Movie;
-import example.model.Room;
 import example.model.Showtime;
 
 public class ShowtimeDAO {
-	public static Showtime getByIdFull(int showtimeId) {
-		Showtime st = null;
-		String sql = """
-				SELECT s.*, m.*, c.id as cinema_id, c.name as cinema_name, c.address,
-				       r.id as room_id, r.name as room_name
-				FROM showtimes s
-				JOIN movies m ON s.movie_id = m.id
-				JOIN rooms r ON s.room_id = r.id
-				JOIN cinemas c ON r.cinema_id = c.id
-				WHERE s.id = ?
-				""";
-
-		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-			ps.setInt(1, showtimeId);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				Movie movie = MovieDAO.getByIdFull(rs.getInt("movie_id")); // đại đại đi
-				Cinema cinema = new Cinema(rs.getInt("cinema_id"), rs.getString("cinema_name"),
-						rs.getString("address"));
-				Room room = new Room(rs.getInt("room_id"), cinema, rs.getString("room_name"), 0);
-
-				st = new Showtime();
-				st.setId(rs.getInt("id"));
-				st.setMovie(movie);
-				st.setRoom(room);
-				st.setStartTime(rs.getTimestamp("start_time").toLocalDateTime());
-				st.setPrice(rs.getBigDecimal("price"));
-				st.setFormatCode(rs.getString("format_code"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return st;
-	}
-
-	public static List<Showtime> getByMovieId(int movieId) {
-		List<Showtime> list = new ArrayList<>();
-		String sql = "SELECT * FROM showtimes WHERE movie_id = ? ORDER BY start_time";
-		
-		return list;
-	}
+	// lấy ngày trong của 1 phim
+	public List<Date> getShowDates(int movieId) {
+        List<Date> dates = new ArrayList<>();
+        String sql = "SELECT DISTINCT show_date FROM Showtime "
+                   + "WHERE movie_id = ? AND show_date >= CURDATE() AND is_active = TRUE "
+                   + "ORDER BY show_date ASC";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                dates.add(rs.getDate("show_date"));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return dates;
+    }
+	
+	public List<Showtime> getShowtimesByDate(int movieId, Date date) {
+        List<Showtime> list = new ArrayList<>();
+        
+        String sql = "SELECT s.*, c.cinema_name " 
+                + "FROM Showtime s "
+                + "JOIN Room r ON s.room_id = r.room_id "
+                + "JOIN Cinema c ON r.cinema_id = c.cinema_id "
+                + "WHERE s.movie_id = ? "
+                + "AND s.show_date = ? "
+                + "AND s.is_active = TRUE "
+                + "AND TIMESTAMP(s.show_date, s.start_time) > NOW() "
+                + "ORDER BY c.cinema_name, s.option_type, s.start_time"; // phai lay cinema name bang cach join 
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, movieId);
+            ps.setDate(2, date);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Showtime s = new Showtime(
+                    rs.getInt("showtime_id"),
+                    rs.getInt("movie_id"),
+                    rs.getInt("room_id"),
+                    rs.getDate("show_date"),
+                    rs.getTime("start_time"),
+                    rs.getTime("end_time"),
+                    rs.getDouble("base_price"),
+                    rs.getString("option_type")
+                );
+                s.setCinemaName(rs.getString("cinema_name"));
+                list.add(s);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+	
 }
-
-
