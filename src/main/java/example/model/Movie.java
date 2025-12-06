@@ -1,6 +1,8 @@
 package example.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Movie {
 	private int movieId;
@@ -12,6 +14,10 @@ public class Movie {
 	private String posterUrl;
 	private String trailerUrl;
 	private boolean isActive;
+	
+	private List<Genre> genres = new ArrayList<>();
+    private List<Artist> actors = new ArrayList<>();
+    private List<Artist> directors = new ArrayList<>();
 
 	public Movie() {
 	}
@@ -118,5 +124,14 @@ public class Movie {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	
+	public List<Genre> getGenres() { return genres; }
+    public void setGenres(List<Genre> genres) { this.genres = genres; }
+
+    public List<Artist> getActors() { return actors; }
+    public void setActors(List<Artist> actors) { this.actors = actors; }
+
+    public List<Artist> getDirectors() { return directors; }
+    public void setDirectors(List<Artist> directors) { this.directors = directors; }
 
 }
