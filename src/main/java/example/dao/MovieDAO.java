@@ -74,13 +74,14 @@ public class MovieDAO {
  
     public Movie getMovieById(int id) {
         String sql = "SELECT * FROM Movie WHERE movie_id = ?";
+        Movie movie = null; 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Movie(
+                movie = new Movie(
                     rs.getInt("movie_id"),
                     rs.getString("title"),
                     rs.getString("description"),
@@ -91,11 +92,14 @@ public class MovieDAO {
                     rs.getString("trailer_url"),
                     rs.getBoolean("is_active")
                 );
+                movie.setGenres(getGenresByMovieId(id));
+                movie.setActors(getActorsByMovieId(id)); 
+                movie.setDirectors(getDirectorsByMovieId(id));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return movie;
     }
     
     public List<Genre> getGenresByMovieId(int movieId) {

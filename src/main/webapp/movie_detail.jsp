@@ -180,7 +180,7 @@
 				</c:if>
 
 				<div class="showtime-row">
-					<div class="format">2D ${s.optionType}</div>
+					<div class="format">${s.optionType}</div>
 					<div class="showtime-buttons">
 						<c:set var="lastType" value="${s.optionType}" />
 			</c:if>
