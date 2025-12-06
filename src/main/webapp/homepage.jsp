@@ -142,7 +142,6 @@
 	</section>
 
 
-	<!-- ===== FOOTER =====  -->
 	<footer>
 		<div class="container">
 			<div class="wrapper">

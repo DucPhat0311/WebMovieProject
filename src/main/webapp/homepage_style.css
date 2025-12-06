@@ -7,7 +7,7 @@
 
 body {
   scroll-behavior: smooth;
-  background: linear-gradient(135deg, #0d0d1f, #2e2b8a, #4638d1);
+  background: #0f172a;
   font-family: "Roboto", sans-serif;
   color: #fff;
   min-height: 100vh;
@@ -280,22 +280,6 @@ nav {
   border-top-right-radius: 12px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-}
-
-/* --- Rating (sao) --- */
-.movie-card .rating {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #ffd700; /* vàng */
-  font-size: 14px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 /* --- Cảnh báo độ tuổi --- */

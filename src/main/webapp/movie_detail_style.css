@@ -1,116 +1,213 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif;
 }
 
 body {
-  scroll-behavior: smooth;
-  background: #0f172a;
-  font-family: "Roboto", sans-serif;
-  color: #fff;
-  min-height: 100vh;
+	scroll-behavior: smooth;
+	background: #0f172a;
+	font-family: "Roboto", sans-serif;
+	color: #fff;
+	min-height: 100vh;
 }
 
 /* Header */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 50px;
-  background: transparent;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 50px;
+	background: transparent;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
 }
 
 /* Icon mạng xã hội */
 .social-icons {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
+	display: flex;
+	gap: 15px;
+	margin-top: 10px;
 }
 
 .social-icons .icon {
-  font-size: 20px;
-  color: #fff;
-  transition: transform 0.3s, color 0.3s;
+	font-size: 20px;
+	color: #fff;
+	transition: transform 0.3s, color 0.3s;
 }
 
 .social-icons a:hover .icon {
-  color: #ff4d73;
-  transform: scale(1.2);
+	color: #ff4d73;
+	transform: scale(1.2);
 }
 
 /* Glass effect */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px); 
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 40px;
-  padding: 10px 40px;
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 40px;
+	padding: 10px 40px;
 }
 
 .glass-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 40px;
+	list-style: none;
+	display: flex;
+	gap: 40px;
 }
 
 .glass-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.3s ease;
 }
 
-.glass-nav a:hover,
-.glass-nav a.active {
-  color: #ff3366;
+.glass-nav a:hover, .glass-nav a.active {
+	color: #ff3366;
 }
 
 nav {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+	display: flex;
+	align-items: center;
+	gap: 25px;
 }
 
 .search-login {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+	display: flex;
+	align-items: center;
+	gap: 25px;
 }
 
 .search-login input {
-  background: #ffffff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 20px;
-  color: #000; 
-  outline: none;
+	background: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 20px;
+	color: #000;
+	outline: none;
 }
+
+/* Phần thông tin phim */
+.movie-hero {
+	display: flex;
+	gap: 40px;
+	margin-bottom: 40px;
+}
+
+.movie-poster img {
+	width: 300px;
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-info h1 {
+	font-size: 2.5em;
+	color: #ff3366;
+	margin-top: 0;
+}
+
+.meta-data {
+	color: #94a3b8;
+	margin-bottom: 20px;
+	font-size: 0.9em;
+}
+
+.meta-data span {
+	margin-right: 15px;
+	border: 1px solid #334155;
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+.desc {
+	line-height: 1.6;
+	color: #cbd5e1;
+}
+
+/* Phần lịch chiếu */
+.booking-section {
+	background: #1e293b;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+/* Tabs Ngày */
+.date-tabs {
+	display: flex;
+	gap: 10px;
+	overflow-x: auto;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #334155;
+}
+
+.date-tab {
+	padding: 10px 20px;
+	background: #334155;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	white-space: nowrap;
+	transition: 0.3s;
+}
+
+.date-tab:hover {
+	background: #475569;
+}
+
+.date-tab.active {
+	background: #facc15;
+	color: #000;
+	font-weight: bold;
+}
+
+/* Grid Suất chiếu */
+.showtime-grid {
+	margin-top: 20px;
+}
+
+.format-label {
+	color: #94a3b8;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.time-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+}
+
+.time-btn {
+	background: white;
+	color: #0f172a;
+	padding: 10px 20px;
+	text-decoration: none;
+	border-radius: 5px;
+	font-weight: bold;
+	border: 2px solid transparent;
+}
+
+.time-btn:hover {
+	border-color: #facc15;
+	transform: translateY(-2px);
+}
+
+.time-btn span {
+	display: block;
+	font-size: 0.8em;
+	color: #64748b;
+	font-weight: normal;
+}
+
+
 
 .movie-detail .poster {
   position: relative; 
   display: inline-block;
-}
-
-/* Rating */
-.movie-detail .poster .rating {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #ffd700; 
-  font-size: 14px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 /* --- Cảnh báo độ tuổi --- */

@@ -14,6 +14,9 @@ public class Showtime {
 	private String optionType; // Long tieng, Phu De
 	private boolean isActive;
 
+	// dung de hien thi only, ko luu trong DB
+	private String cinemaName;
+
 	public Showtime(int showtimeId, int movieId, int roomId, Date showDate, Time startTime, Time endTime,
 			double basePrice, String optionType) {
 		super();
@@ -98,6 +101,14 @@ public class Showtime {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getCinemaName() {
+		return cinemaName;
+	}
+
+	public void setCinemaName(String cinemaName) {
+		this.cinemaName = cinemaName;
 	}
 
 }

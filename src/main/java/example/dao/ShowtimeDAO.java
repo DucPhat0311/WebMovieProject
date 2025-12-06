@@ -32,12 +32,15 @@ public class ShowtimeDAO {
 	public List<Showtime> getShowtimesByDate(int movieId, Date date) {
         List<Showtime> list = new ArrayList<>();
         
-        String sql = "SELECT * FROM Showtime "
-                   + "WHERE movie_id = ? "
-                   + "AND show_date = ? "
-                   + "AND is_active = TRUE "
-                   + "AND TIMESTAMP(show_date, start_time) > NOW() " 
-                   + "ORDER BY start_time ASC";
+        String sql = "SELECT s.*, c.cinema_name " 
+                + "FROM Showtime s "
+                + "JOIN Room r ON s.room_id = r.room_id "
+                + "JOIN Cinema c ON r.cinema_id = c.cinema_id "
+                + "WHERE s.movie_id = ? "
+                + "AND s.show_date = ? "
+                + "AND s.is_active = TRUE "
+                + "AND TIMESTAMP(s.show_date, s.start_time) > NOW() "
+                + "ORDER BY c.cinema_name, s.option_type, s.start_time"; // phai lay cinema name bang cach join 
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -57,6 +60,7 @@ public class ShowtimeDAO {
                     rs.getDouble("base_price"),
                     rs.getString("option_type")
                 );
+                s.setCinemaName(rs.getString("cinema_name"));
                 list.add(s);
             }
         } catch (Exception e) { e.printStackTrace(); }
