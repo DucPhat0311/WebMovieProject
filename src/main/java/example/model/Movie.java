@@ -17,7 +17,7 @@ public class Movie {
 	}
 
 	// Dùng cho INSERT (Tạo phim mới) 
-	// Không có movieId (vì tự tăng), mặc định isActive = true
+	// Không có movieId (vì tự tăng)
 	public Movie(String title, String description, int duration, Date releaseDate, String ageWarning, String posterUrl,
 			String trailerUrl) {
 		this.title = title;
@@ -28,7 +28,6 @@ public class Movie {
 		this.posterUrl = posterUrl;
 		this.trailerUrl = trailerUrl;
 
-		// Giá trị mặc định khi tạo mới
 		this.isActive = true;
 	}
 
