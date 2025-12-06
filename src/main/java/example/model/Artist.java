@@ -12,7 +12,6 @@ public class Artist {
         this.name = name;
     }
 
-    // Getters & Setters
     public int getArtistId() {
         return artistId;
     }

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import example.model.Artist;
+import example.model.Genre;
 import example.model.Movie;
 
 public class MovieDAO {
@@ -94,5 +96,80 @@ public class MovieDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public List<Genre> getGenresByMovieId(int movieId) {
+        List<Genre> list = new ArrayList<>();
+
+        String sql = "SELECT g.* FROM Genre g " +
+                     "JOIN MovieGenre mg ON g.genre_id = mg.genre_id " +
+                     "WHERE mg.movie_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Genre g = new Genre(
+                    rs.getInt("genre_id"),
+                    rs.getString("name")
+                );
+                list.add(g);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+
+        return list;
+    }
+    
+    public List<Artist> getActorsByMovieId(int movieId) {
+        List<Artist> list = new ArrayList<>();
+        
+        // Join bảng Artist với bảng trung gian Actor
+        String sql = "SELECT a.* FROM Artist a " +
+                     "JOIN Actor ac ON a.artist_id = ac.artist_id " +
+                     "WHERE ac.movie_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Artist artist = new Artist(
+                    rs.getInt("artist_id"),
+                    rs.getString("name")
+                );
+                list.add(artist);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    public List<Artist> getDirectorsByMovieId(int movieId) {
+        List<Artist> list = new ArrayList<>();
+        
+        // Join bảng Artist với bảng trung gian Director
+        String sql = "SELECT a.* FROM Artist a " +
+                     "JOIN Director d ON a.artist_id = d.artist_id " +
+                     "WHERE d.movie_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, movieId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Artist artist = new Artist(
+                    rs.getInt("artist_id"),
+                    rs.getString("name")
+                );
+                list.add(artist);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
     }
 }

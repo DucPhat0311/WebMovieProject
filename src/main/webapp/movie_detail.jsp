@@ -53,20 +53,73 @@
 								pattern="dd/MM/yyyy" /></span>
 					</div>
 					<p class="desc">${movie.description}</p>
-					
+					<p>
+						<strong>Đạo diễn: </strong>
+						<c:if test="${empty movie.directors}">
+							<span>Đang cập nhật</span>
+						</c:if>
+						<c:forEach items="${movie.directors}" var="director"
+							varStatus="status">
+            ${director.name}${!status.last ? ', ' : ''}
+        </c:forEach>
+					</p>
+
+					<p>
+						<strong>Diễn viên: </strong>
+						<c:if test="${empty movie.actors}">
+							<span>Đang cập nhật</span>
+						</c:if>
+						<c:forEach items="${movie.actors}" var="actor" varStatus="status"
+							end="4">
+            ${actor.name}${!status.last ? ', ' : ''}
+        </c:forEach>
+
+						<%-- Trailer --%>
+						
+						<c:if test="${movie.actors.size() > 5}">...</c:if>
+					</p>
+					<c:set var="embedUrl"
+						value="${movie.trailerUrl.replace('watch?v=', 'embed/')}" />
+
+					<div style="margin-top: 25px;">
+						<button class="btn-watch-trailer" onclick="openTrailer()">
+							<i class="fas fa-play-circle"></i> XEM TRAILER
+						</button>
+					</div>
+
 				</div>
 			</div>
+		</div>
 	</section>
-	
-	<section>
-        <div class="movie-trailer">
-            <c:set var="embedUrl" value="${movie.trailerUrl.replace('watch?v=', 'embed/')}" />
-            <iframe width="660" height="395" 
-                src="${embedUrl}" 
-                title="Trailer phim" frameborder="0" allowfullscreen>
-            </iframe>
-        </div>
-    </section>
+
+	<div id="trailerModal" class="modal-overlay" onclick="closeTrailer()">
+		<div class="modal-content" onclick="event.stopPropagation()">
+			<span class="close-btn" onclick="closeTrailer()">Đóng</span>
+
+			<iframe id="youtubeVideo" width="100%" height="100%"
+				data-src="${embedUrl}?autoplay=1" frameborder="0"
+				allow="autoplay; encrypted-media" allowfullscreen> </iframe>
+		</div>
+	</div>
+
+	<script>
+		function openTrailer() {
+			var modal = document.getElementById("trailerModal");
+			var iframe = document.getElementById("youtubeVideo");
+			// Lấy link từ data-src gán vào src để chạy video
+			iframe.src = iframe.getAttribute("data-src");
+			modal.style.display = "flex";
+		}
+
+		function closeTrailer() {
+			var modal = document.getElementById("trailerModal");
+			var iframe = document.getElementById("youtubeVideo");
+			// Xóa src để tắt tiếng video ngay lập tức
+			iframe.src = "";
+			modal.style.display = "none";
+		}
+	</script>
+
 
 	<section class="showtime-section" id="booking-area">
 		<div class="section-block">
@@ -108,27 +161,27 @@
 
 			<c:if test="${s.cinemaName ne lastCinema}">
 				<c:if test="${not empty lastCinema}">
-	</div>
-	</div>
-	</div>
-	</c:if>
+					</div>
+					</div>
+					</div>
+				</c:if>
 
-	<div class="theater-block">
-		<h3>${s.cinemaName}</h3>
-		<c:set var="lastCinema" value="${s.cinemaName}" />
-		<c:set var="lastType" value="" />
-		</c:if>
+				<div class="theater-block">
+					<h3>${s.cinemaName}</h3>
+					<c:set var="lastCinema" value="${s.cinemaName}" />
+					<c:set var="lastType" value="" />
+			</c:if>
 
-		<c:if test="${s.optionType ne lastType or empty lastType}">
-			<c:if test="${not empty lastType}">
-	</div>
-	</div>
-	</c:if>
+			<c:if test="${s.optionType ne lastType or empty lastType}">
+				<c:if test="${not empty lastType}">
+					</div>
+					</div>
+				</c:if>
 
-	<div class="showtime-row">
-		<div class="format">2D ${s.optionType}</div>
-		<div class="showtime-buttons">
-			<c:set var="lastType" value="${s.optionType}" />
+				<div class="showtime-row">
+					<div class="format">2D ${s.optionType}</div>
+					<div class="showtime-buttons">
+						<c:set var="lastType" value="${s.optionType}" />
 			</c:if>
 
 			<a href="seat-selection?showtimeId=${s.showtimeId}" class="time-btn"
@@ -137,12 +190,12 @@
 			</a>
 
 			<c:if test="${status.last}">
-		</div>
-	</div>
-	</div>
-	</c:if>
+				</div>
+				</div>
+				</div>
+			</c:if>
 
-	</c:forEach>
+		</c:forEach>
 	</section>
 	</div>
 
