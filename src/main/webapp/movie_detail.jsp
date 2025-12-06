@@ -1,313 +1,119 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Movie Detail - QuickShow</title>
-    <link rel="stylesheet" href="movie_detail_style.css" />
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
-  </head>
+<html>
+<head>
+    <title>${movie.title} | MovieGO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS Cơ bản cho trang chi tiết */
+        body { background-color: #0f172a; color: white; font-family: sans-serif; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* Phần thông tin phim */
+        .movie-hero { display: flex; gap: 40px; margin-bottom: 40px; }
+        .movie-poster img { width: 300px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .movie-info h1 { font-size: 2.5em; color: #facc15; margin-top: 0; }
+        .meta-data { color: #94a3b8; margin-bottom: 20px; font-size: 0.9em; }
+        .meta-data span { margin-right: 15px; border: 1px solid #334155; padding: 5px 10px; border-radius: 5px; }
+        .desc { line-height: 1.6; color: #cbd5e1; }
+        
+        /* Phần lịch chiếu */
+        .booking-section { background: #1e293b; padding: 20px; border-radius: 10px; }
+        
+        /* Tabs Ngày */
+        .date-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; border-bottom: 1px solid #334155; }
+        .date-tab {
+            padding: 10px 20px;
+            background: #334155;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        .date-tab:hover { background: #475569; }
+        .date-tab.active { background: #facc15; color: #000; font-weight: bold; }
+        
+        /* Grid Suất chiếu */
+        .showtime-grid { margin-top: 20px; }
+        .format-label { color: #94a3b8; margin-bottom: 10px; font-weight: bold; }
+        .time-list { display: flex; flex-wrap: wrap; gap: 15px; }
+        
+        .time-btn {
+            background: white;
+            color: #0f172a;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: 2px solid transparent;
+        }
+        .time-btn:hover { border-color: #facc15; transform: translateY(-2px); }
+        .time-btn span { display: block; font-size: 0.8em; color: #64748b; font-weight: normal; }
+    </style>
+</head>
+<body>
 
-  <body>
-    <header>
-      <div class="logo">
-        <span class="movie">Movie</span><b><span class="go">GO!</span></b>
-      </div>
-
-      <nav class="glass-nav">
-        <ul>
-          <li><a href="#" class="active">Trang chủ</a></li>
-          <li><a href="#">Phim</a></li>
-          <li><a href="#">Rạp</a></li>
-          <li><a href="#">Giới thiệu</a></li>
-        </ul>
-      </nav>
-
-      <div class="search-login">
-        <input type="text" placeholder="Tìm kiếm" />
-        <button class="login-btn">Đăng nhập</button>
-      </div>
-    </header>
-
-    <!-- Movie Detail Section -->
-    <section class="movie-detail">
-      <div class="poster">
-        <img
-          src="https://cdn.galaxycine.vn/media/2025/9/19/au-be-ca-heo-500_1758256459385.jpg"
-          alt="If Movie Poster"
-        />
-        <div class="age-badge">T18</div>
-        <div class="rating">⭐ 4.7</div>
-      </div>
-
-      <div class="info">
-        <h1 class="movie-title">CẬU BÉ CÁ HEO & BÍ MẬT 7 ĐẠI DƯƠNG</h1>
-
-        <div class="meta-row">
-          <span class="meta-item">🎭 Hành động, Phiêu lưu</span>
-          <span class="meta-item">⏱ 2h 10m</span>
-          <span class="meta-item">🌏 Mỹ</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="description">
-          <h2>NỘI DUNG PHIM</h2>
-          <p>
-            Bộ phim kể về cuộc hành trình của một người đàn ông phát hiện ra
-            những người bạn tưởng tượng bị bỏ rơi của trẻ em, và giúp họ tìm lại
-            hạnh phúc. Liệu họ có thể vượt qua những thử thách để mang lại niềm
-            vui cho trẻ em một lần nữa?
-          </p>
-        </div>
-
-        <div class="description">
-          <h2>MÔ TẢ</h2>
-          <p><strong>Nhà sản xuất:</strong> Paramount Pictures</p>
-          <p><strong>Đạo diễn:</strong> John Krasinski</p>
-          <p>
-            <strong>Diễn viên:</strong> Ryan Reynolds, Cailey Fleming, Fiona
-            Shaw
-          </p>
-          <p><strong>Khởi chiếu:</strong> 17/10/2025</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Xem trailer -->
-    <section>
-      <div class="movie-trailer">
-        <iframe
-          width="660"
-          height="395"
-          src="https://www.youtube.com/embed/YJIAEmY8R84" 
-          title="Trailer phim"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </section>
-
-    <!-- Showtime Section -->
-    <section class="showtime-section">
-      <div class="container">
-        <!-- Date Selection -->
-        <div class="section-block">
-          <h2>Lịch Chiếu</h2>
-
-          <div class="options date-options">
-            <button class="date-btn active">
-              <span class="day">22/10</span>
-              <span class="weekday">Hôm Nay</span>
-            </button>
-            <button class="date-btn">
-              <span class="day">23/10</span>
-              <span class="weekday">Thứ Ba</span>
-            </button>
-            <button class="date-btn">
-              <span class="day">24/10</span>
-              <span class="weekday">Thứ Tư</span>
-            </button>
-            <button class="date-btn">
-              <span class="day">25/10</span>
-              <span class="weekday">Thứ Năm</span>
-            </button>
-            <button class="date-btn">
-              <span class="day">26/10</span>
-              <span class="weekday">Thứ Sáu</span>
-            </button>
-          </div>
-
-          <!-- Filter Buttons -->
-          <div class="filters">
-            <button class="filter-btn">Toàn quốc ▼</button>
-            <button class="filter-btn">Tất cả rạp ▼</button>
-          </div>
-        </div>
-
-        <!-- Theater List -->
-        <div class="theater-block">
-          <h3>Galaxy Tân Bình</h3>
-          <div class="showtime-row">
-            <div class="format">2D Phụ Đề</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
+    <div class="container">
+        <div class="movie-hero">
+            <div class="movie-poster">
+                <img src="${movie.posterUrl}" alt="${movie.title}">
+                <a href="${movie.trailerUrl}" target="_blank" style="display:block; text-align:center; margin-top:10px; color:#facc15; text-decoration:none;">
+                    <i class="fas fa-play-circle"></i> Xem Trailer
+                </a>
             </div>
-          </div>
-          <div class="showtime-row">
-            <div class="format">2D Lồng Tiếng</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
+            
+            <div class="movie-info">
+                <h1>${movie.title}</h1>
+                <div class="meta-data">
+                    <span>${movie.ageWarning}</span>
+                    <span>${movie.duration} phút</span>
+                    <span><fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM/yyyy"/></span>
+                </div>
+                <p class="desc">${movie.description}</p>
+                <p><strong>Đạo diễn/Diễn viên:</strong> Đang cập nhật...</p>
             </div>
-          </div>
         </div>
 
-      <div class="theater-block">
-          <h3>Galaxy Nguyễn Du</h3>
-          <div class="showtime-row">
-            <div class="format">2D Lồng Tiếng</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
+        <div class="booking-section">
+            <h3>Lịch Chiếu</h3>
+            
+            <div class="date-tabs">
+                <c:if test="${empty showDates}">
+                    <p>Chưa có lịch chiếu cho phim này.</p>
+                </c:if>
+                
+                <c:forEach items="${showDates}" var="d">
+                    <c:set var="isActive" value="${d.toString() == selectedDate.toString() ? 'active' : ''}" />
+                    
+                    <a href="movie-detail?id=${movie.movieId}&date=${d}" class="date-tab ${isActive}">
+                        <fmt:formatDate value="${d}" pattern="dd/MM"/>
+                        </a>
+                </c:forEach>
             </div>
-          </div>
+
+            <c:if test="${not empty showtimes}">
+                <div class="showtime-grid">
+                    <p class="format-label">Giờ chiếu:</p>
+                    <div class="time-list">
+                        <c:forEach items="${showtimes}" var="s">
+                            <a href="seat-selection?showtimeId=${s.showtimeId}" class="time-btn">
+                                <fmt:formatDate value="${s.startTime}" pattern="HH:mm"/>
+                                <span>${s.optionType}</span>
+                            </a>
+                        </c:forEach>
+                    </div>
+                </div>
+            </c:if>
+            
+            <c:if test="${empty showtimes && not empty showDates}">
+                <p style="margin-top:20px;">Vui lòng chọn ngày để xem giờ chiếu.</p>
+            </c:if>
         </div>
+    </div>
 
-        <div class="theater-block">
-          <h3>Galaxy Nguyễn Du</h3>
-          <div class="showtime-row">
-            <div class="format">2D Lồng Tiếng</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="theater-block">
-          <h3>Galaxy Nguyễn Du</h3>
-          <div class="showtime-row">
-            <div class="format">2D Lồng Tiếng</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="theater-block">
-          <h3>Galaxy Nguyễn Du</h3>
-          <div class="showtime-row">
-            <div class="format">2D Lồng Tiếng</div>
-            <div class="showtime-buttons">
-              <button class="time-btn">9:00</button>
-              <button class="time-btn">10:30</button>
-              <button class="time-btn">12:50</button>
-              <button class="time-btn">15:40</button>
-              <button class="time-btn">17:00</button>
-              <button class="time-btn">19:00</button>
-              <button class="time-btn">20:30</button>
-            </div>
-          </div>
-        </div>
-    </section>
-
-     <!-- ===== FOOTER =====  -->
-    <footer>
-      <div class="container">
-        <div class="wrapper">
-          <!-- LOGO + MÔ TẢ -->
-          <div class="footer-widget">
-            <a href="#">
-              <img
-                src="../picture/change_it_into_my_logo.jpeg"
-                class="logo"
-                alt="MovieGO Logo"
-              />
-            </a>
-            <p class="desc">
-              MovieGO là nền tảng đặt vé xem phim trực tuyến hàng đầu, mang đến
-              cho bạn trải nghiệm xem phim dễ dàng, nhanh chóng và tiện lợi. Cập
-              nhật liên tục các suất chiếu, trailer và đánh giá phim mới nhất.
-            </p>
-            <ul class="socials">
-              <li>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- GIỚI THIỆU -->
-          <div class="footer-widget">
-            <h6>GIỚI THIỆU</h6>
-            <ul class="links">
-              <li><a href="#">Về Chúng Tôi</a></li>
-              <li><a href="#">Thỏa Thuận Sử Dụng</a></li>
-              <li><a href="#">Chính Sách Bảo Mật</a></li>
-              <li><a href="#">Liên Hệ Hợp Tác</a></li>
-              <li><a href="#">Điều Khoản Giao Dịch</a></li>
-            </ul>
-          </div>
-
-          <!-- GÓC ĐIỆN ẢNH -->
-          <div class="footer-widget">
-            <h6>GÓC ĐIỆN ẢNH</h6>
-            <ul class="links">
-              <li><a href="#">Thể Loại Phim</a></li>
-              <li><a href="#">Bình Luận Phim</a></li>
-              <li><a href="#">Phim Đang Chiếu</a></li>
-              <li><a href="#">Phim Sắp Chiếu</a></li>
-              <li><a href="#">Top Phim Hot</a></li>
-            </ul>
-          </div>
-
-          <!-- HỖ TRỢ -->
-          <div class="footer-widget">
-            <h6>HỖ TRỢ</h6>
-            <ul class="links">
-              <li><a href="#">Góp Ý & Liên Hệ</a></li>
-              <li><a href="#">Hướng Dẫn Đặt Vé</a></li>
-              <li><a href="#">Chính Sách Đổi / Hủy Vé</a></li>
-              <li><a href="#">Rạp / Giá Vé</a></li>
-              <li><a href="#">Tuyển Dụng</a></li>
-              <li><a href="#">Câu Hỏi Thường Gặp (FAQ)</a></li>
-            </ul>
-          </div> 
-
-        <div class="copyright-wrapper">
-          <p>
-            © 2025 MovieGO! - Design and Developed by
-            <a href="#" target="_blank">MovieGO Team</a>. All rights reserved.
-          </p>
-          <p>
-            Giấy phép kinh doanh số: 1234/GP-STTTT - Cấp bởi Sở Thông tin và
-            Truyền thông TP.HCM
-          </p>
-        </div>
-      </div>
-    </footer>
-  </body>
+</body>
 </html>

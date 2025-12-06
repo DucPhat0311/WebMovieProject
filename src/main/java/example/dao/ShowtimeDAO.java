@@ -32,12 +32,11 @@ public class ShowtimeDAO {
 	public List<Showtime> getShowtimesByDate(int movieId, Date date) {
         List<Showtime> list = new ArrayList<>();
         
-        // CÂU SQL ĐÃ SỬA: Thêm điều kiện TIMESTAMP > NOW()
         String sql = "SELECT * FROM Showtime "
                    + "WHERE movie_id = ? "
                    + "AND show_date = ? "
                    + "AND is_active = TRUE "
-                   + "AND TIMESTAMP(show_date, start_time) > NOW() " // <--- DÒNG QUAN TRỌNG NHẤT
+                   + "AND TIMESTAMP(show_date, start_time) > NOW() " 
                    + "ORDER BY start_time ASC";
         
         try (Connection conn = DBConnection.getConnection();
