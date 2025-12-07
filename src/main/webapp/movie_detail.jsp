@@ -17,7 +17,7 @@
 
 	<header>
 		<div class="logo">
-			<a href="${pageContext.request.contextPath}/home" class="logo-link">
+			<a href="${pageContext.request.contextPath}/home" class="logo-link" style="text-decoration: none !important;">
 				<span class="movie">Movie</span><b><span class="go">GO!</span></b>
 			</a>
 		</div>

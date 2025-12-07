@@ -33,11 +33,11 @@ header {
 }
 
 .logo .movie {
-  color: white; /* phần “Movie” trắng */
+  color: white; 
 }
 
 .logo .go {
-  color: #ff3366; /* phần “GO” hồng */
+  color: #ff3366; 
 }
 
 /* Glass effect */
