@@ -112,8 +112,8 @@ nav {
 
 .movie-info h1 {
 	font-size: 2.5em;
+	margin-bottom: 20px; 
 	color: #ff3366;
-	margin-top: 0;
 }
 
 .movie-info p {
@@ -123,7 +123,9 @@ nav {
 .meta-data {
 	margin-top: 15px;
 	color: #94a3b8;
-	margin-bottom: 20px;
+	gap: 15px;
+	margin-bottom: 10px;
+	padding-bottom: 20px;
 	font-size: 0.9em;
 }
 
@@ -135,8 +137,9 @@ nav {
 }
 
 .desc {
-	line-height: 1.8;
-	color: #cbd5e1;
+	margin-top: 30px;
+	line-height: 1.8; 
+	text-align: justify; 
 }
 
 /* Phần lịch chiếu */

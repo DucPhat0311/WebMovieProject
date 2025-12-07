@@ -17,8 +17,9 @@
 
 	<header>
 		<div class="logo">
-			<a href="${pageContext.request.contextPath}/home" class="logo-link" style="text-decoration: none !important;">
-				<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+			<a href="${pageContext.request.contextPath}/home" class="logo-link"
+				style="text-decoration: none !important;"> <span class="movie">Movie</span><b><span
+					class="go">GO!</span></b>
 			</a>
 		</div>
 
@@ -54,27 +55,26 @@
 							phút</span> <span><fmt:formatDate value="${movie.releaseDate}"
 								pattern="dd/MM/yyyy" /></span>
 					</div>
-					<p class="desc">${movie.description}</p>
-					<p>
+
 					<p>
 						<strong>Thể loại: </strong>
 						<c:if test="${empty movie.genres}">
 							<span>Đang cập nhật</span>
 						</c:if>
-
 						<c:forEach items="${movie.genres}" var="genre" varStatus="status">
         ${genre.name}${!status.last ? ', ' : ''}
     </c:forEach>
 					</p>
 
-					<strong>Đạo diễn: </strong>
-					<c:if test="${empty movie.directors}">
-						<span>Đang cập nhật</span>
-					</c:if>
-					<c:forEach items="${movie.directors}" var="director"
-						varStatus="status">
-            ${director.name}${!status.last ? ', ' : ''}
-        </c:forEach>
+					<p>
+						<strong>Đạo diễn: </strong>
+						<c:if test="${empty movie.directors}">
+							<span>Đang cập nhật</span>
+						</c:if>
+						<c:forEach items="${movie.directors}" var="director"
+							varStatus="status">
+        ${director.name}${!status.last ? ', ' : ''}
+    </c:forEach>
 					</p>
 
 					<p>
@@ -84,13 +84,14 @@
 						</c:if>
 						<c:forEach items="${movie.actors}" var="actor" varStatus="status"
 							end="4">
-            ${actor.name}${!status.last ? ', ' : ''}
-        </c:forEach>
-
-						<%-- Trailer --%>
-
-						<c:if test="${movie.actors.size() > 5}">...</c:if>
+        ${actor.name}${!status.last ? ', ' : ''}
+    </c:forEach>
 					</p>
+
+					<p class="desc">
+						<strong>NỘI DUNG PHIM </strong> <br> ${movie.description}
+					</p>
+
 					<c:set var="embedUrl"
 						value="${movie.trailerUrl.replace('watch?v=', 'embed/')}" />
 
