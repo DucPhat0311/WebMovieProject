@@ -17,7 +17,9 @@
 
 	<header>
 		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+			<a href="${pageContext.request.contextPath}/home" class="logo-link">
+				<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+			</a>
 		</div>
 
 		<nav class="glass-nav">
