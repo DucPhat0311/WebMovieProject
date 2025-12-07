@@ -54,7 +54,6 @@
 					</div>
 					<p class="desc">${movie.description}</p>
 					<p>
-					
 					<p>
 						<strong>Thể loại: </strong>
 						<c:if test="${empty movie.genres}">
@@ -67,11 +66,11 @@
 					</p>
 
 					<strong>Đạo diễn: </strong>
-						<c:if test="${empty movie.directors}">
-							<span>Đang cập nhật</span>
-						</c:if>
-						<c:forEach items="${movie.directors}" var="director"
-							varStatus="status">
+					<c:if test="${empty movie.directors}">
+						<span>Đang cập nhật</span>
+					</c:if>
+					<c:forEach items="${movie.directors}" var="director"
+						varStatus="status">
             ${director.name}${!status.last ? ', ' : ''}
         </c:forEach>
 					</p>
@@ -146,14 +145,28 @@
 					<c:set var="isActive"
 						value="${d.toString() == selectedDate.toString() ? 'active' : ''}" />
 
-					<a href="movie-detail?id=${movie.movieId}&date=${d}#booking-area"
-						class="date-btn ${isActive}" style="text-decoration: none;"> <span
-						class="day"><fmt:formatDate value="${d}" pattern="dd/MM" /></span>
-						<span class="weekday"><fmt:formatDate value="${d}"
-								pattern="E" /></span>
-					</a>
+					<%-- di chuyển qua lại các date mà ko lưu lại history stack --%>
+					<div class="date-btn ${isActive}"
+						style="text-decoration: none; cursor: pointer;"
+						onclick="changeDate('${movie.movieId}', '${d}')">
+
+						<span class="day"><fmt:formatDate value="${d}"
+								pattern="dd/MM" /></span> <span class="weekday"><fmt:formatDate
+								value="${d}" pattern="E" /></span>
+					</div>
 				</c:forEach>
 			</div>
+
+			<script>
+				function changeDate(movieId, dateStr) {
+					// tạo URL mới 
+					var newUrl = "movie-detail?id=" + movieId + "&date="
+							+ dateStr + "#booking-area";
+
+					// dùng replace để thay thế trang hiện tại (Không lưu vào History Stack)
+					window.location.replace(newUrl);
+				}
+			</script>
 
 			<div class="filters">
 				<button class="filter-btn">Toàn quốc ▼</button>
