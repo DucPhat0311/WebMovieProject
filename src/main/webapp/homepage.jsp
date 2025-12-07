@@ -100,7 +100,7 @@
 					<div class="age-badge">${m.ageWarning}</div>
 
 					<div class="overlay">
-						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Mua vé</a>
+						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Chi tiết</a>
 					</div>
 
 					<div class="movie-info">
