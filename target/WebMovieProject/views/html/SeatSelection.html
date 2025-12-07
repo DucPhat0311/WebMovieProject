@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickShow - GreatStack</title>
+    <link href="SeatSelection.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <img src="images\logofake.jpg" alt="QuickShow Logo" />
+        </div>
+        <nav class="navigation">
+          <a href="#" class="nav-link">Home</a>
+          <a href="#" class="nav-link">Movies</a>
+          <a href="#" class="nav-link">Theaters</a>
+          <a href="#" class="nav-link">Releases</a>
+        </nav>
+        <div class="header-actions">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m21 21-4.34-4.34"></path>
+            <circle cx="11" cy="11" r="8"></circle>
+          </svg>
+          <button class="login-btn">Login</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="seat-main-container">
+      <div class="seat-content-wrapper">
+        <!-- Timings Sidebar -->
+        <aside class="timings-sidebar">
+          <p class="timings-title">Available Timings</p>
+          <div class="timings-list">
+            <div class="timing-item">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="clock-icon"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <p class="timing-text">04:00 PM</p>
+            </div>
+            <div class="timing-item">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="clock-icon"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <p class="timing-text">07:00 PM</p>
+            </div>
+            <div class="timing-item">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="clock-icon"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <p class="timing-text">10:00 PM</p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Seat Selection -->
+        <section class="seat-selection">
+          <div class="background-blur-1"></div>
+          <div class="background-blur-2"></div>
+
+          <h1 class="section-title">Select your seat</h1>
+
+          <div class="screen-container">
+            <img
+              class="screen-image"
+              src="data:image/svg+xml,%3csvg%20width='585'%20height='29'%20viewBox='0%200%20585%2029'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M585%2029V17C585%2017%20406.824%200%20292.5%200C178.176%200%200%2017%200%2017V29C0%2029%20175.5%2012%20292.5%2012C404.724%2012%20585%2029%20585%2029Z'%20fill='%23F84565'%20fill-opacity='0.3'/%3e%3c/svg%3e"
+              alt="screen"
+            />
+            <p class="screen-label">SCREEN SIDE</p>
+          </div>
+
+          <div class="seats-container">
+            <div class="seats-grid">
+              <!-- Row A -->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="A1">A1</button>
+                  <button class="seat-btn" data-seat="A2">A2</button>
+                  <button class="seat-btn" data-seat="A3">A3</button>
+                  <button class="seat-btn" data-seat="A4">A4</button>
+                  <button class="seat-btn" data-seat="A5">A5</button>
+                  <button class="seat-btn" data-seat="A6">A6</button>
+                  <button class="seat-btn" data-seat="A7">A7</button>
+                  <button class="seat-btn" data-seat="A8">A8</button>
+                  <button class="seat-btn" data-seat="A9">A9</button>
+                </div>
+              </div>
+
+              <!-- Row B -->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="B1">B1</button>
+                  <button class="seat-btn" data-seat="B2">B2</button>
+                  <button class="seat-btn" data-seat="B3">B3</button>
+                  <button class="seat-btn" data-seat="B4">B4</button>
+                  <button class="seat-btn" data-seat="B5">B5</button>
+                  <button class="seat-btn" data-seat="B6">B6</button>
+                  <button class="seat-btn" data-seat="B7">B7</button>
+                  <button class="seat-btn" data-seat="B8">B8</button>
+                  <button class="seat-btn" data-seat="B9">B9</button>
+                </div>
+              </div>
+
+              <!-- Row C -->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="C1">C1</button>
+                  <button class="seat-btn" data-seat="C2">C2</button>
+                  <button class="seat-btn" data-seat="C3">C3</button>
+                  <button class="seat-btn" data-seat="C4">C4</button>
+                  <button class="seat-btn" data-seat="C5">C5</button>
+                  <button class="seat-btn" data-seat="C6">C6</button>
+                  <button class="seat-btn" data-seat="C7">C7</button>
+                  <button class="seat-btn" data-seat="C8">C8</button>
+                  <button class="seat-btn" data-seat="C9">C9</button>
+                </div>
+              </div>
+
+              <!-- Row D -->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="D1">D1</button>
+                  <button class="seat-btn" data-seat="D2">D2</button>
+                  <button class="seat-btn" data-seat="D3">D3</button>
+                  <button class="seat-btn" data-seat="D4">D4</button>
+                  <button class="seat-btn" data-seat="D5">D5</button>
+                  <button class="seat-btn" data-seat="D6">D6</button>
+                  <button class="seat-btn" data-seat="D7">D7</button>
+                  <button class="seat-btn" data-seat="D8">D8</button>
+                  <button class="seat-btn" data-seat="D9">D9</button>
+                </div>
+              </div>
+              <!-- E-->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="E1">E1</button>
+                  <button class="seat-btn" data-seat="E2">E2</button>
+                  <button class="seat-btn" data-seat="E3">E3</button>
+                  <button class="seat-btn" data-seat="E4">E4</button>
+                  <button class="seat-btn" data-seat="E5">E5</button>
+                  <button class="seat-btn" data-seat="E6">E6</button>
+                  <button class="seat-btn" data-seat="E7">E7</button>
+                  <button class="seat-btn" data-seat="E8">E8</button>
+                  <button class="seat-btn" data-seat="E9">E9</button>
+                </div>
+              </div>
+              <!-- F-->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="F1">F1</button>
+                  <button class="seat-btn" data-seat="F2">F2</button>
+                  <button class="seat-btn" data-seat="F3">F3</button>
+                  <button class="seat-btn" data-seat="F4">F4</button>
+                  <button class="seat-btn" data-seat="F5">F5</button>
+                  <button class="seat-btn" data-seat="F6">F6</button>
+                  <button class="seat-btn" data-seat="F7">F7</button>
+                  <button class="seat-btn" data-seat="F8">F8</button>
+                  <button class="seat-btn" data-seat="F9">F9</button>
+                </div>
+              </div>
+              <!-- G-->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="G1">G1</button>
+                  <button class="seat-btn" data-seat="G2">G2</button>
+                  <button class="seat-btn" data-seat="G3">G3</button>
+                  <button class="seat-btn" data-seat="G4">G4</button>
+                  <button class="seat-btn" data-seat="G5">G5</button>
+                  <button class="seat-btn" data-seat="G6">G6</button>
+                  <button class="seat-btn" data-seat="G7">G7</button>
+                  <button class="seat-btn" data-seat="G8">G8</button>
+                  <button class="seat-btn" data-seat="G9">G9</button>
+                </div>
+              </div>
+              <!-- H-->
+              <div class="seat-row">
+                <div class="seat-buttons">
+                  <button class="seat-btn" data-seat="H1">H1</button>
+                  <button class="seat-btn" data-seat="H2">H2</button>
+                  <button class="seat-btn" data-seat="H3">H3</button>
+                  <button class="seat-btn" data-seat="H4">H4</button>
+                  <button class="seat-btn" data-seat="H5">H5</button>
+                  <button class="seat-btn" data-seat="H6">H6</button>
+                  <button class="seat-btn" data-seat="H7">H7</button>
+                  <button class="seat-btn" data-seat="H8">H8</button>
+                  <button class="seat-btn" data-seat="H9">H9</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seat Legend -->
+          <div class="seat-legend">
+            <div class="seat-type available">
+              <span class="seat"></span>
+              Ghế trống
+            </div>
+            <div class="seat-type selected">
+              <span class="seat"></span>
+              Ghế bạn chọn
+            </div>
+            <div class="seat-type booked">
+              <span class="seat"></span>
+              Ghế đã đặt
+            </div>
+          </div>
+
+          <a href="Checkout.html" class="checkout-btn">
+            Proceed to Checkout
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="arrow-icon"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="#" class="footer-link">Chính sách</a>
+          <a href="#" class="footer-link">Lịch chiếu</a>
+          <a href="#" class="footer-link">Tin tức</a>
+          <a href="#" class="footer-link">Giá vé</a>
+          <a href="#" class="footer-link">Hỏi đáp</a>
+          <a href="#" class="footer-link">Đặt vé nhóm, tập thể</a>
+          <a href="#" class="footer-link">Liên hệ</a>
+        </div>
+        <div class="footer-social-download">
+          <div class="social-icons">
+            <a href="#" class="social-icon">
+              <img src="images\fb.png" alt="Facebook" />
+            </a>
+            <a href="#" class="social-icon">
+              <img src="images\zl.png" alt="Zalo" />
+            </a>
+            <a href="#" class="social-icon">
+              <img src="images\yt.png" alt="YouTube" />
+            </a>
+          </div>
+
+          <div class="app-downloads">
+            <a href="#" class="download-btn">
+              <img src="images/ggplay.png" alt="Google Play" />
+            </a>
+            <a href="#" class="download-btn">
+              <img src="images/appstore.png" alt="App Store" />
+            </a>
+            <a href="#" class="download-btn">
+              <img src="images/thongbao.png" alt="Da Thong Bao" />
+            </a>
+          </div>
+        </div>
+        <div class="contact-info">
+          <p>Cơ quan chủ quản: BỘ VĂN HÓA, THỂ THAO VÀ DU LỊCH</p>
+          <p>Bản quyền thuộc Trung tâm Chiếu phim Quốc gia.</p>
+          <p>
+            Giấy phép số: 224/GP- TTĐT ngày 31/8/2010 - Chịu trách nhiệm: Vũ Đức
+            Tùng – Giám đốc.
+          </p>
+          <p>
+            Địa chỉ: Số 87 Láng Hạ, Phường Ô Chợ Dừa, TP.Hà Nội - Điện thoại:
+            024.35141791
+          </p>
+        </div>
+
+        <div class="copyright">
+          <p>Copyright 2023. NCC All Rights Reservered. Dev by Anvui.vn</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

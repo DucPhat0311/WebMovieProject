@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MovieGO!</title>
+<link rel="stylesheet" href="homepage_style.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+	<header>
+		<div class="logo">
+			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+		</div>
+
+		<nav class="glass-nav">
+			<ul>
+				<li><a href="#" class="active">Trang chủ</a></li>
+				<li><a href="#">Phim</a></li>
+				<li><a href="#">Rạp</a></li>
+				<li><a href="#">Giới thiệu</a></li>
+			</ul>
+		</nav>
+
+		<div class="search-login">
+			<input type="text" placeholder="Tìm kiếm" />
+			<button class="login-btn">Đăng nhập</button>
+		</div>
+	</header>
+
+	<section class="hero">
+		<div class="hero-content">
+			<img src="../picture/Marvel_Studios_logo-removebg-preview.png"
+				alt="Marvel Studios Logo" class="studio-logo" />
+			<h1>
+				Avengers<br />Doomsday
+			</h1>
+
+			<div class="movie-info">Hành động | Phiêu lưu | Khoa học viễn
+				tưỡng • 2026 • ⏱ 2h 8m</div>
+
+			<p class="description">Sau những mất mát tàn khốc, các Avenger
+				còn lại đối mặt với kẻ thù mạnh nhất mà vũ trụ từng biết — Doomsday,
+				sinh vật hủy diệt mang sức mạnh vượt ngoài mọi giới hạn. Trái đất
+				đang trên bờ diệt vong… và lần này, không phải ai cũng trở về.</p>
+
+			<a href="#now-showing" class="explore-btn"> XEM THÊM <span>→</span>
+			</a>
+		</div>
+	</section>
+
+	<!-- QUICK BOOKING BAR -->
+	<section class="quick-booking">
+		<div class="booking-container">
+			<select>
+				<option>1. Chọn Phim</option>
+				<option>Avengers: Doomsday</option>
+				<option>Inside Out 2</option>
+				<option>Venom: The Last Dance</option>
+			</select> <select>
+				<option>2. Chọn Rạp</option>
+				<option>Cinema Tân Bình</option>
+				<option>Cinema Đống Đa</option>
+				<option>Cinema Thủ Đức</option>
+				<option>Cinema Đà Nẵng</option>
+				<option>Cinema Vũng Tàu</option>
+			</select> <select>
+				<option>3. Chọn Ngày</option>
+				<option>20/10/2025</option>
+				<option>21/10/2025</option>
+				<option>22/10/2025</option>
+				<option>23/10/2025</option>
+				<option>24/10/2025</option>
+			</select> <select>
+				<option>4. Chọn Suất</option>
+				<option>09:30</option>
+				<option>13:45</option>
+				<option>19:00</option>
+			</select>
+
+			<button class="buy-btn">Mua vé nhanh</button>
+		</div>
+	</section>
+
+	<!-- 🔻 Phần phim đang chiếu -->
+	<section id="now-showing">
+		<div class="section-header">
+			<h2>PHIM ĐANG CHIẾU</h2>
+			<a href="movies">Xem tất cả</a>
+		</div>
+
+		<div class="movie-grid">
+			<!-- CARD PHIM -->
+			<div class="movie-card">
+				<img
+					src="https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/542750947_1164864369010910_1729385072311480629_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=Y6uKjaxySNMQ7kNvwH69zU_&_nc_oc=Adl-I1RLerMIqYt7gNmKUyGOHu3O4GBK0b1bdb2sHcz62_qIJnbHPRd8hgeQgzNx-JZKV1Z9V1QAgYE-N39bOvyL&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=_0meUt2PcVlpMHoF1No6kg&oh=00_Afd3lHxCGHWEFqB5trMa6uKBBogH5ywONe4vdO51UpGDOQ&oe=68FB8E86"
+					alt="Trò chơi ảo giác" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<!-- Nút mua vé -->
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<!-- Tên phim -->
+				<div class="movie-info">
+					<h3>TRÒ CHƠI ẢO GIÁC: ARES</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://www.bhdstar.vn/wp-content/uploads/2025/09/referenceSchemeHeadOfficeallowPlaceHoldertrueheight700ldapp-18.jpg"
+					alt="Tay anh giữ một vì sao" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>TAY ANH GIỮ MỘT VÌ SAO</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://www.cgv.vn/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/m/a/main_tctk_social.jpg"
+					alt="Tử chiến trên không" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>TỬ CHIẾN TRÊN KHÔNG</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/10/9/nam-cua-anh-ngay-cua-em-500_1760004441909.jpg"
+					alt="Năm của anh, ngày của em" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>NĂM CỦA ANH, NGÀY CỦA EM</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-6/561015167_1232336472255785_4574473340721551089_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=CjfhCfaw7F8Q7kNvwHjrFR0&_nc_oc=AdncBoGCvHFOSLTOtieU-tXezpMUMc9DGVRjToDz8l1zsVXJF8C0IB5Dxx1Tq_H9S1zXLrc52BwG2_1o1OoTN1dC&_nc_zt=23&_nc_ht=scontent.fsgn5-8.fna&_nc_gid=byL1mL7BMnlOP99-JYMMHg&oh=00_AffK3wIQwWB7ZPckDsrCSilc1IE9lWIao0TEy_4MTI1exw&oe=68FB7CB4"
+					alt="Vận may" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>VẬN MAY - CẦN MỘT PHÉP MÀU!</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://www.cgv.vn/media/catalog/product/cache/1/image/c5f0a1eff4c394a251036189ccddaacd/3/5/350x495-csm.jpg"
+					alt="Chainsaw Man" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>CHAINSAW MAN</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/9/19/au-be-ca-heo-500_1758256459385.jpg"
+					alt="Cậu bé cá heo" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>CẬU BÉ CÁ HEO & BÍ MẬT 7 ĐẠI DƯƠNG</h3>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 🔻 Phần phim đang chiếu -->
+	<section id="now-showing">
+		<div class="section-header">
+			<h2>PHIM SẮP CHIẾU</h2>
+			<a href="#">Xem tất cả</a>
+		</div>
+
+		<div class="movie-grid">
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/7/31/zootopia2-500_1753933574554.jpg"
+					alt="Zootopia 2" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>ZOOTOPIA 2</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/8/4/shinchan-500_1754281110224.jpg"
+					alt="Crayon Shin-chan: Operation Golden Spy" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>CRAYON SHIN-CHAN: NHỮNG VŨ CÔNG SIÊU CAY KASUKABE</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/7/30/avatar-3-500_1753848148849.jpg"
+					alt="Avatar 3" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>AVATAR 3</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/6/6/wicked-2-500_1749194656620.jpg"
+					alt="Wicked: Part Two" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>WICKED: PHẦN 2</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/7/30/project-mary-500_1753848924810.jpg"
+					alt="Project Mary" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>DỰ ÁN MARY</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/9/15/mortal-kombat-500_1757909784096.jpg"
+					alt="Mortal Kombat 2" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>CUỘC CHIẾN SINH TỬ II</h3>
+				</div>
+			</div>
+
+			<div class="movie-card">
+				<img
+					src="https://cdn.galaxycine.vn/media/2025/9/9/predator-500_1757409424970.jpg"
+					alt="Predator: The Last Hunt" />
+
+				<!-- Cảnh báo độ tuổi -->
+				<div class="age-badge">T18</div>
+
+				<!-- Hiển thị số sao -->
+				<div class="rating">⭐ 4.7</div>
+
+				<div class="overlay">
+					<button class="buy-btn">Mua vé</button>
+				</div>
+
+				<div class="movie-info">
+					<h3>QUÁI VẬT VÔ HÌNH: VÙNG ĐẤT CHẾT CHÓC</h3>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ===== FOOTER =====  -->
+	<footer>
+		<div class="container">
+			<div class="wrapper">
+				<!-- LOGO + MÔ TẢ -->
+				<div class="footer-widget">
+					<a href="#"> <img src="../picture/change_it_into_my_logo.jpeg"
+						class="logo" alt="MovieGO Logo" />
+					</a>
+					<p class="desc">MovieGO là nền tảng đặt vé xem phim trực tuyến
+						hàng đầu, mang đến cho bạn trải nghiệm xem phim dễ dàng, nhanh
+						chóng và tiện lợi. Cập nhật liên tục các suất chiếu, trailer và
+						đánh giá phim mới nhất.</p>
+					<ul class="socials">
+						<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+						<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+						<li><a href="#"><i class="fab fa-instagram"></i></a></li>
+						<li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+						<li><a href="#"><i class="fab fa-youtube"></i></a></li>
+					</ul>
+				</div>
+
+				<!-- GIỚI THIỆU -->
+				<div class="footer-widget">
+					<h6>GIỚI THIỆU</h6>
+					<ul class="links">
+						<li><a href="#">Về Chúng Tôi</a></li>
+						<li><a href="#">Thỏa Thuận Sử Dụng</a></li>
+						<li><a href="#">Chính Sách Bảo Mật</a></li>
+						<li><a href="#">Liên Hệ Hợp Tác</a></li>
+						<li><a href="#">Điều Khoản Giao Dịch</a></li>
+					</ul>
+				</div>
+
+				<!-- GÓC ĐIỆN ẢNH -->
+				<div class="footer-widget">
+					<h6>GÓC ĐIỆN ẢNH</h6>
+					<ul class="links">
+						<li><a href="#">Thể Loại Phim</a></li>
+						<li><a href="#">Bình Luận Phim</a></li>
+						<li><a href="#">Phim Đang Chiếu</a></li>
+						<li><a href="#">Phim Sắp Chiếu</a></li>
+						<li><a href="#">Top Phim Hot</a></li>
+					</ul>
+				</div>
+
+				<!-- HỖ TRỢ -->
+				<div class="footer-widget">
+					<h6>HỖ TRỢ</h6>
+					<ul class="links">
+						<li><a href="#">Góp Ý & Liên Hệ</a></li>
+						<li><a href="#">Hướng Dẫn Đặt Vé</a></li>
+						<li><a href="#">Chính Sách Đổi / Hủy Vé</a></li>
+						<li><a href="#">Rạp / Giá Vé</a></li>
+						<li><a href="#">Tuyển Dụng</a></li>
+						<li><a href="#">Câu Hỏi Thường Gặp (FAQ)</a></li>
+					</ul>
+				</div>
+
+				<div class="copyright-wrapper">
+					<p>
+						© 2025 MovieGO! - Design and Developed by <a href="#"
+							target="_blank">MovieGO Team</a>. All rights reserved.
+					</p>
+					<p>Giấy phép kinh doanh số: 1234/GP-STTTT - Cấp bởi Sở Thông
+						tin và Truyền thông TP.HCM</p>
+				</div>
+			</div>
+	</footer>
+</body>
+</html>

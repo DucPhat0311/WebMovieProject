@@ -1,0 +1,24 @@
+{
+    "java.project.sourcePaths": ["src/main/java"],
+    "java.project.resourcePaths": ["src/main/resources", "src/main/webapp"],
+    "java.project.outputPath": "build/classes",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "src/main/webapp/WEB-INF/lib/**/*.jar"
+    ],
+
+    "tomcat.home": "D:\\Git_Space\\ThienVo\\apache-tomcat-9.0.112\\apache-tomcat-9.0.112",
+    "tomcat.javaHome": "D:\\Git_Space\\ThienVo\\jdk-23",
+    "tomcat.webapp": "D:\\Git_Space\\ThienVo\\apache-tomcat-9.0.112\\apache-tomcat-9.0.112\\webapps\\WebMovieProject",
+
+    "tomcat.autoDeployMode": "On Shortcut",
+    "tomcat.protectedWebApps": [
+        "ROOT",
+        "docs",
+        "examples",
+        "manager",
+        "host-manager"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "maven.view": "hierarchical"
+}
