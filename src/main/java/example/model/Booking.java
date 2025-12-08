@@ -3,80 +3,89 @@ package example.model;
 import java.sql.Timestamp;
 
 public class Booking {
-    private int bookingId;
-    private int userId;
-    private int showtimeId;
-    private double totalAmount;
-    private String status;
-    private Timestamp createdAt;
-    
-    // Constructor mặc định
-    public Booking() {}
-    
-    // Constructor đầy đủ
-    public Booking(int bookingId, int userId, int showtimeId, double totalAmount, String status, Timestamp createdAt) {
-        this.bookingId = bookingId;
-        this.userId = userId;
-        this.showtimeId = showtimeId;
-        this.totalAmount = totalAmount;
-        this.status = status;
-        this.createdAt = createdAt;
-    }
-    
-    // Constructor không có bookingId (dùng khi insert)
-    public Booking(int userId, int showtimeId, double totalAmount, String status) {
-        this.userId = userId;
-        this.showtimeId = showtimeId;
-        this.totalAmount = totalAmount;
-        this.status = status;
-    }
+	private int bookingId;
+	private int userId;
+	private int showtimeId;
+	private Timestamp bookingDate;
+	private double totalAmount;
+	private String status;
+	private Timestamp createdAt;
 
-    // Getters and Setters
-    public int getBookingId() {
-        return bookingId;
-    }
+	public Booking() {
+	}
 
-    public void setBookingId(int bookingId) {
-        this.bookingId = bookingId;
-    }
+	public Booking(int bookingId, int userId, int showtimeId, Timestamp bookingDate, double totalAmount, String status,
+			Timestamp createdAt) {
+		this.bookingId = bookingId;
+		this.userId = userId;
+		this.showtimeId = showtimeId;
+		this.bookingDate = bookingDate;
+		this.totalAmount = totalAmount;
+		this.status = status;
+		this.createdAt = createdAt;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	public Booking(int userId, int showtimeId, Timestamp bookingDate, double totalAmount, String status) {
+		this.userId = userId;
+		this.showtimeId = showtimeId;
+		this.bookingDate = bookingDate;
+		this.totalAmount = totalAmount;
+		this.status = status;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public int getBookingId() {
+		return bookingId;
+	}
 
-    public int getShowtimeId() {
-        return showtimeId;
-    }
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
+	}
 
-    public void setShowtimeId(int showtimeId) {
-        this.showtimeId = showtimeId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+	public int getShowtimeId() {
+		return showtimeId;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setShowtimeId(int showtimeId) {
+		this.showtimeId = showtimeId;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public Timestamp getBookingDate() {
+		return bookingDate;
+	}
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
+	public void setBookingDate(Timestamp bookingDate) {
+		this.bookingDate = bookingDate;
+	}
 
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
 }

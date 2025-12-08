@@ -2,12 +2,14 @@ package example.model;
 
 public class BookingDetail {
 	private int bookingDetailId;
-    private int bookingId;
-    private int seatId;
-    private double price;
-    
+	private int bookingId;
+	private int seatId;
+	private double price;
+
+	public BookingDetail() {
+	}
+
 	public BookingDetail(int bookingDetailId, int bookingId, int seatId, double price) {
-		super();
 		this.bookingDetailId = bookingDetailId;
 		this.bookingId = bookingId;
 		this.seatId = seatId;
@@ -44,9 +46,5 @@ public class BookingDetail {
 
 	public void setPrice(double price) {
 		this.price = price;
-	} 
-	
-	
-
-    
+	}
 }

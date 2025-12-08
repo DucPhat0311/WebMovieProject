@@ -24,33 +24,35 @@ public class SeatSelectionServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-
-		// 1. Kiểm tra đăng nhập
 		User user = (User) session.getAttribute("user");
+
 		if (user == null) {
-			// Lưu URL hiện tại để redirect sau khi login
 			String redirectUrl = request.getRequestURL().toString();
 			String queryString = request.getQueryString();
 			if (queryString != null && !queryString.isEmpty()) {
 				redirectUrl += "?" + queryString;
 			}
 			session.setAttribute("redirectAfterLogin", redirectUrl);
-
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
 		}
 
-		// 2. Lấy tham số showtimeId
 		String showtimeIdParam = request.getParameter("showtimeId");
-		if (showtimeIdParam == null || showtimeIdParam.isEmpty()) {
-			response.sendRedirect(request.getContextPath() + "/");
+		if (showtimeIdParam == null || showtimeIdParam.trim().isEmpty()) {
+			request.setAttribute("errorMessage", "Thiếu thông tin suất chiếu");
+			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
 			return;
 		}
 
 		try {
 			int showtimeId = Integer.parseInt(showtimeIdParam);
 
-			// 3. Lấy thông tin suất chiếu
+			if (showtimeId <= 0) {
+				request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ");
+				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				return;
+			}
+
 			ShowtimeDAO showtimeDAO = new ShowtimeDAO();
 			Showtime showtime = showtimeDAO.getShowtimeById(showtimeId);
 
@@ -60,30 +62,46 @@ public class SeatSelectionServlet extends HttpServlet {
 				return;
 			}
 
-			// 4. Lấy thông tin phim từ movieId
+			if (!showtime.isActive()) {
+				request.setAttribute("errorMessage", "Suất chiếu đã bị hủy!");
+				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				return;
+			}
+
 			MovieDAO movieDAO = new MovieDAO();
 			Movie movie = movieDAO.getMovieById(showtime.getMovieId());
 
-			// 5. Lấy danh sách ghế đã đặt
+			if (movie == null || !movie.isActive()) {
+				request.setAttribute("errorMessage", "Phim không tồn tại hoặc đã ngừng chiếu!");
+				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				return;
+			}
+
 			BookingDAO bookingDAO = new BookingDAO();
 			List<Integer> bookedSeatIds = bookingDAO.getBookedSeatIds(showtimeId);
 
-			// 6. Lấy tất cả ghế trong phòng
 			SeatDAO seatDAO = new SeatDAO();
 			List<example.model.Seat> allSeats = seatDAO.getSeatsByRoomId(showtime.getRoomId());
 
-			// 7. Gửi dữ liệu đến JSP
+			if (allSeats == null || allSeats.isEmpty()) {
+				request.setAttribute("errorMessage", "Phòng chiếu không có ghế!");
+				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				return;
+			}
+
 			request.setAttribute("showtime", showtime);
-			request.setAttribute("movie", movie); // Thêm movie object
+			request.setAttribute("movie", movie);
 			request.setAttribute("bookedSeatIds", bookedSeatIds);
 			request.setAttribute("allSeats", allSeats);
 			request.setAttribute("user", user);
 
-			// 8. Forward đến trang chọn ghế
 			request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
 
 		} catch (NumberFormatException e) {
 			request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ!");
+			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+		} catch (Exception e) {
+			request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
 			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
 		}
 	}
