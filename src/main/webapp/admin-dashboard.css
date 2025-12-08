@@ -59,23 +59,22 @@ body {
 	text-align: center;
 }
 
-.sidebar-menu a:hover,
-      .sidebar-menu a.active {
-        background-color: #1e293b;
-        color: #fff;
-        border-left-color: #ff3366;
-      }
+.sidebar-menu a:hover, .sidebar-menu a.active {
+	background-color: #1e293b;
+	color: #fff;
+	border-left-color: #ff3366;
+}
 
-      .sidebar-footer {
-        padding: 20px;
-        border-top: 1px solid #334155;
-      }
+.sidebar-footer {
+	padding: 20px;
+	border-top: 1px solid #334155;
+}
 
-      .sidebar-footer a {
-        color: #ef4444;
-        text-decoration: none;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+.sidebar-footer a {
+	color: #ef4444;
+	text-decoration: none;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
