@@ -20,6 +20,7 @@
             
             <h2>Đăng nhập</h2>
             
+            <!-- Hiển thị thông báo lỗi/success từ server -->
             <c:if test="${not empty error}">
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i> ${error}
@@ -33,54 +34,76 @@
             </c:if>
             
             <form action="${pageContext.request.contextPath}/login" method="post">
+                <!-- Email -->
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email <span class="required">*</span></label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
+                        <input type="email" id="email" name="email" 
+                               placeholder="Nhập email của bạn" 
+                               required
+                               value="${param.email}"
+                               title="Vui lòng nhập đúng định dạng email">
+                        <c:if test="${not empty emailError}">
+                            <div class="field-error">
+                                <i class="fas fa-exclamation-circle"></i> ${emailError}
+                            </div>
+                        </c:if>
                     </div>
                 </div>
                 
+                <!-- Password với toggle -->
                 <div class="form-group">
-                    <label for="password">Mật khẩu</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                    <label for="password">Mật khẩu <span class="required">*</span></label>
+                    
+                    <!-- Checkbox để toggle password -->
+                    <input type="checkbox" id="showPassword" class="password-toggle-checkbox">
+                    
+                    <div class="password-toggle-wrapper">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" 
+                                   class="password-field"
+                                   placeholder="Nhập mật khẩu" 
+                                   required
+                                   minlength="6"
+                                   title="Mật khẩu phải có ít nhất 6 ký tự">
+                        </div>
+                        
+                        <!-- Label thay cho button -->
+                        <label for="showPassword" class="password-toggle-label">
+                            <i class="fas fa-eye"></i>
+                            <i class="fas fa-eye-slash"></i>
+                        </label>
                     </div>
+                    
+                    <c:if test="${not empty passwordError}">
+                        <div class="field-error">
+                            <i class="fas fa-exclamation-circle"></i> ${passwordError}
+                        </div>
+                    </c:if>
                 </div>
                 
+                <!-- Remember me & Forgot password -->
                 <div class="remember-forgot">
                     <label>
-                        <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
+                        <input type="checkbox" name="remember" value="true"
+                               ${param.remember == 'true' ? 'checked' : ''}>
+                        Ghi nhớ đăng nhập
                     </label>
-                    <a href="#">Quên mật khẩu?</a>
+                    <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
                 </div>
                 
+                <!-- Submit button -->
                 <button type="submit" class="btn-primary">Đăng nhập</button>
             </form>
             
+            <!-- Links -->
             <div class="links">
                 <p>Chưa có tài khoản? <a href="${pageContext.request.contextPath}/register">Đăng ký ngay</a></p>
                 <p><a href="${pageContext.request.contextPath}/home"><i class="fas fa-arrow-left"></i> Quay lại trang chủ</a></p>
             </div>
         </div>
     </div>
-    
-    <script>
-        // Toggle hiển thị mật khẩu
-        document.getElementById('togglePassword').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const icon = this;
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.className = 'fas fa-eye-slash password-toggle';
-            } else {
-                passwordInput.type = 'password';
-                icon.className = 'fas fa-eye password-toggle';
-            }
-        });
-    </script>
 </body>
 </html>
