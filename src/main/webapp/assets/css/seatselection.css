@@ -1,4 +1,3 @@
-/* Seat Selection Page Styles */
 :root {
     --primary-color: #ff3366;
     --secondary-color: #6c5ce7;
@@ -16,7 +15,6 @@
     --screen-color: linear-gradient(180deg, rgba(255,51,102,0.3) 0%, rgba(255,51,102,0.1) 100%);
 }
 
-/* Main Container */
 .seat-main-container {
     padding: 40px 20px;
     max-width: 1200px;
@@ -38,7 +36,6 @@
     }
 }
 
-/* Showtime Info Card */
 .showtime-info-card {
     background: var(--light-bg);
     border-radius: 20px;
@@ -134,7 +131,6 @@
     font-weight: 600;
 }
 
-/* Error Card */
 .error-card {
     background: var(--light-bg);
     border-radius: 20px;
@@ -175,7 +171,6 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Seat Selection Section */
 .seat-selection {
     background: var(--light-bg);
     border-radius: 20px;
@@ -225,7 +220,6 @@
     color: var(--primary-color);
 }
 
-/* Screen Container */
 .screen-container {
     text-align: center;
     margin: 0 0 50px 0;
@@ -276,7 +270,6 @@
     font-size: 12px;
 }
 
-/* Seats Container */
 .seats-container {
     position: relative;
     z-index: 1;
@@ -384,8 +377,6 @@
 .note-row i {
     color: var(--primary-color);
 }
-
-/* Seat Legend */
 .seat-legend {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
@@ -453,7 +444,6 @@
     font-size: 14px;
 }
 
-/* Booking Section */
 .booking-section {
     position: relative;
     z-index: 1;
@@ -518,7 +508,6 @@
     font-weight: 700;
 }
 
-/* Action Buttons */
 .action-buttons {
     display: flex;
     justify-content: space-between;
@@ -590,7 +579,6 @@
     transform: translateX(5px);
 }
 
-/* Alerts */
 .alert {
     padding: 15px 20px;
     border-radius: 10px;
@@ -632,7 +620,6 @@
 
 
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .seat-main-container {
         padding: 20px 15px;
@@ -715,4 +702,45 @@
     .legend-items {
         grid-template-columns: 1fr;
     }
+.vip-seat {
+    background-color: #ffd700 !important;
+    color: #000 !important;
+}
+
+.seat-btn.selected {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+.seat-btn.booked {
+    background-color: #f44336 !important;
+    color: white !important;
+    cursor: not-allowed;
+}
+
+.checkout-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #f44336;
+}
+
+.seat-btn input[type="checkbox"] {
+    display: none;
+}
+
+.seat-btn {
+    cursor: pointer;
+    user-select: none;
+}
 }

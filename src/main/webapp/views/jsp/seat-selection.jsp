@@ -138,6 +138,13 @@
 					<i class="fas fa-chair"></i> Chọn ghế của bạn
 				</h1>
 
+				<!-- Hiển thị lỗi từ server -->
+				<c:if test="${not empty seatError}">
+					<div class="alert alert-error">
+						<i class="fas fa-exclamation-circle"></i> ${seatError}
+					</div>
+				</c:if>
+
 				<div class="screen-container">
 					<div class="screen"></div>
 					<p class="screen-label">
@@ -146,103 +153,175 @@
 					</p>
 				</div>
 
-				<div class="seats-container">
-					<div class="seats-grid">
-						<!-- Tạo hàng ghế từ A đến H -->
-						<c:set var="rowLetters" value="A,B,C,D,E,F,G,H" />
-						<c:forEach items="${fn:split(rowLetters, ',')}" var="row">
-							<div class="seat-row">
-								<div class="row-label">${row}</div>
-								<div class="seat-buttons">
-									<c:forEach begin="1" end="9" var="col">
-										<c:set var="seatCode" value="${row}${col}" />
-										<c:set var="isBooked" value="false" />
-										<c:set var="currentSeatId" value="0" />
+				<!-- FORM CHỌN GHẾ -->
+				<form id="seatForm"
+					action="${pageContext.request.contextPath}/booking" method="post">
+					<input type="hidden" name="showtimeId"
+						value="${showtime.showtimeId}">
 
-										<!-- Tìm seatId từ seatCode -->
-										<c:forEach items="${allSeats}" var="seat">
-											<c:if test="${seat.seatRow == row && seat.seatNumber == col}">
-												<c:set var="currentSeatId" value="${seat.seatId}" />
-												<!-- Kiểm tra ghế đã đặt -->
-												<c:forEach items="${bookedSeatIds}" var="bookedId">
-													<c:if test="${bookedId == seat.seatId}">
-														<c:set var="isBooked" value="true" />
+					<div class="seats-container">
+						<div class="seats-grid">
+							<!-- Tạo hàng ghế từ A đến H -->
+							<c:set var="rowLetters" value="A,B,C,D,E,F,G,H" />
+							<c:forEach items="${fn:split(rowLetters, ',')}" var="row">
+								<div class="seat-row">
+									<div class="row-label">${row}</div>
+									<div class="seat-buttons">
+										<c:forEach begin="1" end="9" var="col">
+											<c:set var="seatCode" value="${row}${col}" />
+											<c:set var="isBooked" value="false" />
+											<c:set var="currentSeatId" value="0" />
+
+											<!-- Tìm seatId từ seatCode -->
+											<c:forEach items="${allSeats}" var="seat">
+												<c:if
+													test="${seat.seatRow == row && seat.seatNumber == col}">
+													<c:set var="currentSeatId" value="${seat.seatId}" />
+													<!-- Kiểm tra ghế đã đặt -->
+													<c:forEach items="${bookedSeatIds}" var="bookedId">
+														<c:if test="${bookedId == seat.seatId}">
+															<c:set var="isBooked" value="true" />
+														</c:if>
+													</c:forEach>
+												</c:if>
+											</c:forEach>
+
+											<!-- Hiển thị radio button cho ghế trống, label cho ghế đã đặt -->
+											<c:choose>
+												<c:when test="${isBooked}">
+													<!-- Ghế đã đặt - chỉ hiển thị, không thể chọn -->
+													<label class="seat-btn booked" data-seat="${seatCode}">
+														${col} </label>
+												</c:when>
+												<c:otherwise>
+													<!-- Ghế trống - có thể chọn -->
+													<c:set var="isSelected" value="false" />
+													<!-- Kiểm tra nếu ghế này đã được chọn từ trước (khi reload page) -->
+													<c:if test="${not empty param.selectedSeats}">
+														<c:set var="selectedSeatsArray"
+															value="${fn:split(param.selectedSeats, ',')}" />
+														<c:forEach items="${selectedSeatsArray}"
+															var="selectedSeat">
+															<c:if test="${selectedSeat eq seatCode}">
+																<c:set var="isSelected" value="true" />
+															</c:if>
+														</c:forEach>
 													</c:if>
-												</c:forEach>
-											</c:if>
+
+													<label
+														class="seat-btn ${isSelected ? 'selected' : 'available'} ${row == 'H' ? 'vip-seat' : ''}">
+														<input type="checkbox" name="selectedSeats"
+														value="${seatCode}" ${isSelected ? 'checked' : ''}
+														style="display: none;" /> ${col}
+													</label>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
-
-										<button class="seat-btn ${isBooked ? 'booked' : 'available'}"
-											data-seat="${seatCode}" data-seat-id="${currentSeatId}"
-											<c:if test="${isBooked}">disabled</c:if>>${col}</button>
-									</c:forEach>
+									</div>
 								</div>
+							</c:forEach>
+						</div>
+
+						<div class="seat-notes">
+							<div class="note-row">
+								<i class="fas fa-info-circle"></i> <span>Hàng A-G: Ghế
+									thường | Hàng H: Ghế VIP (+15.000 VND)</span>
 							</div>
-						</c:forEach>
-					</div>
-
-					<div class="seat-notes">
-						<div class="note-row">
-							<i class="fas fa-info-circle"></i> <span>Hàng A-G: Ghế
-								thường | Hàng H: Ghế VIP (+15.000 VND)</span>
-						</div>
-						<div class="note-row">
-							<i class="fas fa-info-circle"></i> <span>Chọn tối đa 8 ghế
-								cho mỗi lần đặt vé</span>
+							<div class="note-row">
+								<i class="fas fa-info-circle"></i> <span>Chọn tối đa 8
+									ghế cho mỗi lần đặt vé</span>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Seat Legend -->
-				<div class="seat-legend">
-					<div class="legend-title">Chú thích:</div>
-					<div class="legend-items">
-						<div class="seat-type available">
-							<span class="seat"></span> <span class="seat-label">Ghế
-								trống</span>
-						</div>
-						<div class="seat-type selected">
-							<span class="seat"></span> <span class="seat-label">Ghế
-								bạn chọn</span>
-						</div>
-						<div class="seat-type booked">
-							<span class="seat"></span> <span class="seat-label">Ghế đã
-								đặt</span>
-						</div>
-						<div class="seat-type vip">
-							<span class="seat"></span> <span class="seat-label">Ghế
-								VIP</span>
+					<!-- Seat Legend -->
+					<div class="seat-legend">
+						<div class="legend-title">Chú thích:</div>
+						<div class="legend-items">
+							<div class="seat-type available">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									trống</span>
+							</div>
+							<div class="seat-type selected">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									bạn chọn</span>
+							</div>
+							<div class="seat-type booked">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									đã đặt</span>
+							</div>
+							<div class="seat-type vip">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									VIP</span>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- Booking Summary và Form -->
-				<div class="booking-section">
-					<form id="seatForm"
-						action="${pageContext.request.contextPath}/booking" method="post">
-						<input type="hidden" name="showtimeId"
-							value="${showtime.showtimeId}"> <input type="hidden"
-							name="selectedSeats" id="selectedSeatsInput">
-
+					<!-- Booking Summary -->
+					<div class="booking-section">
 						<div class="booking-summary">
 							<h3>
 								<i class="fas fa-receipt"></i> Thông tin đặt vé
 							</h3>
 
 							<div class="summary-content">
+								<!-- Tính toán và hiển thị thông tin từ server -->
+								<c:set var="selectedSeatsCount" value="0" />
+								<c:set var="vipSeatsCount" value="0" />
+								<c:set var="standardSeatsCount" value="0" />
+								<c:set var="selectedSeatsList" value="" />
+
+								<c:if test="${not empty param.selectedSeats}">
+									<c:set var="selectedSeatsArray"
+										value="${fn:split(param.selectedSeats, ',')}" />
+									<c:set var="selectedSeatsCount"
+										value="${fn:length(selectedSeatsArray)}" />
+
+									<c:forEach items="${selectedSeatsArray}" var="seat"
+										varStatus="status">
+										<c:set var="selectedSeatsList"
+											value="${selectedSeatsList}${seat}${status.last ? '' : ', '}" />
+										<c:if test="${fn:startsWith(seat, 'H')}">
+											<c:set var="vipSeatsCount" value="${vipSeatsCount + 1}" />
+										</c:if>
+									</c:forEach>
+
+									<c:set var="standardSeatsCount"
+										value="${selectedSeatsCount - vipSeatsCount}" />
+								</c:if>
+
+								<c:set var="totalPrice"
+									value="${(standardSeatsCount * showtime.basePrice) + (vipSeatsCount * (showtime.basePrice + 15000))}" />
+
 								<div class="summary-row">
 									<span class="summary-label">Ghế đã chọn:</span> <span
-										class="summary-value" id="selectedSeatsText">Chưa chọn
-										ghế nào</span>
+										class="summary-value"> <c:choose>
+											<c:when test="${selectedSeatsCount > 0}">
+                                                ${selectedSeatsList}
+                                            </c:when>
+											<c:otherwise>
+                                                Chưa chọn ghế nào
+                                            </c:otherwise>
+										</c:choose>
+									</span>
 								</div>
 								<div class="summary-row">
 									<span class="summary-label">Số lượng:</span> <span
-										class="summary-value" id="seatCount">0 ghế</span>
+										class="summary-value"> <c:choose>
+											<c:when test="${selectedSeatsCount > 0}">
+                                                ${selectedSeatsCount} ghế (${standardSeatsCount} thường, ${vipSeatsCount} VIP)
+                                            </c:when>
+											<c:otherwise>
+                                                0 ghế
+                                            </c:otherwise>
+										</c:choose>
+									</span>
 								</div>
 								<div class="summary-row">
 									<span class="summary-label">Giá vé cơ bản:</span> <span
-										class="summary-value"><fmt:formatNumber
-											value="${showtime.basePrice}" type="number" /> VND/ghế</span>
+										class="summary-value"> <fmt:formatNumber
+											value="${showtime.basePrice}" type="number" /> VND/ghế
+									</span>
 								</div>
 								<div class="summary-row">
 									<span class="summary-label">Phụ thu VIP:</span> <span
@@ -250,32 +329,36 @@
 								</div>
 								<div class="summary-row total">
 									<span class="summary-label">Tổng tiền:</span> <span
-										class="summary-value price-total" id="totalPrice">0 VND</span>
+										class="summary-value price-total"> <fmt:formatNumber
+											value="${totalPrice}" type="number" /> VND
+									</span>
 								</div>
 							</div>
 						</div>
 
+						<!-- Action Buttons -->
 						<div class="action-buttons">
 							<a
 								href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}"
 								class="back-to-movie-btn"> <i class="fas fa-arrow-left"></i>
 								Quay lại
 							</a>
-							<button type="submit" class="checkout-btn" disabled
-								id="checkoutButton">
+
+							<!-- Thêm hidden field để gửi lại thông tin selectedSeats -->
+							<c:if test="${not empty param.selectedSeats}">
+								<input type="hidden" name="preselectedSeats"
+									value="${param.selectedSeats}">
+							</c:if>
+
+							<button type="submit"
+								class="checkout-btn ${selectedSeatsCount == 0 ? 'disabled' : ''}"
+								${selectedSeatsCount == 0 ? 'disabled' : ''}>
 								<span class="btn-text">Tiếp tục thanh toán</span> <i
 									class="fas fa-arrow-right arrow-icon"></i>
 							</button>
 						</div>
-					</form>
-				</div>
-
-				<!-- Warning message -->
-				<c:if test="${not empty error}">
-					<div class="alert alert-error">
-						<i class="fas fa-exclamation-circle"></i> ${error}
 					</div>
-				</c:if>
+				</form>
 			</section>
 		</div>
 	</main>
@@ -349,203 +432,5 @@
 			</div>
 		</div>
 	</footer>
-
-	<!-- JavaScript -->
-	<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Khai báo biến
-        const seatButtons = document.querySelectorAll('.seat-btn:not(.booked)');
-        const selectedSeats = [];
-        const selectedSeatIds = [];
-        const basePrice = ${not empty showtime ? showtime.basePrice : 0};
-        const vipSurcharge = 15000;
-        
-        // Các phần tử DOM
-        const selectedSeatsInput = document.getElementById('selectedSeatsInput');
-        const selectedSeatsText = document.getElementById('selectedSeatsText');
-        const seatCountText = document.getElementById('seatCount');
-        const totalPriceText = document.getElementById('totalPrice');
-        const checkoutButton = document.getElementById('checkoutButton');
-        
-        // Function hiển thị thông báo (ĐÃ SỬA LỖI EL)
-        function showAlert(message, type = 'info') {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-' + type;
-            
-            // Xác định icon
-            let icon;
-            if (type === 'warning') {
-                icon = 'exclamation-triangle';
-            } else if (type === 'error') {
-                icon = 'exclamation-circle';
-            } else {
-                icon = 'info-circle';
-            }
-            
-            alertDiv.innerHTML = '<i class="fas fa-' + icon + '"></i> ' + message;
-            
-            document.querySelector('.seat-selection').appendChild(alertDiv);
-            
-            // Tự động xóa sau 3 giây
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.remove();
-                }
-            }, 3000);
-        }
-        
-        // Xử lý chọn ghế
-        seatButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const seatCode = this.getAttribute('data-seat');
-                const seatId = this.getAttribute('data-seat-id');
-                const isVIP = seatCode.charAt(0) === 'H'; // Hàng H là VIP
-                const index = selectedSeats.findIndex(seat => seat.code === seatCode);
-                
-                if (index === -1) {
-                    // Nếu chưa chọn, thêm vào danh sách
-                    if (selectedSeats.length < 8) {
-                        selectedSeats.push({
-                            code: seatCode,
-                            id: seatId,
-                            isVIP: isVIP
-                        });
-                        
-                        // Thêm class selected và VIP nếu cần
-                        this.classList.add('selected');
-                        this.classList.remove('available');
-                        if (isVIP) {
-                            this.classList.add('vip-selected');
-                        }
-                    } else {
-                        showAlert('Bạn chỉ có thể chọn tối đa 8 ghế!', 'warning');
-                        return;
-                    }
-                } else {
-                    // Nếu đã chọn, bỏ chọn
-                    selectedSeats.splice(index, 1);
-                    this.classList.remove('selected', 'vip-selected');
-                    this.classList.add('available');
-                }
-                
-                // Cập nhật form và hiển thị
-                updateBookingSummary();
-            });
-        });
-        
-        // Cập nhật thông tin đặt vé
-        function updateBookingSummary() {
-            // Tạo mảng seat codes để gửi đi
-            const seatCodes = selectedSeats.map(seat => seat.code);
-            selectedSeatsInput.value = seatCodes.join(',');
-            
-            // Tính toán
-            const standardSeats = selectedSeats.filter(seat => !seat.isVIP).length;
-            const vipSeats = selectedSeats.filter(seat => seat.isVIP).length;
-            const totalSeats = selectedSeats.length;
-            
-            // Tính tổng tiền
-            const standardTotal = standardSeats * basePrice;
-            const vipTotal = vipSeats * (basePrice + vipSurcharge);
-            const totalAmount = standardTotal + vipTotal;
-            
-            // Cập nhật hiển thị
-            if (totalSeats > 0) {
-                selectedSeatsText.textContent = seatCodes.join(', ');
-                seatCountText.textContent = totalSeats + ' ghế (' + standardSeats + ' thường, ' + vipSeats + ' VIP)';
-                totalPriceText.textContent = formatCurrency(totalAmount) + ' VND';
-                
-                // Kích hoạt nút thanh toán
-                checkoutButton.disabled = false;
-                checkoutButton.classList.add('active');
-            } else {
-                selectedSeatsText.textContent = 'Chưa chọn ghế nào';
-                seatCountText.textContent = '0 ghế';
-                totalPriceText.textContent = '0 VND';
-                
-                // Vô hiệu hóa nút thanh toán
-                checkoutButton.disabled = true;
-                checkoutButton.classList.remove('active');
-            }
-        }
-        
-        // Format tiền tệ
-        function formatCurrency(amount) {
-            return amount.toLocaleString('vi-VN');
-        }
-        
-        // Tính tổng tiền
-        function calculateTotal() {
-            const standardSeats = selectedSeats.filter(seat => !seat.isVIP).length;
-            const vipSeats = selectedSeats.filter(seat => seat.isVIP).length;
-            return (standardSeats * basePrice) + (vipSeats * (basePrice + vipSurcharge));
-        }
-        
-        // Xử lý form submit
-        document.getElementById('seatForm').addEventListener('submit', function(e) {
-            if (selectedSeats.length === 0) {
-                e.preventDefault();
-                showAlert('Vui lòng chọn ít nhất một ghế!', 'warning');
-                return false;
-            }
-            
-            // Tạo thông báo xác nhận
-            const seatCodes = selectedSeats.map(seat => seat.code);
-            const vipCount = selectedSeats.filter(seat => seat.isVIP).length;
-            const standardCount = selectedSeats.length - vipCount;
-            const movieTitle = '${movie.title}'; // Sửa EL ở đây
-            
-            const confirmMessage = 'XÁC NHẬN ĐẶT VÉ\n\n' +
-                                 'Phim: ' + movieTitle + '\n' +
-                                 'Ghế: ' + seatCodes.join(', ') + '\n' +
-                                 'Số lượng: ' + selectedSeats.length + ' ghế (' + standardCount + ' thường, ' + vipCount + ' VIP)\n' +
-                                 'Tổng tiền: ' + formatCurrency(calculateTotal()) + ' VND\n\n' +
-                                 'Bấm OK để tiếp tục thanh toán.';
-            
-            if (!confirm(confirmMessage)) {
-                e.preventDefault();
-                return false;
-            }
-            
-            // Thêm loading state
-            checkoutButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-            checkoutButton.disabled = true;
-        });
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            // ESC để bỏ chọn tất cả
-            if (e.key === 'Escape' && selectedSeats.length > 0) {
-                if (confirm('Bỏ chọn tất cả ghế?')) {
-                    selectedSeats.length = 0;
-                    seatButtons.forEach(btn => {
-                        btn.classList.remove('selected', 'vip-selected');
-                        if (!btn.classList.contains('booked')) {
-                            btn.classList.add('available');
-                        }
-                    });
-                    updateBookingSummary();
-                    showAlert('Đã bỏ chọn tất cả ghế', 'info');
-                }
-            }
-            
-            // Ctrl+Enter để submit form
-            if (e.ctrlKey && e.key === 'Enter' && !checkoutButton.disabled) {
-                checkoutButton.click();
-            }
-        });
-        
-        // Khởi tạo
-        updateBookingSummary();
-        
-        // Thêm tooltip cho ghế VIP
-        seatButtons.forEach(btn => {
-            const seatCode = btn.getAttribute('data-seat');
-            if (seatCode && seatCode.charAt(0) === 'H') {
-                btn.title = 'Ghế VIP (+15.000 VND)';
-            }
-        });
-    });
-</script>
 </body>
 </html>
