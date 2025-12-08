@@ -7,7 +7,7 @@
 <html>
 <head>
 <title>${movie.title}|MovieGO</title>
-<link rel="stylesheet" href="movie_detail_style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" /><!-- sửa tạm -->
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

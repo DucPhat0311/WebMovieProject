@@ -13,7 +13,7 @@
 //import javax.servlet.http.HttpServletResponse;
 //
 //public class MovieServlet extends HttpServlet {
-//	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response)         //của ai đây không dùng thì xóa nhá?
 //			throws ServletException, IOException {
 //
 //		MovieDAO dao = MovieDAO.getInstance();

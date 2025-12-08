@@ -60,7 +60,7 @@ public class MovieDetailServlet extends HttpServlet {
             request.setAttribute("selectedDate", selectedDate); // Ngày đang dc click vào
             request.setAttribute("showtimes", showtimes);     // Danh sách giờ chiếu
             
-            request.getRequestDispatcher("movie_detail.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/jsp/movie_detail.jsp").forward(request, response);//tạm sửa
             
         } catch (Exception e) {
             e.printStackTrace();
