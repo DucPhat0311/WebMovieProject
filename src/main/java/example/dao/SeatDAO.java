@@ -8,15 +8,11 @@ import java.util.List;
 
 public class SeatDAO {
 
-	// Lấy tất cả ghế trong một phòng
 	public List<Seat> getSeatsByRoomId(int roomId) {
 		List<Seat> seats = new ArrayList<>();
-		String sql = "SELECT s.*, st.name as seat_type_name, st.surcharge " + "FROM seat s "
-				+ "JOIN seattype st ON s.seat_type_id = st.seat_type_id " + "WHERE s.room_id = ? "
-				+ "ORDER BY s.seat_row, s.seat_number";
+		String sql = "SELECT s.* FROM seat s WHERE s.room_id = ? ORDER BY s.seat_row, s.seat_number";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setInt(1, roomId);
 			ResultSet rs = ps.executeQuery();
 
@@ -31,13 +27,11 @@ public class SeatDAO {
 		return seats;
 	}
 
-	// Lấy ghế theo ID
 	public Seat getSeatById(int seatId) {
 		Seat seat = null;
 		String sql = "SELECT * FROM seat WHERE seat_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setInt(1, seatId);
 			ResultSet rs = ps.executeQuery();
 
@@ -51,13 +45,34 @@ public class SeatDAO {
 		return seat;
 	}
 
-	// Lấy loại ghế theo ID
+	public Seat getSeatByCode(String seatCode, int roomId) {
+		Seat seat = null;
+		String row = seatCode.substring(0, 1);
+		int number = Integer.parseInt(seatCode.substring(1));
+
+		String sql = "SELECT * FROM seat WHERE seat_row = ? AND seat_number = ? AND room_id = ?";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, row);
+			ps.setInt(2, number);
+			ps.setInt(3, roomId);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				seat = new Seat(rs.getInt("seat_id"), rs.getInt("room_id"), rs.getInt("seat_type_id"),
+						rs.getString("seat_row"), rs.getInt("seat_number"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return seat;
+	}
+
 	public SeatType getSeatTypeById(int seatTypeId) {
 		SeatType seatType = null;
 		String sql = "SELECT * FROM seattype WHERE seat_type_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setInt(1, seatTypeId);
 			ResultSet rs = ps.executeQuery();
 
