@@ -113,7 +113,9 @@
 					<div class="age-badge">${m.ageWarning}</div>
 
 					<div class="overlay">
-						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Chi tiết</a>
+						<a
+							href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
+							class="buy-btn">Mua vé</a>
 
 					</div>
 
