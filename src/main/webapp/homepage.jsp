@@ -108,7 +108,7 @@
 		<div class="movie-grid">
 			<c:forEach items="${nowShowingList}" var="m">
 				<div class="movie-card">
-					<img src="${m.posterUrl}" alt="${m.title}" />
+					<img src="${m.posterUrl}" alt="${m.title}" loading="lazy"/>
 
 					<div class="age-badge">${m.ageWarning}</div>
 
@@ -140,7 +140,7 @@
 		<div class="movie-grid">
 			<c:forEach items="${comingSoonList}" var="m">
 				<div class="movie-card">
-					<img src="${m.posterUrl}" alt="${m.title}" />
+					<img src="${m.posterUrl}" alt="${m.title}" loading="lazy" />
 
 					<div class="age-badge">${m.ageWarning}</div>
 

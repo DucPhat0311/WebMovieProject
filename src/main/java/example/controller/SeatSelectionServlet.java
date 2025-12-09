@@ -1,6 +1,5 @@
 //package example.controller;
 //
-//import example.dao.BookingDAO;
 //import example.dao.MovieDAO;
 //import example.dao.SeatDAO;
 //import example.dao.ShowtimeDAO;
