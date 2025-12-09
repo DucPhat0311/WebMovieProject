@@ -7,7 +7,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MovieGO!</title>
-<link rel="stylesheet" href="homepage_style.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/homepage_style.css" />
+<!-- sửa tạm -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
@@ -25,10 +27,21 @@
 				<li><a href="#">Giới thiệu</a></li>
 			</ul>
 		</nav>
-
+		<!-- Thay thế button đăng nhập nếu đăng nhập thành công -->
 		<div class="search-login">
 			<input type="text" placeholder="Tìm kiếm" />
-			<button class="login-btn">Đăng nhập</button>
+			<!-- Kiểm tra nếu đã login -->
+			<c:choose>
+				<c:when test="${not empty sessionScope.user}">
+					<div class="user-info">
+						<span>Xin chào, ${sessionScope.user.fullName}</span> <a
+							href="logout" class="logout-btn">Đăng xuất</a>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<a href="login" class="login-btn">Đăng nhập</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</header>
 
@@ -101,6 +114,7 @@
 
 					<div class="overlay">
 						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Chi tiết</a>
+
 					</div>
 
 					<div class="movie-info">

@@ -1,0 +1,436 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chọn ghế | MovieGO!</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/homepage_style.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/seatselection.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+	<!-- Header -->
+	<header>
+		<div class="logo">
+			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+		</div>
+
+		<nav class="glass-nav">
+			<ul>
+				<li><a href="${pageContext.request.contextPath}/">Trang chủ</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/movies?type=now">Phim</a></li>
+				<li><a href="#">Rạp</a></li>
+				<li><a href="#">Giới thiệu</a></li>
+			</ul>
+		</nav>
+
+		<div class="search-login">
+			<input type="text" placeholder="Tìm kiếm" />
+			<c:choose>
+				<c:when test="${not empty sessionScope.user}">
+					<div class="user-info">
+						<span>Xin chào, ${sessionScope.user.fullName}</span> <a
+							href="${pageContext.request.contextPath}/logout"
+							class="logout-btn">Đăng xuất</a>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<a href="${pageContext.request.contextPath}/login"
+						class="login-btn">Đăng nhập</a>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</header>
+
+	<!-- Main Content -->
+	<main class="seat-main-container">
+		<div class="seat-content-wrapper">
+			<!-- Thông tin suất chiếu và phim -->
+			<c:choose>
+				<c:when test="${not empty showtime and not empty movie}">
+					<div class="showtime-info-card">
+						<div class="movie-header">
+							<c:if test="${not empty movie.posterUrl}">
+								<img src="${movie.posterUrl}" alt="${movie.title}"
+									class="movie-thumbnail" />
+							</c:if>
+							<div class="movie-header-info">
+								<h2>${movie.title}</h2>
+								<div class="movie-meta">
+									<span class="age-badge ${movie.ageWarning}">${movie.ageWarning}</span>
+									<span><i class="fas fa-clock"></i> ${movie.duration}
+										phút</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="info-grid">
+							<div class="info-row">
+								<i class="fas fa-map-marker-alt"></i>
+								<div class="info-content">
+									<span class="info-label">Rạp:</span> <span class="info-value">${showtime.cinemaName}</span>
+								</div>
+							</div>
+							<div class="info-row">
+								<i class="fas fa-calendar"></i>
+								<div class="info-content">
+									<span class="info-label">Ngày:</span> <span class="info-value"><fmt:formatDate
+											value="${showtime.showDate}" pattern="dd/MM/yyyy" /></span>
+								</div>
+							</div>
+							<div class="info-row">
+								<i class="fas fa-clock"></i>
+								<div class="info-content">
+									<span class="info-label">Giờ:</span> <span class="info-value">${showtime.startTime}</span>
+								</div>
+							</div>
+							<div class="info-row">
+								<i class="fas fa-film"></i>
+								<div class="info-content">
+									<span class="info-label">Loại:</span> <span class="info-value">${showtime.optionType}</span>
+								</div>
+							</div>
+							<div class="info-row">
+								<i class="fas fa-tag"></i>
+								<div class="info-content">
+									<span class="info-label">Giá vé:</span> <span
+										class="info-value price"><fmt:formatNumber
+											value="${showtime.basePrice}" type="number" /> VND</span>
+								</div>
+							</div>
+							<div class="info-row">
+								<i class="fas fa-chair"></i>
+								<div class="info-content">
+									<span class="info-label">Sức chứa:</span> <span
+										class="info-value">72 ghế (8 hàng x 9 cột)</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="error-card">
+						<i class="fas fa-exclamation-triangle"></i>
+						<h3>Không tìm thấy thông tin suất chiếu</h3>
+						<p>Vui lòng quay lại trang trước và thử lại.</p>
+						<a href="${pageContext.request.contextPath}/" class="back-btn">
+							<i class="fas fa-arrow-left"></i> Quay về trang chủ
+						</a>
+					</div>
+				</c:otherwise>
+			</c:choose>
+
+			<!-- Seat Selection Interface -->
+			<section class="seat-selection">
+				<div class="background-blur-1"></div>
+				<div class="background-blur-2"></div>
+
+				<h1 class="section-title">
+					<i class="fas fa-chair"></i> Chọn ghế của bạn
+				</h1>
+
+				<!-- Hiển thị lỗi từ server -->
+				<c:if test="${not empty seatError}">
+					<div class="alert alert-error">
+						<i class="fas fa-exclamation-circle"></i> ${seatError}
+					</div>
+				</c:if>
+
+				<div class="screen-container">
+					<div class="screen"></div>
+					<p class="screen-label">
+						<i class="fas fa-chevron-up"></i> MÀN HÌNH <i
+							class="fas fa-chevron-up"></i>
+					</p>
+				</div>
+
+				<!-- FORM CHỌN GHẾ -->
+				<form id="seatForm"
+					action="${pageContext.request.contextPath}/booking" method="post">
+					<input type="hidden" name="showtimeId"
+						value="${showtime.showtimeId}">
+
+					<div class="seats-container">
+						<div class="seats-grid">
+							<!-- Tạo hàng ghế từ A đến H -->
+							<c:set var="rowLetters" value="A,B,C,D,E,F,G,H" />
+							<c:forEach items="${fn:split(rowLetters, ',')}" var="row">
+								<div class="seat-row">
+									<div class="row-label">${row}</div>
+									<div class="seat-buttons">
+										<c:forEach begin="1" end="9" var="col">
+											<c:set var="seatCode" value="${row}${col}" />
+											<c:set var="isBooked" value="false" />
+											<c:set var="currentSeatId" value="0" />
+
+											<!-- Tìm seatId từ seatCode -->
+											<c:forEach items="${allSeats}" var="seat">
+												<c:if
+													test="${seat.seatRow == row && seat.seatNumber == col}">
+													<c:set var="currentSeatId" value="${seat.seatId}" />
+													<!-- Kiểm tra ghế đã đặt -->
+													<c:forEach items="${bookedSeatIds}" var="bookedId">
+														<c:if test="${bookedId == seat.seatId}">
+															<c:set var="isBooked" value="true" />
+														</c:if>
+													</c:forEach>
+												</c:if>
+											</c:forEach>
+
+											<!-- Hiển thị radio button cho ghế trống, label cho ghế đã đặt -->
+											<c:choose>
+												<c:when test="${isBooked}">
+													<!-- Ghế đã đặt - chỉ hiển thị, không thể chọn -->
+													<label class="seat-btn booked" data-seat="${seatCode}">
+														${col} </label>
+												</c:when>
+												<c:otherwise>
+													<!-- Ghế trống - có thể chọn -->
+													<c:set var="isSelected" value="false" />
+													<!-- Kiểm tra nếu ghế này đã được chọn từ trước (khi reload page) -->
+													<c:if test="${not empty param.selectedSeats}">
+														<c:set var="selectedSeatsArray"
+															value="${fn:split(param.selectedSeats, ',')}" />
+														<c:forEach items="${selectedSeatsArray}"
+															var="selectedSeat">
+															<c:if test="${selectedSeat eq seatCode}">
+																<c:set var="isSelected" value="true" />
+															</c:if>
+														</c:forEach>
+													</c:if>
+
+													<label
+														class="seat-btn ${isSelected ? 'selected' : 'available'} ${row == 'H' ? 'vip-seat' : ''}">
+														<input type="checkbox" name="selectedSeats"
+														value="${seatCode}" ${isSelected ? 'checked' : ''}
+														style="display: none;" /> ${col}
+													</label>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+
+						<div class="seat-notes">
+							<div class="note-row">
+								<i class="fas fa-info-circle"></i> <span>Hàng A-G: Ghế
+									thường | Hàng H: Ghế VIP (+15.000 VND)</span>
+							</div>
+							<div class="note-row">
+								<i class="fas fa-info-circle"></i> <span>Chọn tối đa 8
+									ghế cho mỗi lần đặt vé</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Seat Legend -->
+					<div class="seat-legend">
+						<div class="legend-title">Chú thích:</div>
+						<div class="legend-items">
+							<div class="seat-type available">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									trống</span>
+							</div>
+							<div class="seat-type selected">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									bạn chọn</span>
+							</div>
+							<div class="seat-type booked">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									đã đặt</span>
+							</div>
+							<div class="seat-type vip">
+								<span class="seat"></span> <span class="seat-label">Ghế
+									VIP</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Booking Summary -->
+					<div class="booking-section">
+						<div class="booking-summary">
+							<h3>
+								<i class="fas fa-receipt"></i> Thông tin đặt vé
+							</h3>
+
+							<div class="summary-content">
+								<!-- Tính toán và hiển thị thông tin từ server -->
+								<c:set var="selectedSeatsCount" value="0" />
+								<c:set var="vipSeatsCount" value="0" />
+								<c:set var="standardSeatsCount" value="0" />
+								<c:set var="selectedSeatsList" value="" />
+
+								<c:if test="${not empty param.selectedSeats}">
+									<c:set var="selectedSeatsArray"
+										value="${fn:split(param.selectedSeats, ',')}" />
+									<c:set var="selectedSeatsCount"
+										value="${fn:length(selectedSeatsArray)}" />
+
+									<c:forEach items="${selectedSeatsArray}" var="seat"
+										varStatus="status">
+										<c:set var="selectedSeatsList"
+											value="${selectedSeatsList}${seat}${status.last ? '' : ', '}" />
+										<c:if test="${fn:startsWith(seat, 'H')}">
+											<c:set var="vipSeatsCount" value="${vipSeatsCount + 1}" />
+										</c:if>
+									</c:forEach>
+
+									<c:set var="standardSeatsCount"
+										value="${selectedSeatsCount - vipSeatsCount}" />
+								</c:if>
+
+								<c:set var="totalPrice"
+									value="${(standardSeatsCount * showtime.basePrice) + (vipSeatsCount * (showtime.basePrice + 15000))}" />
+
+								<div class="summary-row">
+									<span class="summary-label">Ghế đã chọn:</span> <span
+										class="summary-value"> <c:choose>
+											<c:when test="${selectedSeatsCount > 0}">
+                                                ${selectedSeatsList}
+                                            </c:when>
+											<c:otherwise>
+                                                Chưa chọn ghế nào
+                                            </c:otherwise>
+										</c:choose>
+									</span>
+								</div>
+								<div class="summary-row">
+									<span class="summary-label">Số lượng:</span> <span
+										class="summary-value"> <c:choose>
+											<c:when test="${selectedSeatsCount > 0}">
+                                                ${selectedSeatsCount} ghế (${standardSeatsCount} thường, ${vipSeatsCount} VIP)
+                                            </c:when>
+											<c:otherwise>
+                                                0 ghế
+                                            </c:otherwise>
+										</c:choose>
+									</span>
+								</div>
+								<div class="summary-row">
+									<span class="summary-label">Giá vé cơ bản:</span> <span
+										class="summary-value"> <fmt:formatNumber
+											value="${showtime.basePrice}" type="number" /> VND/ghế
+									</span>
+								</div>
+								<div class="summary-row">
+									<span class="summary-label">Phụ thu VIP:</span> <span
+										class="summary-value">15.000 VND/ghế</span>
+								</div>
+								<div class="summary-row total">
+									<span class="summary-label">Tổng tiền:</span> <span
+										class="summary-value price-total"> <fmt:formatNumber
+											value="${totalPrice}" type="number" /> VND
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Action Buttons -->
+						<div class="action-buttons">
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}"
+								class="back-to-movie-btn"> <i class="fas fa-arrow-left"></i>
+								Quay lại
+							</a>
+
+							<!-- Thêm hidden field để gửi lại thông tin selectedSeats -->
+							<c:if test="${not empty param.selectedSeats}">
+								<input type="hidden" name="preselectedSeats"
+									value="${param.selectedSeats}">
+							</c:if>
+
+							<button type="submit"
+								class="checkout-btn ${selectedSeatsCount == 0 ? 'disabled' : ''}"
+								${selectedSeatsCount == 0 ? 'disabled' : ''}>
+								<span class="btn-text">Tiếp tục thanh toán</span> <i
+									class="fas fa-arrow-right arrow-icon"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</section>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="wrapper">
+				<!-- LOGO + MÔ TẢ -->
+				<div class="footer-widget">
+					<a href="${pageContext.request.contextPath}/">
+						<div class="logo">
+							<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+						</div>
+					</a>
+					<p class="desc">MovieGO là nền tảng đặt vé xem phim trực tuyến
+						hàng đầu, mang đến cho bạn trải nghiệm xem phim dễ dàng, nhanh
+						chóng và tiện lợi. Cập nhật liên tục các suất chiếu, trailer và
+						đánh giá phim mới nhất.</p>
+					<ul class="socials">
+						<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+						<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+						<li><a href="#"><i class="fab fa-instagram"></i></a></li>
+						<li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+						<li><a href="#"><i class="fab fa-youtube"></i></a></li>
+					</ul>
+				</div>
+
+				<!-- GIỚI THIỆU -->
+				<div class="footer-widget">
+					<h6>GIỚI THIỆU</h6>
+					<ul class="links">
+						<li><a href="#">Về Chúng Tôi</a></li>
+						<li><a href="#">Thỏa Thuận Sử Dụng</a></li>
+						<li><a href="#">Chính Sách Bảo Mật</a></li>
+						<li><a href="#">Liên Hệ Hợp Tác</a></li>
+						<li><a href="#">Điều Khoản Giao Dịch</a></li>
+					</ul>
+				</div>
+
+				<!-- GÓC ĐIỆN ẢNH -->
+				<div class="footer-widget">
+					<h6>GÓC ĐIỆN ẢNH</h6>
+					<ul class="links">
+						<li><a
+							href="${pageContext.request.contextPath}/movies?type=now">Thể
+								Loại Phim</a></li>
+						<li><a href="#">Bình Luận Phim</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/movies?type=now">Phim
+								Đang Chiếu</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/movies?type=coming">Phim
+								Sắp Chiếu</a></li>
+						<li><a href="#">Top Phim Hot</a></li>
+					</ul>
+				</div>
+
+				<!-- HỖ TRỢ -->
+				<div class="footer-widget">
+					<h6>HỖ TRỢ</h6>
+					<ul class="links">
+						<li><a href="#">Góp Ý & Liên Hệ</a></li>
+						<li><a href="#">Hướng Dẫn Đặt Vé</a></li>
+						<li><a href="#">Chính Sách Đổi / Hủy Vé</a></li>
+						<li><a href="#">Rạp / Giá Vé</a></li>
+						<li><a href="#">Tuyển Dụng</a></li>
+						<li><a href="#">Câu Hỏi Thường Gặp (FAQ)</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>

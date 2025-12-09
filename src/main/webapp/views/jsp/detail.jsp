@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="movie_detail_style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" /><!-- sửa tạm -->
 
 </head>
 <body>

@@ -7,7 +7,7 @@
 <html>
 <head>
 <title>${movie.title}|MovieGO</title>
-<link rel="stylesheet" href="movie_detail_style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" /><!-- sửa tạm -->
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,10 +17,7 @@
 
 	<header>
 		<div class="logo">
-			<a href="${pageContext.request.contextPath}/home" class="logo-link"
-				style="text-decoration: none !important;"> <span class="movie">Movie</span><b><span
-					class="go">GO!</span></b>
-			</a>
+			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
 		</div>
 
 		<nav class="glass-nav">
@@ -55,26 +52,28 @@
 							phút</span> <span><fmt:formatDate value="${movie.releaseDate}"
 								pattern="dd/MM/yyyy" /></span>
 					</div>
-
+					<p class="desc">${movie.description}</p>
+					<p>
+					
 					<p>
 						<strong>Thể loại: </strong>
 						<c:if test="${empty movie.genres}">
 							<span>Đang cập nhật</span>
 						</c:if>
+
 						<c:forEach items="${movie.genres}" var="genre" varStatus="status">
         ${genre.name}${!status.last ? ', ' : ''}
     </c:forEach>
 					</p>
 
-					<p>
-						<strong>Đạo diễn: </strong>
+					<strong>Đạo diễn: </strong>
 						<c:if test="${empty movie.directors}">
 							<span>Đang cập nhật</span>
 						</c:if>
 						<c:forEach items="${movie.directors}" var="director"
 							varStatus="status">
-        ${director.name}${!status.last ? ', ' : ''}
-    </c:forEach>
+            ${director.name}${!status.last ? ', ' : ''}
+        </c:forEach>
 					</p>
 
 					<p>
@@ -84,14 +83,13 @@
 						</c:if>
 						<c:forEach items="${movie.actors}" var="actor" varStatus="status"
 							end="4">
-        ${actor.name}${!status.last ? ', ' : ''}
-    </c:forEach>
-					</p>
+            ${actor.name}${!status.last ? ', ' : ''}
+        </c:forEach>
 
-					<p class="desc">
-						<strong>NỘI DUNG PHIM </strong> <br> ${movie.description}
-					</p>
+						<%-- Trailer --%>
 
+						<c:if test="${movie.actors.size() > 5}">...</c:if>
+					</p>
 					<c:set var="embedUrl"
 						value="${movie.trailerUrl.replace('watch?v=', 'embed/')}" />
 
@@ -148,28 +146,14 @@
 					<c:set var="isActive"
 						value="${d.toString() == selectedDate.toString() ? 'active' : ''}" />
 
-					<%-- di chuyển qua lại các date mà ko lưu lại history stack --%>
-					<div class="date-btn ${isActive}"
-						style="text-decoration: none; cursor: pointer;"
-						onclick="changeDate('${movie.movieId}', '${d}')">
-
-						<span class="day"><fmt:formatDate value="${d}"
-								pattern="dd/MM" /></span> <span class="weekday"><fmt:formatDate
-								value="${d}" pattern="E" /></span>
-					</div>
+					<a href="movie-detail?id=${movie.movieId}&date=${d}#booking-area"
+						class="date-btn ${isActive}" style="text-decoration: none;"> <span
+						class="day"><fmt:formatDate value="${d}" pattern="dd/MM" /></span>
+						<span class="weekday"><fmt:formatDate value="${d}"
+								pattern="E" /></span>
+					</a>
 				</c:forEach>
 			</div>
-
-			<script>
-				function changeDate(movieId, dateStr) {
-					// tạo URL mới 
-					var newUrl = "movie-detail?id=" + movieId + "&date="
-							+ dateStr + "#booking-area";
-
-					// dùng replace để thay thế trang hiện tại (Không lưu vào History Stack)
-					window.location.replace(newUrl);
-				}
-			</script>
 
 			<div class="filters">
 				<button class="filter-btn">Toàn quốc ▼</button>
