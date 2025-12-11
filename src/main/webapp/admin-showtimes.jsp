@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -67,7 +66,61 @@
                     </tr>
                 </thead>
                 
-                
-	</div>
+     <tbody>
+                    <c:forEach items="${listS}" var="st">
+                        <tr>
+                            <td>#${st.showtimeId}</td>
+                            
+                            <td style="font-weight: 600; color: #0f172a">
+                                ${st.movie.title}
+                            </td>
+                            
+                            <td>
+                                ${st.room.cinema.cinemaName}<br />
+                                <small style="color: #64748b">${st.room.roomName}</small>
+                            </td>
+                            
+                            <td><fmt:formatDate value="${st.showDate}" pattern="dd/MM/yyyy"/></td>
+                            
+                            <td>
+                                <span class="status ${st.startTime.toString() > '12:00:00' ? 'success' : 'pending'}">
+                                    <fmt:formatDate value="${st.startTime}" pattern="HH:mm"/>
+                                </span>
+                            </td>
+                            
+                            <td style="font-weight: bold;">
+                                <fmt:formatNumber value="${st.basePrice}" type="currency" currencySymbol="₫"/>
+                            </td>
+                            
+                            <td>
+                                <a href="edit-showtime?id=${st.showtimeId}" class="action-btn btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="#" onclick="confirmDelete('${st.showtimeId}')" class="action-btn btn-delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    
+                    <c:if test="${empty listS}">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 20px; color: #888;">
+                                Không tìm thấy lịch chiếu nào.
+                            </td>
+                        </tr>
+                    </c:if>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function confirmDelete(id) {
+            if(confirm("Bạn có chắc chắn muốn xóa lịch chiếu này không?")) {
+                window.location.href = "delete-showtime?id=" + id;
+            }
+        }
+    </script>
 </body>
 </html>

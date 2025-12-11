@@ -16,6 +16,12 @@ public class Showtime {
 
 	// dung de hien thi only, ko luu trong DB
 	private String cinemaName;
+	
+	private Movie movie;
+	private Room room;
+	
+	// why need that one
+	public Showtime() {}
 
 	public Showtime(int showtimeId, int movieId, int roomId, Date showDate, Time startTime, Time endTime,
 			double basePrice, String optionType) {
@@ -110,5 +116,21 @@ public class Showtime {
 	public void setCinemaName(String cinemaName) {
 		this.cinemaName = cinemaName;
 	}
+	
+	public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
 }
