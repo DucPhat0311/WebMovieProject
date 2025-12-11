@@ -15,7 +15,7 @@ import example.model.*;
 /**
  * Servlet implementation class ManageShowtimeServlet
  */
-@WebServlet("/ManageShowtimeServlet")
+@WebServlet("/manage-showtimes")
 public class ManageShowtimeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,7 +41,7 @@ public class ManageShowtimeServlet extends HttpServlet {
 	    request.setAttribute("listS", list); // Tên "listS" phải khớp với items="${listS}" trong JSP
 
 	    // 3. Chuyển hướng
-	    request.getRequestDispatcher("admin_showtimes.jsp").forward(request, response);
+	    request.getRequestDispatcher("admin-showtimes.jsp").forward(request, response);
 	}
 
 	/**

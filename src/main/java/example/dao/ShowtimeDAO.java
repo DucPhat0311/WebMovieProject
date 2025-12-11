@@ -23,20 +23,25 @@ public class ShowtimeDAO {
 		String sql = "SELECT st.showtime_id, st.show_date, st.start_time, st.base_price, " + "m.movie_id, m.title, "
 				+ "r.room_id, r.room_name, " + "c.cinema_id, c.cinema_name " + "FROM Showtime st "
 				+ "JOIN Movie m ON st.movie_id = m.movie_id " + "JOIN Room r ON st.room_id = r.room_id "
-				+ "JOIN Cinema c ON r.cinema_id = c.cinema_id " + "WHERE st.is_active = TRUE " + 
-																									
+				+ "JOIN Cinema c ON r.cinema_id = c.cinema_id " + "WHERE st.is_active = TRUE " +
+
 				"ORDER BY st.show_date DESC, st.start_time ASC";
 
 		Connection conn = null;
-		try {
-			conn = DBConnection.getConnection();
-			if (conn == null) {
-				System.err.println("Không thể kết nối đến CSDL!");
-				return list; // trả rỗng
-			}
+	    PreparedStatement ps = null; // Dùng PreparedStatement thay vì Statement
+	    ResultSet rs = null;
 
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM students");
+	    try {
+	        conn = DBConnection.getConnection();
+	        if (conn == null) {
+	            return list;
+	        }
+
+	        ps = conn.prepareStatement(sql);
+	        rs = ps.executeQuery(); 
+	        // -----------------------
+
+		
 
 			while (rs.next()) {
 				// 1. Tạo đối tượng Movie và set thông tin
@@ -53,7 +58,7 @@ public class ShowtimeDAO {
 				Room room = new Room();
 				room.setRoomId(rs.getInt("room_id"));
 				room.setRoomName(rs.getString("room_name"));
-				room.setCinema(cinema); 
+				room.setCinema(cinema);
 
 				// 4. Tạo đối tượng Showtime và gán Movie, Room vào
 				Showtime st = new Showtime();
