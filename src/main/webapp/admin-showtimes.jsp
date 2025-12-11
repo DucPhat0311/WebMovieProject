@@ -92,10 +92,7 @@
                                 <fmt:formatNumber value="${st.basePrice}" type="currency" currencySymbol="₫"/>
                             </td>
                             
-                            <td>
-                                <a href="edit-showtime?id=${st.showtimeId}" class="action-btn btn-edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
+                            <td>            
                                 <a href="#" onclick="confirmDelete('${st.showtimeId}')" class="action-btn btn-delete">
                                     <i class="fas fa-trash"></i>
                                 </a>
