@@ -63,3 +63,50 @@ body {
 	color: #fff;
 	border-left-color: #ff3366;
 }
+
+.main-content {
+	margin-left: 260px;
+	flex: 1;
+	padding: 30px;
+}
+
+.header-title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+.toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	background: white;
+	padding: 15px;
+	border-radius: 10px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.btn-add {
+	background-color: #ff3366;
+	color: white;
+	padding: 10px 20px;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: none;
+	cursor: pointer;
+}
+
+.search-box {
+	display: flex;
+	align-items: center;
+	background: #f1f5f9;
+	border-radius: 6px;
+	padding: 8px 15px;
+	border: 1px solid #e2e8f0;
+}
