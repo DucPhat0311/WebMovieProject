@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif;
+}
+
+body {
+	display: flex;
+	background-color: #f1f5f9;
+}
+
+.sidebar {
+	width: 260px;
+	background-color: #0f172a;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	height: 100%;
+}
