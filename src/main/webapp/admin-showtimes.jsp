@@ -62,14 +62,14 @@
                         <th>Ngày Chiếu</th>
                         <th>Giờ Bắt Đầu</th>
                         <th>Giá Vé</th>
-                        <th>Hành Động</th>
+                        <th>Xóa</th>
                     </tr>
                 </thead>
                 
      <tbody>
                     <c:forEach items="${listS}" var="st">
                         <tr>
-                            <td>#${st.showtimeId}</td>
+                            <td>${st.showtimeId}</td>
                             
                             <td style="font-weight: 600; color: #0f172a">
                                 ${st.movie.title}

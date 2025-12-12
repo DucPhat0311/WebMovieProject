@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ShowtimeDAO {
 				"ORDER BY st.show_date DESC, st.start_time ASC";
 
 		Connection conn = null;
-	    PreparedStatement ps = null; // Dùng PreparedStatement thay vì Statement
+	    PreparedStatement ps = null; 
 	    ResultSet rs = null;
 
 	    try {
@@ -38,29 +39,22 @@ public class ShowtimeDAO {
 	        }
 
 	        ps = conn.prepareStatement(sql);
-	        rs = ps.executeQuery(); 
-	        // -----------------------
-
-		
+	        rs = ps.executeQuery(); 		
 
 			while (rs.next()) {
-				// 1. Tạo đối tượng Movie và set thông tin
 				Movie movie = new Movie();
 				movie.setMovieId(rs.getInt("movie_id"));
 				movie.setTitle(rs.getString("title"));
 
-				// 2. Tạo đối tượng Cinema
 				Cinema cinema = new Cinema();
 				cinema.setCinemaId(rs.getInt("cinema_id"));
 				cinema.setCinemaName(rs.getString("cinema_name"));
 
-				// 3. Tạo đối tượng Room và gán Cinema vào Room
 				Room room = new Room();
 				room.setRoomId(rs.getInt("room_id"));
 				room.setRoomName(rs.getString("room_name"));
 				room.setCinema(cinema);
 
-				// 4. Tạo đối tượng Showtime và gán Movie, Room vào
 				Showtime st = new Showtime();
 				st.setShowtimeId(rs.getInt("showtime_id"));
 				st.setShowDate(rs.getDate("show_date"));
@@ -70,7 +64,6 @@ public class ShowtimeDAO {
 				st.setMovie(movie);
 				st.setRoom(room);
 
-				// Thêm vào list
 				list.add(st);
 			}
 		} catch (Exception e) {
@@ -170,6 +163,31 @@ public class ShowtimeDAO {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public boolean checkShowtimeOverlap(int roomId, Date showDate, Time newStart, Time newEnd) {
+	    String sql = "SELECT COUNT(*) FROM Showtime WHERE room_id = ? AND show_date = ? AND is_active = TRUE " +
+	                 "AND ((start_time < ? AND end_time > ?) OR (start_time >= ? AND start_time < ?))";
+	                
+
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setInt(1, roomId);
+	        ps.setDate(2, showDate);
+	        ps.setTime(3, newEnd);   
+	        ps.setTime(4, newStart); 
+	        ps.setTime(5, newStart);
+	        ps.setTime(6, newEnd);
+	        
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0; //> 0 là bị trùng
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
 	}
 
 }
