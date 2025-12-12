@@ -190,4 +190,25 @@ public class ShowtimeDAO {
 	    return false;
 	}
 
+	public boolean addShowtime(Showtime st) {
+	    String sql = "INSERT INTO Showtime(movie_id, room_id, show_date, start_time, end_time, base_price, option_type, is_active) " +
+	                 "VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)";
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setInt(1, st.getMovieId());
+	        ps.setInt(2, st.getRoomId());
+	        ps.setDate(3, st.getShowDate());
+	        ps.setTime(4, st.getStartTime());
+	        ps.setTime(5, st.getEndTime());
+	        ps.setDouble(6, st.getBasePrice());
+	        ps.setString(7, st.getOptionType());
+	        
+	        return ps.executeUpdate() > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
 }
