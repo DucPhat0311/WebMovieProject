@@ -3,6 +3,7 @@ package example.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,36 @@ import example.model.Genre;
 import example.model.Movie;
 
 public class MovieDAO {
+	
+	public List<Movie> getAllMovies(){
+        List<Movie> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM Movie";
+        
+        try(Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
+        	ResultSet rs = ps.executeQuery();
+        	
+        	while (rs.next()) {
+        		 Movie m = new Movie(
+                         rs.getInt("movie_id"),
+                         rs.getString("title"),
+                         rs.getString("description"),
+                         rs.getInt("duration"),
+                         rs.getDate("release_date"),
+                         rs.getString("age_warning"),
+                         rs.getString("poster_url"),
+                         rs.getString("trailer_url"),
+                         rs.getBoolean("is_active")
+                     );
+                     list.add(m);
+        	}
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        return list;
+	}
 
     public List<Movie> getNowShowingMovies() {
         List<Movie> list = new ArrayList<>();
