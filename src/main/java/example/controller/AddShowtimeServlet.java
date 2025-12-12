@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import example.dao.MovieDAO;
+
 /**
  * Servlet implementation class AddShowtimeServlet
  */
@@ -27,7 +29,9 @@ public class AddShowtimeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		MovieDAO movieDAO = new MovieDAO();
+		request.setAttribute("movies", movieDAO.getAllMovies());		
+		request.getRequestDispatcher("add-showtime.jsp").forward(request, response);
 	}
 
 	/**
