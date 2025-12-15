@@ -52,11 +52,11 @@
                     </div>
                 </div>
                 
-                <!-- Password với toggle -->
+                <!-- Password với toggle (FIXED) -->
                 <div class="form-group">
                     <label for="password">Mật khẩu <span class="required">*</span></label>
                     
-                    <!-- Checkbox để toggle password -->
+                    <!-- Checkbox ẩn để toggle password -->
                     <input type="checkbox" id="showPassword" class="password-toggle-checkbox">
                     
                     <div class="password-toggle-wrapper">
@@ -68,13 +68,11 @@
                                    required
                                    minlength="6"
                                    title="Mật khẩu phải có ít nhất 6 ký tự">
+                            <label for="showPassword" class="password-toggle-label">
+                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye-slash"></i>
+                            </label>
                         </div>
-                        
-                        <!-- Label thay cho button -->
-                        <label for="showPassword" class="password-toggle-label">
-                            <i class="fas fa-eye"></i>
-                            <i class="fas fa-eye-slash"></i>
-                        </label>
                     </div>
                     
                     <c:if test="${not empty passwordError}">

@@ -13,6 +13,7 @@ body {
     justify-content: center;
     padding: 20px;
 }
+
 .container {
     width: 100%;
     max-width: 1200px;
@@ -117,6 +118,7 @@ body {
     cursor: pointer;
 }
 
+/* ===== FIXED PASSWORD TOGGLE STYLES ===== */
 .password-toggle-wrapper {
     position: relative;
 }
@@ -149,24 +151,33 @@ body {
     display: none;
 }
 
-.password-toggle-checkbox:not(:checked) + .password-toggle-wrapper .password-field[type="text"] {
-    -webkit-text-security: disc;
-    text-security: disc;
+/* Hiển thị mật khẩu khi checkbox được checked */
+.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-field {
+    -webkit-text-security: none !important;
+    text-security: none !important;
+    letter-spacing: 1px;
 }
 
-.password-toggle-checkbox:checked + .password-toggle-wrapper .password-toggle-label .fa-eye {
+/* Ẩn mật khẩu khi checkbox không checked */
+.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-field {
+    -webkit-text-security: disc !important;
+    text-security: disc !important;
+}
+
+/* Ẩn/hiện icon mắt */
+.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-toggle-label .fa-eye {
     display: none;
 }
 
-.password-toggle-checkbox:checked + .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
+.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
     display: inline;
 }
 
-.password-toggle-checkbox:not(:checked) + .password-toggle-wrapper .password-toggle-label .fa-eye {
+.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-toggle-label .fa-eye {
     display: inline;
 }
 
-.password-toggle-checkbox:not(:checked) + .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
+.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
     display: none;
 }
 
@@ -343,6 +354,7 @@ body {
 .alert i {
     font-size: 1.2rem;
 }
+
 .field-error {
     color: #e94560;
     font-size: 0.85rem;
