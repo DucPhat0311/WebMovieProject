@@ -7,7 +7,9 @@
 <html>
 <head>
 <title>${movie.title}|MovieGO</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" /><!-- sửa tạm -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" />
+<!-- sửa tạm -->
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -40,8 +42,9 @@
 		<div class="container">
 			<div class="movie-hero">
 				<div class="movie-poster">
-					<img src="${movie.posterUrl}" alt="${movie.title}"> <a
-						style="display: block; text-align: center; margin-top: 10px; color: #ff3366; text-decoration: none;">
+					<img src="${pageContext.request.contextPath}/${movie.posterUrl}"
+						alt="${movie.title}"> <!-- sua tam -->
+						<a style="display: block; text-align: center; margin-top: 10px; color: #ff3366; text-decoration: none;">
 					</a>
 				</div>
 
@@ -54,7 +57,6 @@
 					</div>
 					<p class="desc">${movie.description}</p>
 					<p>
-					
 					<p>
 						<strong>Thể loại: </strong>
 						<c:if test="${empty movie.genres}">
@@ -67,11 +69,11 @@
 					</p>
 
 					<strong>Đạo diễn: </strong>
-						<c:if test="${empty movie.directors}">
-							<span>Đang cập nhật</span>
-						</c:if>
-						<c:forEach items="${movie.directors}" var="director"
-							varStatus="status">
+					<c:if test="${empty movie.directors}">
+						<span>Đang cập nhật</span>
+					</c:if>
+					<c:forEach items="${movie.directors}" var="director"
+						varStatus="status">
             ${director.name}${!status.last ? ', ' : ''}
         </c:forEach>
 					</p>
