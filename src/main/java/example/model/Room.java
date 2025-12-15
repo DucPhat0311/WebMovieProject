@@ -5,6 +5,8 @@ public class Room {
     private int cinemaId;
     private String roomName;
     
+    private Cinema cinema;
+    
     public Room() {}
     
     public Room(int cinemaId, String roomName) {
@@ -43,6 +45,13 @@ public class Room {
 		this.roomName = roomName;
 	}
 	
+	public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
 	
     
     
