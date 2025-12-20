@@ -244,7 +244,7 @@ public class BookingDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.err.println("Lỗi khi lấy danh sách ghế: " + e.getMessage());
+			System.err.println("Lỗi khi lấy danh sách ghế: " + e.getMessage());//
 		}
 		return seats;
 	}
