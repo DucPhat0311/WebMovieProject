@@ -1,0 +1,332 @@
+
+
+/* Warning container */
+.timeout-warning {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.5s ease-out;
+    margin: -20px -20px 20px -20px;
+    border-radius: 0 0 15px 15px;
+    transition: all 0.3s ease;
+}
+
+/* Warning khi hết thời gian */
+.timeout-warning.expired {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    animation: pulse 1.5s infinite;
+}
+
+/* Warning khi sắp hết thời gian */
+.timeout-warning.warning {
+    background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+}
+
+/* Warning khi còn nhiều thời gian */
+.timeout-warning.normal {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Warning content */
+.timeout-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 16px;
+    flex-wrap: wrap;
+}
+
+.timeout-content i {
+    font-size: 18px;
+}
+
+/* Countdown timer */
+#countdown {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 25px;
+    min-width: 85px;
+    text-align: center;
+    letter-spacing: 2px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#countdown.warning {
+    background: rgba(255, 255, 255, 0.3);
+    animation: blink 1s infinite;
+}
+
+#countdown.expired {
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 18px;
+}
+
+/* Progress bar */
+.timeout-progress {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    margin-top: 10px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.timeout-progress-bar {
+    height: 100%;
+    background: white;
+    width: 100%;
+    border-radius: 2px;
+    transition: width 1s linear;
+}
+
+/* Additional info */
+.timeout-info {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 8px;
+    font-weight: normal;
+}
+
+.timeout-info i {
+    font-size: 11px;
+    margin-right: 5px;
+}
+
+/* Animations */
+@keyframes slideDown {
+    from { 
+        transform: translateY(-100%); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1; 
+    }
+    50% { 
+        opacity: 0.7; 
+    }
+}
+
+@keyframes blink {
+    0%, 100% { 
+        opacity: 1; 
+    }
+    50% { 
+        opacity: 0.5; 
+    }
+}
+
+@keyframes shake {
+    0%, 100% { 
+        transform: translateX(0); 
+    }
+    10%, 30%, 50%, 70%, 90% { 
+        transform: translateX(-5px); 
+    }
+    20%, 40%, 60%, 80% { 
+        transform: translateX(5px); 
+    }
+}
+
+.timeout-warning.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .timeout-warning {
+        padding: 12px 15px;
+        margin: -20px -15px 15px -15px;
+    }
+    
+    .timeout-content {
+        font-size: 14px;
+        gap: 8px;
+    }
+    
+    #countdown {
+        font-size: 16px;
+        min-width: 70px;
+        padding: 5px 12px;
+    }
+    
+    .timeout-info {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .timeout-content {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .timeout-content span:not(#countdown) {
+        order: -1;
+    }
+    
+    #countdown {
+        order: 1;
+    }
+    
+    .timeout-warning {
+        padding: 10px 12px;
+    }
+}
+
+/* Checkout page specific adjustments */
+.checkout-container {
+    position: relative;
+}
+
+.checkout-container .timeout-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    border-radius: 0;
+    z-index: 9999;
+}
+
+/* Adjust main content when timeout warning is present */
+.checkout-container.with-timeout {
+    padding-top: 80px !important;
+}
+
+/* Form submission disabled state */
+#paymentForm.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+#paymentForm.disabled .checkout-pay-btn {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Loading state */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #f84565;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-message {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Alert messages */
+.alert-message {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 9998;
+    animation: slideInRight 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.alert-message.warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.alert-message.error {
+    background: #dc3545;
+}
+
+.alert-message i {
+    font-size: 20px;
+}
+
+@keyframes slideInRight {
+    from { 
+        transform: translateX(100%); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateX(0); 
+        opacity: 1; 
+    }
+}
+
+@keyframes slideOutRight {
+    from { 
+        transform: translateX(0); 
+        opacity: 1; 
+    }
+    to { 
+        transform: translateX(100%); 
+        opacity: 0; 
+    }
+}
+
+.alert-message.hide {
+    animation: slideOutRight 0.3s ease-out forwards;
+}
+
+/* Auto refresh notice */
+.auto-refresh-notice {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #ffc107;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auto-refresh-notice i {
+    font-size: 14px;
+}

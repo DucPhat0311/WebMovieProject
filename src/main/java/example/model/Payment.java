@@ -1,43 +1,27 @@
 package example.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Payment {
 	private int paymentId;
 	private int bookingId;
-	private String method; // Momo, VNPay, BankPro
-	private String status; // Pending, Success, Failed
 	private double amount;
-	private Timestamp paidAt;
+	private String paymentMethod; // Momo, VNPay, BankPro
+	private String status; // Pending, Success, Failed
+	private LocalDateTime paymentDate;
 
 	public Payment() {
 	}
 
-	// Dùng cho INSERT (Khi user bấm Thanh toán) ---
-	// Chỉ cần biết Booking nào, Phương thức gì, Bao nhiêu tiền.
-	// Tự động set Status = PENDING và PaidAt = NULL
-	public Payment(int bookingId, String method, double amount) {
+	public Payment(int bookingId, double amount, String paymentMethod, String status) {
 		this.bookingId = bookingId;
-		this.method = method;
 		this.amount = amount;
-
-		// Mặc định ban đầu
-		this.status = Constant.PAYMENT_PENDING;
-		this.paidAt = null;
+		this.paymentMethod = paymentMethod;
+		this.status = status;
+		this.paymentDate = LocalDateTime.now();
 	}
 
-	// Dùng cho SELECT (Xem lịch sử giao dịch) ---
-	// Nhận đầy đủ thông tin từ DB
-	public Payment(int paymentId, int bookingId, String method, String status, double amount, Timestamp paidAt) {
-		super();
-		this.paymentId = paymentId;
-		this.bookingId = bookingId;
-		this.method = method;
-		this.status = status; // Nhận status thực tế (Success/Failed)
-		this.amount = amount;
-		this.paidAt = paidAt; // Nhận thời gian thực tế
-	}
-
+	// Getters and Setters
 	public int getPaymentId() {
 		return paymentId;
 	}
@@ -54,12 +38,29 @@ public class Payment {
 		this.bookingId = bookingId;
 	}
 
-	public String getMethod() {
-		return method;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setMethod(String method) {
-		this.method = method;
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		// Chuyển đổi từ MOMO/VNPAY/CASH sang format database
+		if ("MOMO".equalsIgnoreCase(paymentMethod)) {
+			this.paymentMethod = "Momo";
+		} else if ("VNPAY".equalsIgnoreCase(paymentMethod)) {
+			this.paymentMethod = "VNPay";
+		} else if ("CASH".equalsIgnoreCase(paymentMethod)) {
+			this.paymentMethod = "BankPro"; // Sử dụng BankPro cho tiền mặt
+		} else {
+			this.paymentMethod = paymentMethod;
+		}
 	}
 
 	public String getStatus() {
@@ -70,20 +71,11 @@ public class Payment {
 		this.status = status;
 	}
 
-	public double getAmount() {
-		return amount;
+	public LocalDateTime getPaymentDate() {
+		return paymentDate;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setPaymentDate(LocalDateTime paymentDate) {
+		this.paymentDate = paymentDate;
 	}
-
-	public Timestamp getPaidAt() {
-		return paidAt;
-	}
-
-	public void setPaidAt(Timestamp paidAt) {
-		this.paidAt = paidAt;
-	}
-
 }
