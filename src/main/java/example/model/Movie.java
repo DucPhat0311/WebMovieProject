@@ -10,7 +10,7 @@ public class Movie {
 	private String description;
 	private int duration;
 	private Date releaseDate;
-	private String ageWarning; // P, T13, T16, T18
+	private String ageWarning; 
 	private String posterUrl;
 	private String trailerUrl;
 	private boolean isActive;

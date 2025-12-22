@@ -17,9 +17,6 @@
 
 @charset "UTF-8";
 
-/* =========================================
-   PHẦN I: LAYOUT & SIDEBAR (GIỮ NGUYÊN)
-   ========================================= */
 * {
 	margin: 0;
 	padding: 0;
@@ -113,7 +110,7 @@ body {
 	align-items: center;
 	margin-bottom: 25px;
 	background: white;
-	padding: 20px; /* Tăng padding cho thoáng */
+	padding: 20px; 
 	border-radius: 10px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
@@ -146,9 +143,6 @@ body {
 	border: 1px solid #cbd5e1;
 }
 
-/* =========================================
-   PHẦN II: TABLE & DATA (PHẦN MỚI THÊM)
-   ========================================= */
 
 /* 1. Khung chứa bảng */
 .recent-grid {
@@ -172,7 +166,7 @@ thead tr {
 }
 
 th {
-	padding: 15px 10px; /* Tạo khoảng cách trên dưới cho tiêu đề */
+	padding: 15px 10px; 
 	color: #64748b;
 	font-size: 0.85rem;
 	font-weight: 700;
@@ -182,19 +176,17 @@ th {
 
 /* 4. Nội dung dòng (tbody) */
 td {
-	padding: 15px 10px; /* QUAN TRỌNG: Dãn cách nội dung ko bị dính */
+	padding: 15px 10px; 
 	color: #334155;
 	font-size: 0.95rem;
-	border-bottom: 1px solid #f1f5f9; /* Đường kẻ mờ giữa các dòng */
-	vertical-align: middle; /* Căn giữa theo chiều dọc */
+	border-bottom: 1px solid #f1f5f9; 
+	vertical-align: middle; 
 }
 
-/* Hiệu ứng khi di chuột vào dòng */
 tbody tr:hover {
 	background-color: #f8fafc;
 }
 
-/* 5. Badge trạng thái (Giờ chiếu) */
 .status {
 	padding: 6px 12px;
 	border-radius: 20px;
@@ -203,16 +195,15 @@ tbody tr:hover {
 }
 
 .status.success {
-	background: #dcfce7; /* Xanh nhạt */
-	color: #166534; /* Chữ xanh đậm */
+	background: #dcfce7;
+	color: #166534; 
 }
 
 .status.pending {
-	background: #fff7ed; /* Cam nhạt */
-	color: #9a3412; /* Chữ cam đậm */
+	background: #fff7ed; 
+	color: #9a3412; 
 }
 
-/* 6. Nút hành động (Sửa/Xóa) */
 .action-btn {
 	display: inline-flex;
 	justify-content: center;
@@ -223,16 +214,6 @@ tbody tr:hover {
 	text-decoration: none;
 	margin-right: 5px;
 	transition: all 0.2s;
-}
-
-.btn-edit {
-	background: #eff6ff;
-	color: #3b82f6;
-}
-
-.btn-edit:hover {
-	background: #3b82f6;
-	color: white;
 }
 
 .btn-delete {
