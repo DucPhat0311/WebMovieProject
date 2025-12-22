@@ -161,7 +161,6 @@ public class MovieDAO {
     public List<Artist> getActorsByMovieId(int movieId) {
         List<Artist> list = new ArrayList<>();
         
-        // Join bảng Artist với bảng trung gian Actor
         String sql = "SELECT a.* FROM Artist a " +
                      "JOIN Actor ac ON a.artist_id = ac.artist_id " +
                      "WHERE ac.movie_id = ?";
@@ -186,7 +185,6 @@ public class MovieDAO {
     public List<Artist> getDirectorsByMovieId(int movieId) {
         List<Artist> list = new ArrayList<>();
         
-        // Join bảng Artist với bảng trung gian Director
         String sql = "SELECT a.* FROM Artist a " +
                      "JOIN Director d ON a.artist_id = d.artist_id " +
                      "WHERE d.movie_id = ?";
@@ -207,4 +205,6 @@ public class MovieDAO {
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }
+    
+    
 }
