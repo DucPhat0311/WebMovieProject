@@ -47,8 +47,6 @@
 
 	<section class="hero">
 		<div class="hero-content">
-			<img src="../picture/Marvel_Studios_logo-removebg-preview.png"
-				alt="Marvel Studios Logo" class="studio-logo" />
 			<h1>
 				Avengers<br />Doomsday
 			</h1>
@@ -102,13 +100,15 @@
 	<section id="now-showing">
 		<div class="section-header">
 			<h2>PHIM ĐANG CHIẾU</h2>
-			<a href="movies?type=now">Xem tất cả</a>
+			<a href="movie-list?type=now">Xem tất cả</a>
 		</div>
 
 		<div class="movie-grid">
-			<c:forEach items="${nowShowingList}" var="m">
+			<c:forEach items="${now8ShowingList}" var="m">
 				<div class="movie-card">
-					<img src="${m.posterUrl}" alt="${m.title}" loading="lazy"/>
+					<img
+						src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
+						alt="${m.title}" loading="lazy" />
 
 					<div class="age-badge">${m.ageWarning}</div>
 
@@ -116,41 +116,45 @@
 						<a
 							href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
 							class="buy-btn">Mua vé</a>
-
 					</div>
 
 					<div class="movie-info">
-						<h3>${m.title}</h3>
+						<h3>
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
+								class="movie-title-link"> ${m.title} </a>
+						</h3>
 					</div>
 				</div>
 			</c:forEach>
-			<c:if test="${empty nowShowingList}">
-				<p style="color: white; text-align: center;">Hiện chưa có phim
-					đang chiếu.</p>
-			</c:if>
 		</div>
 	</section>
 
 	<section id="coming-soon">
 		<div class="section-header">
 			<h2>PHIM SẮP CHIẾU</h2>
-			<a href="movies?type=coming">Xem tất cả</a>
+			<a href="movie-list?type=coming">Xem tất cả</a>
 		</div>
 
 		<div class="movie-grid">
-			<c:forEach items="${comingSoonList}" var="m">
+			<c:forEach items="${coming8SoonList}" var="m">
 				<div class="movie-card">
-					<img src="${m.posterUrl}" alt="${m.title}" loading="lazy" />
+					<img
+						src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
+						alt="${m.title}" loading="lazy" />
 
 					<div class="age-badge">${m.ageWarning}</div>
 
 					<div class="overlay">
-						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Chi
-							tiết</a>
+						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Mua vé</a>
 					</div>
 
 					<div class="movie-info">
-						<h3>${m.title}</h3>
+						<h3>
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
+								class="movie-title-link"> ${m.title} </a>
+						</h3>
 					</div>
 				</div>
 			</c:forEach>
