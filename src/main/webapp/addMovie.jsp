@@ -3,31 +3,46 @@
 <html>
 <head>
     <title>Thêm Phim Mới</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input[type=text], input[type=number], input[type=date], textarea { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; }
+        .btn-submit { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; }
+        .btn-submit:hover { background: #45a049; }
+    </style>
 </head>
 <body>
-    <div align="center">
-        <h1>Thêm Phim Mới</h1>
-        <form method="post" action="AddMovieServlet" enctype="multipart/form-data">
-            <table border="0">
-                <tr>
-                    <td>Tên phim:</td>
-                    <td><input type="text" name="title" size="50" required/></td>
-                </tr>
-                <tr>
-                    <td>Đạo diễn:</td>
-                    <td><input type="text" name="director" size="50"/></td>
-                </tr>
-                <tr>
-                    <td>Poster phim:</td>
-                    <td><input type="file" name="poster" size="50" required/></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input type="submit" value="Lưu Phim" />
-                    </td>
-                </tr>
-            </table>
+    <div class="container">
+        <h2 align="center">Thêm Phim Mới</h2>
+        
+        <form method="post" action="add-movie" enctype="multipart/form-data">
+            
+            <label>Tên phim:</label>
+            <input type="text" name="title" required placeholder="Ví dụ: Avengers: Endgame"/>
+            
+            <label>Mô tả:</label>
+            <textarea name="description" rows="4"></textarea>
+
+            <label>Thời lượng (phút):</label>
+            <input type="number" name="duration" required value="90"/>
+
+            <label>Ngày khởi chiếu:</label>
+            <input type="date" name="releaseDate" required/>
+            
+            <label>Phân loại tuổi:</label>
+            <input type="text" name="ageWarning" placeholder="Ví dụ: P, C13, C18"/>
+            
+            <label>Poster (Ảnh):</label>
+            <input type="file" name="poster" required accept="image/*"/>
+            
+            <label>Trailer URL:</label>
+            <input type="text" name="trailerUrl" />
+
+            <button type="submit" class="btn-submit">Lưu Phim</button>
         </form>
+        
+        <br>
+        <a href="manager-movie">Quay lại danh sách</a>
     </div>
 </body>
 </html>
