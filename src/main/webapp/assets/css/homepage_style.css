@@ -178,6 +178,16 @@ nav {
 	background: linear-gradient(90deg, #ff3a1a, #ff2f5d);
 }
 
+.movie-title-link {
+    text-decoration: none; 
+    color: inherit;        
+	transition: background 0.3s ease;
+}
+
+.movie-title-link:hover {
+    color: linear-gradient(90deg, #ff3a1a, #ff2f5d); 
+}
+
 /* ===== SECTION: PHIM ĐANG CHIẾU ===== */
 #now-showing {
 	padding: 0px 100px; /* lề trái/phải 80px */
@@ -577,31 +587,6 @@ footer {
 	animation: fadeIn 0.5s ease;
 }
 
-/* Hiệu ứng xuất hiện */
-@
-keyframes fadeIn {from { opacity:0;
-	transform: translateY(-10px);
-}
-
-to {
-	opacity: 1;
-	transform: translateY(0);
-}
-
-}
-
-/* Hiệu ứng biến mất */
-@
-keyframes fadeOut {from { opacity:1;
-	transform: translateY(0);
-}
-
-to {
-	opacity: 0;
-	transform: translateY(-10px);
-}
-
-}
 .welcome-content {
 	max-width: 1200px;
 	margin: 0 auto;
