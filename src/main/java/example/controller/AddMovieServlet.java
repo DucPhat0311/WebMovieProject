@@ -1,8 +1,11 @@
 package example.controller;
 
 import java.io.File;
-
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.sql.Date; // Lưu ý import sql.Date
+import java.text.SimpleDateFormat;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -11,89 +14,94 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import example.dao.MovieDAO;
+import example.model.Movie;
+
 @WebServlet("/add-movie")
-// Cấu hình upload file theo Servlet 3.0
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB: Nếu file > 2MB sẽ ghi tạm ra đĩa
-		maxFileSize = 1024 * 1024 * 10, // 10MB: Tối đa cho 1 file
-		maxRequestSize = 1024 * 1024 * 50 // 50MB: Tối đa cho toàn bộ request
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10,      // 10MB
+    maxRequestSize = 1024 * 1024 * 50    // 50MB
 )
 public class AddMovieServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    
+    private static final String UPLOAD_DIR = "assets" + File.separator + "img" + File.separator + "movies";
 
-	// Tên thư mục chứa ảnh upload
-	private static final String SAVE_DIR = "movie_posters";
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("addMovie.jsp").forward(request, response);
+    }
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-	        throws ServletException, IOException {
-	    // Nếu ai đó cố truy cập trực tiếp vào link Servlet bằng method GET,
-	    // Hãy chuyển hướng (Redirect) họ về trang form nhập liệu
-	    response.sendRedirect("addMovie.jsp");
-	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
-		// 1. Xử lý Encoding để đọc tiếng Việt
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
+        try {
+            String applicationPath = request.getServletContext().getRealPath("");
+            String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
 
-		// 2. Định nghĩa đường dẫn lưu file
-		// getRealPath("") trả về đường dẫn gốc của ứng dụng web trên server
-		String appPath = request.getServletContext().getRealPath("");
-		String savePath = appPath + File.separator + SAVE_DIR;
+            File uploadDir = new File(uploadFilePath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
 
-		// Tạo thư mục nếu chưa tồn tại
-		File fileSaveDir = new File(savePath);
-		if (!fileSaveDir.exists()) {
-			fileSaveDir.mkdir();
-		}
+            String fileName = null;
+            Part part = request.getPart("poster");
+            
+            if (part != null && part.getSize() > 0) {
+                fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+                
+                // Ghi file vào ổ cứng server
+                part.write(uploadFilePath + File.separator + fileName);
+            } else {
+                fileName = "no-image.jpg"; // Ảnh mặc định nếu không upload
+            }
 
-		String fileName = "";
+            // --- 2. LẤY DỮ LIỆU FORM ---
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String ageWarning = request.getParameter("ageWarning");
+            String trailerUrl = request.getParameter("trailerUrl");
+            
+            // Xử lý số nguyên
+            int duration = 0;
+            try {
+                duration = Integer.parseInt(request.getParameter("duration"));
+            } catch (NumberFormatException e) { duration = 0; }
 
-		// 3. Xử lý Upload File (Poster)
-		// Lấy part có name="poster" từ form
-		Part part = request.getPart("poster");
+            // Xử lý ngày tháng 
+            String dateStr = request.getParameter("releaseDate");
+            Date sqlDate = new Date(System.currentTimeMillis()); // Mặc định là hôm nay
+            if(dateStr != null && !dateStr.isEmpty()){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = sdf.parse(dateStr);
+                sqlDate = new Date(utilDate.getTime());
+            }
 
-		if (part != null) {
-			fileName = extractFileName(part);
-			// Có thể thêm mã unique vào fileName để tránh trùng lặp (ví dụ:
-			// System.currentTimeMillis() + fileName)
-			// Lưu file vào ổ cứng
-			part.write(savePath + File.separator + fileName);
-		}
+            Movie movie = new Movie();
+            movie.setTitle(title);
+            movie.setDescription(description);
+            movie.setDuration(duration);
+            movie.setReleaseDate(sqlDate);
+            movie.setAgeWarning(ageWarning);
+            movie.setPosterUrl(fileName); 
+            movie.setTrailerUrl(trailerUrl);
+            movie.setActive(true);
 
-		// 4. Xử lý dữ liệu văn bản (Thông tin phim)
-		String title = request.getParameter("title");
-		String director = request.getParameter("director");
+            MovieDAO dao = new MovieDAO();
+            dao.insertMovie(movie);
 
-		// 5. (Giả lập) Lưu vào Database
-		// Tại đây bạn sẽ gọi JDBC để Insert vào bảng Movie
-		// INSERT INTO Movies (Title, Director, PosterUrl) VALUES (title, director,
-		// SAVE_DIR + "/" + fileName);
+            response.sendRedirect("manage-movies"); 
 
-		// Console Log để kiểm tra kết quả
-		System.out.println("--- Đã thêm phim mới ---");
-		System.out.println("Tên phim: " + title);
-		System.out.println("Đạo diễn: " + director);
-		System.out.println("Đường dẫn ảnh đã lưu: " + savePath + File.separator + fileName);
-
-		// 6. Phản hồi về cho người dùng
-		request.setAttribute("message", "Thêm phim thành công! Ảnh lưu tại: " + SAVE_DIR + "/" + fileName);
-		request.getServletContext().getRequestDispatcher("/message.jsp").forward(request, response);
-	}
-
-	/**
-	 * Hàm trích xuất tên file từ Header (Theo logic trong slide cung cấp)
-	 */
-	private String extractFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		String[] items = contentDisp.split(";");
-		for (String s : items) {
-			if (s.trim().startsWith("filename")) {
-				return s.substring(s.indexOf("=") + 2, s.length() - 1);
-			}
-		}
-		return "";
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi: " + e.getMessage());
+            request.getRequestDispatcher("addMovie.jsp").forward(request, response);
+        }
+    }
 }
