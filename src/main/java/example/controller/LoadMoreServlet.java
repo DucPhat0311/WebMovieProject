@@ -41,7 +41,6 @@ public class LoadMoreServlet extends HttpServlet {
         
         MovieDAO dao = new MovieDAO();
         
-        // SỬA SỐ 4 THÀNH SỐ 8 Ở ĐÂY
         List<Movie> list = dao.getNextMovies(type, 8, existed); 
         
         request.setAttribute("newList", list);

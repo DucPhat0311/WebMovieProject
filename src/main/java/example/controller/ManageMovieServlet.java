@@ -31,14 +31,11 @@ public class ManageMovieServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 1. Gọi DAO để lấy danh sách phim
         MovieDAO dao = new MovieDAO();
-        List<Movie> list = dao.getAllMovies(); // Hoặc hàm phân trang getMovieByIndex...
+        List<Movie> list = dao.getAllMovies(); 
 
-        // 2. Đẩy dữ liệu sang JSP
-        request.setAttribute("listM", list); // "listM" phải trùng với items="${listM}" trong JSP
+        request.setAttribute("listM", list); 
 
-        // 3. Chuyển hướng về trang JSP
         request.getRequestDispatcher("admin-movies.jsp").forward(request, response);
     }
 
