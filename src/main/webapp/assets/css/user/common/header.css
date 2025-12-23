@@ -1,0 +1,93 @@
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 50px;
+	background: transparent;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+
+.logo {
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+
+.logo .movie {
+	color: white;
+}
+
+.logo .go {
+	color: #ff3366;
+}
+
+.glass-nav {
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 40px;
+	padding: 10px 40px;
+}
+
+.glass-nav ul {
+	list-style: none;
+	display: flex;
+	gap: 40px;
+}
+
+.glass-nav a {
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.3s ease;
+}
+
+.glass-nav a:hover, .glass-nav a.active {
+	color: #ff3366;
+}
+
+nav {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+}
+
+.search-login {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+}
+
+.search-login input {
+	background: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 20px;
+	color: #000;
+	outline: none;
+}
+
+.login-btn {
+	background: linear-gradient(90deg, #ff4b2b, #ff416c);
+	color: white;
+	border: none;
+	padding: 8px 18px;
+	border-radius: 20px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.circle {
+	width: 28px;
+	height: 28px;
+	background-color: #ff4655;
+	color: white;
+	font-weight: 700;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
