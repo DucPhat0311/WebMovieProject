@@ -42,7 +42,7 @@
 		<div class="container">
 			<div class="movie-hero">
 				<div class="movie-poster">
-					<img src="${pageContext.request.contextPath}/${movie.posterUrl}"
+					<img src="${pageContext.request.contextPath}/assets/img/movies/${movie.posterUrl}"
 						alt="${movie.title}"> <!-- sua tam -->
 						<a style="display: block; text-align: center; margin-top: 10px; color: #ff3366; text-decoration: none;">
 					</a>
