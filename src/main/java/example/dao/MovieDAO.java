@@ -221,5 +221,65 @@ public class MovieDAO {
 		}
 	}
 	
+	public List<Movie> getMoviesByPage(String type, int amount, int offset) {
+	    List<Movie> list = new ArrayList<>();
+	    String sql = "";
+
+	    if ("now".equals(type)) {
+	        sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT ? OFFSET ?";
+	    } else if ("coming".equals(type)) {
+	        sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT ? OFFSET ?";
+	    }
+
+	    try (Connection conn = new DBConnection().getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, amount); 
+	        ps.setInt(2, offset); 
+
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            Movie m = new Movie();
+	            m.setMovieId(rs.getInt("movie_id"));
+	            m.setTitle(rs.getString("title"));
+	            m.setPosterUrl(rs.getString("poster_url"));
+	            m.setAgeWarning(rs.getString("age_warning")); 
+	            list.add(m);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
 	
+	public List<Movie> getNextMovies(String type, int amount, int offset) {
+	    List<Movie> list = new ArrayList<>();
+	    String sql = "";
+	    
+	    if ("now".equals(type)) {
+	        sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = 1 ORDER BY release_date DESC LIMIT ? OFFSET ?";
+	    } else {
+	        sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = 1 ORDER BY release_date ASC LIMIT ? OFFSET ?";
+	    }
+
+	    try (Connection conn = new DBConnection().getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	         
+	        ps.setInt(1, amount);
+	        ps.setInt(2, offset); 
+	        
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            Movie m = new Movie();
+	            m.setMovieId(rs.getInt("movie_id"));
+	            m.setTitle(rs.getString("title"));
+	            m.setPosterUrl(rs.getString("poster_url"));
+	            m.setAgeWarning(rs.getString("age_warning"));
+	            list.add(m);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
 }
