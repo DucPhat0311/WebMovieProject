@@ -1,1 +1,118 @@
-@charset "UTF-8";
+:root {
+    --primary-color: #ff3152;
+    --secondary-color: #ff416c;
+    --bg-color: #0f172a;
+    --text-color: #ffffff;
+    --font-main: "Roboto", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+}
+
+body {
+    scroll-behavior: smooth;
+    background: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    font-family: var(--font-main);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+.age-badge {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    background: red;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: 1px solid #fff3;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    z-index: 5; 
+}
+
+.explore-btn {
+    display: inline-flex;
+    margin-top: 25px; 
+    align-items: center;
+    gap: 8px;
+    background: #ff3152; 
+    color: white;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 49, 82, 0.4);
+}
+.explore-btn:hover {
+    background: #ff4f6a;
+    box-shadow: 0 0 20px rgba(255, 79, 106, 0.6);
+    transform: translateY(-2px);
+}
+
+.buy-btn {
+    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    color: white;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px; 
+}
+
+.buy-btn:hover {
+    background: linear-gradient(90deg, #ff3a1a, #ff2f5d);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 80px; 
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.section-header h2::before {
+    content: "•";
+    color: red;
+    font-size: 32px;
+    margin-right: 10px;
+}
+
+.section-header a {
+    color: #a89dfb;
+    font-size: 15px;
+}
+
+.section-header a:hover {
+    text-decoration: underline;
+    color: var(--secondary-color);
+}

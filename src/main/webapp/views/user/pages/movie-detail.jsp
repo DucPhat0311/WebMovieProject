@@ -16,28 +16,6 @@
 
 </head>
 <body>
-
-	<header>
-		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-		</div>
-
-		<nav class="glass-nav">
-			<ul>
-				<li><a href="#" class="active">Trang chủ</a></li>
-				<li><a href="#">Phim</a></li>
-				<li><a href="#">Rạp</a></li>
-				<li><a href="#">Giới thiệu</a></li>
-			</ul>
-		</nav>
-
-		<div class="search-login">
-			<input type="text" placeholder="Tìm kiếm" />
-			<button class="login-btn">Đăng nhập</button>
-		</div>
-	</header>
-
-
 	<section class="movie-detail">
 		<div class="container">
 			<div class="movie-hero">

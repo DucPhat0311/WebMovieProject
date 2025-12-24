@@ -13,23 +13,6 @@
 </head>
 <body>
 
-	<div class="sidebar">
-		<div class="sidebar-header">
-			<h2>
-				Movie<span>GO</span>
-			</h2>
-		</div>
-		<div class="sidebar-menu">
-			<a href="dashboard"><i class="fas fa-home"></i> Tổng Quan</a> <a
-				href="manager-movie" class="active"><i class="fas fa-film"></i>
-				Quản Lý Phim</a> <a href="manager-showtime"><i
-				class="fas fa-calendar-alt"></i> Lịch Chiếu</a> <a
-				href="manager-booking"><i class="fas fa-ticket-alt"></i> Đơn
-				Hàng</a> <a href="manager-user"><i class="fas fa-users"></i> Khách
-				Hàng</a>
-		</div>
-	</div>
-
 	<div class="main-content">
 		<div class="header-title">
 			<h1>Quản Lý Phim</h1>

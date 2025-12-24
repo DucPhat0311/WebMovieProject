@@ -162,38 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </head>
 <body>
-	<header>
-		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-		</div>
-
-		<nav class="glass-nav">
-			<ul>
-				<li><a href="${pageContext.request.contextPath}/">Trang chủ</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/movies?type=now">Phim</a></li>
-				<li><a href="#">Rạp</a></li>
-				<li><a href="#">Giới thiệu</a></li>
-			</ul>
-		</nav>
-
-		<div class="search-login">
-			<input type="text" placeholder="Tìm kiếm" />
-			<c:choose>
-				<c:when test="${not empty sessionScope.user}">
-					<div class="user-info">
-						<span>Xin chào, ${sessionScope.user.fullName}</span> <a
-							href="${pageContext.request.contextPath}/logout"
-							class="logout-btn">Đăng xuất</a>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/login"
-						class="login-btn">Đăng nhập</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</header>
+	
 
 	<main class="seat-main-container">
 		<div class="seat-content-wrapper">
@@ -477,70 +446,5 @@ document.addEventListener('DOMContentLoaded', function() {
 			</section>
 		</div>
 	</main>
-
-	<footer>
-		<div class="container">
-			<div class="wrapper">
-				<div class="footer-widget">
-					<a href="${pageContext.request.contextPath}/">
-						<div class="logo">
-							<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-						</div>
-					</a>
-					<p class="desc">MovieGO là nền tảng đặt vé xem phim trực tuyến
-						hàng đầu, mang đến cho bạn trải nghiệm xem phim dễ dàng, nhanh
-						chóng và tiện lợi. Cập nhật liên tục các suất chiếu, trailer và
-						đánh giá phim mới nhất.</p>
-					<ul class="socials">
-						<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-						<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-						<li><a href="#"><i class="fab fa-instagram"></i></a></li>
-						<li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-						<li><a href="#"><i class="fab fa-youtube"></i></a></li>
-					</ul>
-				</div>
-
-				<div class="footer-widget">
-					<h6>GIỚI THIỆU</h6>
-					<ul class="links">
-						<li><a href="#">Về Chúng Tôi</a></li>
-						<li><a href="#">Thỏa Thuận Sử Dụng</a></li>
-						<li><a href="#">Chính Sách Bảo Mật</a></li>
-						<li><a href="#">Liên Hệ Hợp Tác</a></li>
-						<li><a href="#">Điều Khoản Giao Dịch</a></li>
-					</ul>
-				</div>
-
-				<div class="footer-widget">
-					<h6>GÓC ĐIỆN ẢNH</h6>
-					<ul class="links">
-						<li><a
-							href="${pageContext.request.contextPath}/movies?type=now">Thể
-								Loại Phim</a></li>
-						<li><a href="#">Bình Luận Phim</a></li>
-						<li><a
-							href="${pageContext.request.contextPath}/movies?type=now">Phim
-								Đang Chiếu</a></li>
-						<li><a
-							href="${pageContext.request.contextPath}/movies?type=coming">Phim
-								Sắp Chiếu</a></li>
-						<li><a href="#">Top Phim Hot</a></li>
-					</ul>
-				</div>
-
-				<div class="footer-widget">
-					<h6>HỖ TRỢ</h6>
-					<ul class="links">
-						<li><a href="#">Góp Ý & Liên Hệ</a></li>
-						<li><a href="#">Hướng Dẫn Đặt Vé</a></li>
-						<li><a href="#">Chính Sách Đổi / Hủy Vé</a></li>
-						<li><a href="#">Rạp / Giá Vé</a></li>
-						<li><a href="#">Tuyển Dụng</a></li>
-						<li><a href="#">Câu Hỏi Thường Gặp (FAQ)</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</footer>
 </body>
 </html>

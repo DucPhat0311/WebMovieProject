@@ -18,8 +18,6 @@
 <body>
 
     <div class="admin-container" style="display: flex;">
-        
-
         <div class="main-content" style="flex: 1; padding: 20px;">
             <div class="header-title">
                 <h1>Quản lý lịch chiếu</h1>

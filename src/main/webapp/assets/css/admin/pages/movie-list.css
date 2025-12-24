@@ -79,7 +79,6 @@ body {
 	margin-bottom: 30px;
 }
 
-/* --- CSS RIÊNG CHO TABLE & TOOLBAR --- */
 .toolbar {
 	display: flex;
 	justify-content: space-between;
@@ -199,32 +198,6 @@ tbody td {
 	margin-right: 5px;
 }
 
-.btn-edit {
-	background-color: #3b82f6;
-}
-
 .btn-delete {
 	background-color: #ef4444;
-}
-
-.pagination {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 20px;
-	gap: 5px;
-}
-
-.page-link {
-	padding: 8px 12px;
-	border: 1px solid #ddd;
-	background: white;
-	color: #333;
-	text-decoration: none;
-	border-radius: 4px;
-}
-
-.page-link.active {
-	background-color: #ff3366;
-	color: white;
-	border-color: #ff3366;
 }
