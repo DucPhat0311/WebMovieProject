@@ -18,7 +18,7 @@ import example.model.Showtime;
 /**
  * Servlet implementation class AddShowtimeServlet
  */
-@WebServlet("/add-showtime")
+@WebServlet("/admin/add-showtime")
 public class AddShowtimeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,7 +37,7 @@ public class AddShowtimeServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		MovieDAO movieDAO = new MovieDAO();
 		request.setAttribute("movies", movieDAO.getAllMovies());		
-		request.getRequestDispatcher("add-showtime.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/admin/pages/showtime-add.jsp").forward(request, response);
 	}
 
 	/**

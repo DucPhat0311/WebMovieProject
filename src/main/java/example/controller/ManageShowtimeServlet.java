@@ -15,7 +15,7 @@ import example.model.*;
 /**
  * Servlet implementation class ManageShowtimeServlet
  */
-@WebServlet("/manage-showtimes")
+@WebServlet("/admin/manage-showtimes")
 public class ManageShowtimeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,7 +37,7 @@ public class ManageShowtimeServlet extends HttpServlet {
 
 	    request.setAttribute("listS", list); 
 
-	    request.getRequestDispatcher("admin-showtimes.jsp").forward(request, response);
+	    request.getRequestDispatcher("/views/admin/pages/showtime-list.jsp").forward(request, response);
 	}
 
 	/**

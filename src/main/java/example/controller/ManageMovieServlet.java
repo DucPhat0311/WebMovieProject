@@ -15,7 +15,7 @@ import example.model.Movie;
 /**
  * Servlet implementation class ManageMovieServlet
  */
-@WebServlet("/manage-movies")
+@WebServlet("/admin/manage-movies")
 public class ManageMovieServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,7 +36,7 @@ public class ManageMovieServlet extends HttpServlet {
 
         request.setAttribute("listM", list); 
 
-        request.getRequestDispatcher("admin-movies.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/admin/pages/movie-list.jsp").forward(request, response);
     }
 
 	/**

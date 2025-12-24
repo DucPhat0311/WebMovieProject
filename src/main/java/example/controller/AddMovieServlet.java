@@ -17,7 +17,7 @@ import javax.servlet.http.Part;
 import example.dao.MovieDAO;
 import example.model.Movie;
 
-@WebServlet("/add-movie")
+@WebServlet("/admin/add-movie")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 2, // 2MB
     maxFileSize = 1024 * 1024 * 10,      // 10MB
@@ -31,7 +31,7 @@ public class AddMovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        request.getRequestDispatcher("addMovie.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/admin/pages/movie-add.jsp").forward(request, response);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class AddMovieServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Lỗi: " + e.getMessage());
-            request.getRequestDispatcher("addMovie.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/pages/movie-add.jsp").forward(request, response);
         }
     }
 }
