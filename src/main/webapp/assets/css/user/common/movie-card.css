@@ -5,14 +5,13 @@
 	padding: 0 80px 50px 80px;
 }
 
-/* Class mới để xử lý ảnh và overlay */
 .movie-img-wrapper {
     position: relative;
     width: 100%;
     height: 390px;
     border-radius: 12px;
-    overflow: hidden; /* CẮT ẢNH KHI ZOOM: Đây là dòng quan trọng nhất */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Đổ bóng cho khung ảnh */
+    overflow: hidden; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
 }
 
 .movie-img-wrapper img {
@@ -22,7 +21,6 @@
     transition: transform 0.5s ease, filter 0.3s ease;
 }
 
-/* Overlay chỉ nằm trong wrapper, không che tên phim */
 .movie-img-wrapper .overlay {
     position: absolute;
     top: 0;

@@ -1,14 +1,13 @@
-/* Thêm class này bao quanh nội dung header hoặc target thẻ <header> hoặc <nav> cha */
-/* Giả sử trong file header.jsp của bạn thẻ bao ngoài cùng là <header> */
+
 header {
-	position: absolute; /* Giúp header đè lên ảnh background */
+	position: absolute; 
 	top: 0;
 	left: 0;
 	width: 100%;
-	z-index: 1000; /* Đảm bảo luôn nằm trên cùng */
-	padding: 20px 50px; /* Căn chỉnh khoảng cách lề */
+	z-index: 1000; 
+	padding: 20px 50px; 
 	display: flex;
-	justify-content: space-between; /* Đẩy logo và menu ra 2 bên */
+	justify-content: space-between; 
 	align-items: center;
 	background: transparent;
 }
@@ -20,11 +19,11 @@ header {
 }
 
 .logo .movie {
-	color: white; /* phần “Movie” trắng */
+	color: white; 
 }
 
 .logo .go {
-	color: #ff3366; /* phần “GO” hồng */
+	color: #ff3366; 
 }
 
 .glass-nav {
