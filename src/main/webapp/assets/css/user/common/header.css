@@ -1,3 +1,32 @@
+/* Thêm class này bao quanh nội dung header hoặc target thẻ <header> hoặc <nav> cha */
+/* Giả sử trong file header.jsp của bạn thẻ bao ngoài cùng là <header> */
+header {
+	position: absolute; /* Giúp header đè lên ảnh background */
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000; /* Đảm bảo luôn nằm trên cùng */
+	padding: 20px 50px; /* Căn chỉnh khoảng cách lề */
+	display: flex;
+	justify-content: space-between; /* Đẩy logo và menu ra 2 bên */
+	align-items: center;
+	background: transparent;
+}
+
+.logo {
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+
+.logo .movie {
+	color: white; /* phần “Movie” trắng */
+}
+
+.logo .go {
+	color: #ff3366; /* phần “GO” hồng */
+}
+
 .glass-nav {
 	background: rgba(255, 255, 255, 0.08);
 	backdrop-filter: blur(10px);
@@ -30,116 +59,116 @@ nav {
 }
 
 .search-login {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+	display: flex;
+	align-items: center;
+	gap: 25px;
 }
 
 .search-login input {
-  background: #ffffff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 20px;
-  color: #000; 
-  outline: none;
+	background: #ffffff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 20px;
+	color: #000;
+	outline: none;
 }
 
 .login-btn {
-  background: #ff3366;
-  color: white;
-  border: none;
-  padding: 8px 18px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 600;
+	background: #ff3366;
+	color: white;
+	border: none;
+	padding: 8px 18px;
+	border-radius: 20px;
+	cursor: pointer;
+	font-weight: 600;
 }
 
 .tabs {
-  margin-top: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin-bottom: 30px;
-  padding: 0px 180px; 
+	margin-top: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	margin-bottom: 30px;
+	padding: 0px 180px;
 }
 
 .tabs h2 {
-  font-size: 20px;
-  letter-spacing: 1px;
-  border-left: 4px solid #ff2d55;
-  padding-left: 10px; 
+	font-size: 20px;
+	letter-spacing: 1px;
+	border-left: 4px solid #ff2d55;
+	padding-left: 10px;
 }
 
 .tab-menu span {
-  margin-left: 30px;
-  font-size: 17px;
-  color: #aaa;
-  cursor: pointer;
-  transition: color 0.3s;
+	margin-left: 30px;
+	font-size: 17px;
+	color: #aaa;
+	cursor: pointer;
+	transition: color 0.3s;
 }
 
 .tab-menu span.active {
-  color: #ff2d55;
-  border-bottom: 2px solid #ff2d55;
-  padding-bottom: 4px;
+	color: #ff2d55;
+	border-bottom: 2px solid #ff2d55;
+	padding-bottom: 4px;
 }
 
 .tab-menu span:hover {
-  color: #ff2d55;
+	color: #ff2d55;
 }
 
 .welcome-message {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
-    padding: 12px 0;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1000;
-    animation: fadeIn 0.5s ease;
+	background: linear-gradient(135deg, #4CAF50, #45a049);
+	color: white;
+	padding: 12px 0;
+	text-align: center;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	position: relative;
+	z-index: 1000;
+	animation: fadeIn 0.5s ease;
 }
 
 .welcome-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
 }
 
 .username {
-    color: white; 
-    font-weight: 600;
-    font-size: 14px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	color: white;
+	font-weight: 600;
+	font-size: 14px;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .user-role {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 12px;
+	background: rgba(255, 255, 255, 0.2);
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
 }
 
 .logout-btn-header {
-    background: #ff416c; 
-    color: white; 
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 6px 14px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.3s ease;
+	background: #ff416c;
+	color: white;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	padding: 6px 14px;
+	border-radius: 20px;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 500;
+	transition: all 0.3s ease;
 }
 
 .logout-btn-header:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: #ff416c;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	background: rgba(255, 255, 255, 0.3);
+	border-color: #ff416c;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

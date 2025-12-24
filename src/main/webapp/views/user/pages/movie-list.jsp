@@ -26,25 +26,35 @@
 	<div class="container" style="padding-top: 100px;">
 		<h1 style="color: white; margin-bottom: 20px;">
 			<c:choose>
-				<c:when test="${pageType == 'now'}">PHIM ĐANG CHIẾU</c:when>
-				<c:otherwise>PHIM SẮP CHIẾU</c:otherwise>
+				<c:when test="${pageType == 'now'}">
+					<div class="section-header">
+						<h2>PHIM ĐANG CHIẾU</h2>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="section-header">
+						<h2>PHIM SẮP CHIẾU</h2>
+					</div>
+				</c:otherwise>
 			</c:choose>
 		</h1>
 
 		<div class="movie-grid" id="content-grid">
 			<c:forEach items="${listM}" var="m">
 				<div class="movie-card">
-					<img
-						src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
-						alt="${m.title}" loading="lazy" />
 
-					<div class="age-badge">${m.ageWarning}</div>
+					<div class="movie-img-wrapper">
+						<img
+							src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
+							alt="${m.title}" loading="lazy" />
 
-					<div class="overlay">
-						<a
-							href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
-							class="buy-btn"> ${pageType == 'now' ? 'Mua vé' : 'Chi tiết'}
-						</a>
+						<div class="age-badge">${m.ageWarning}</div>
+
+						<div class="overlay">
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
+								class="buy-btn"> Mua vé </a>
+						</div>
 					</div>
 
 					<div class="movie-info">
@@ -54,6 +64,7 @@
 								class="movie-title-link"> ${m.title} </a>
 						</h3>
 					</div>
+
 				</div>
 			</c:forEach>
 		</div>

@@ -17,7 +17,7 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/views/jsp/SignUp.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,7 +84,7 @@ public class RegisterServlet extends HttpServlet {
             request.setAttribute("gender", gender);
             request.setAttribute("agreeTerms", agreeTerms);
             errors.forEach(request::setAttribute);
-            request.getRequestDispatcher("/views/jsp/SignUp.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
             return;
         }
         
@@ -100,14 +100,14 @@ public class RegisterServlet extends HttpServlet {
         
         if (success) {
             request.setAttribute("success", "Đăng ký thành công! Vui lòng đăng nhập");
-            request.getRequestDispatcher("/views/jsp/SignIn.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại");
             request.setAttribute("fullName", fullName);
             request.setAttribute("email", email);
             request.setAttribute("phone", phone);
             request.setAttribute("gender", gender);
-            request.getRequestDispatcher("/views/jsp/SignUp.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
         }
     }
     

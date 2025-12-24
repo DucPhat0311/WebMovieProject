@@ -84,16 +84,18 @@
 		<div class="movie-grid">
 			<c:forEach items="${now8ShowingList}" var="m">
 				<div class="movie-card">
-					<img
-						src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
-						alt="${m.title}" loading="lazy" />
+					<div class="movie-img-wrapper">
+						<img
+							src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
+							alt="${m.title}" loading="lazy" />
 
-					<div class="age-badge">${m.ageWarning}</div>
+						<div class="age-badge">${m.ageWarning}</div>
 
-					<div class="overlay">
-						<a
-							href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
-							class="buy-btn">Mua vé</a>
+						<div class="overlay">
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${m.movieId}"
+								class="buy-btn">Mua vé</a>
+						</div>
 					</div>
 
 					<div class="movie-info">
@@ -117,16 +119,17 @@
 		<div class="movie-grid">
 			<c:forEach items="${coming8SoonList}" var="m">
 				<div class="movie-card">
-					<img
-						src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
-						alt="${m.title}" loading="lazy" />
+					<div class="movie-img-wrapper">
+						<img
+							src="${pageContext.request.contextPath}/assets/img/movies/${m.posterUrl}"
+							alt="${m.title}" loading="lazy" />
 
-					<div class="age-badge">${m.ageWarning}</div>
+						<div class="age-badge">${m.ageWarning}</div>
 
-					<div class="overlay">
-						<a href="movie-detail?id=${m.movieId}" class="buy-btn">Mua vé</a>
+						<div class="overlay">
+							<a href="movie-detail?id=${m.movieId}" class="buy-btn">Mua vé</a>
+						</div>
 					</div>
-
 					<div class="movie-info">
 						<h3>
 							<a
@@ -138,8 +141,8 @@
 			</c:forEach>
 		</div>
 	</section>
-	
+
 	<jsp:include page="/views/user/common/footer.jsp" />
-	
+
 </body>
 </html>

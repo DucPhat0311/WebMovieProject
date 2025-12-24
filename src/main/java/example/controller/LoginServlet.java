@@ -18,7 +18,7 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/views/jsp/SignIn.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("error", "Vui lòng kiểm tra lại thông tin");
 			errors.forEach(request::setAttribute);
 			request.setAttribute("email", email);
-			request.getRequestDispatcher("/views/jsp/SignIn.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 			return;
 		}
 
@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			request.setAttribute("error", "Email hoặc mật khẩu không đúng");
 			request.setAttribute("email", email);
-			request.getRequestDispatcher("/views/jsp/SignIn.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 		}
 	}
 }
