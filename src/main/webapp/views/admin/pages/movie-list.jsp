@@ -9,9 +9,17 @@
 <title>Quản Lý Phim - MovieGO</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-<link href="admin-movies.css" rel="stylesheet" />
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/admin/common/sidebar-admin.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/admin/common/base.css" />
 </head>
 <body>
+
+	<jsp:include page="/views/admin/common/sidebar-admin.jsp">
+		<jsp:param name="muc_hien_tai" value="movies" />
+	</jsp:include>
 
 	<div class="main-content">
 		<div class="header-title">
@@ -80,10 +88,7 @@
 									</c:otherwise>
 								</c:choose></td>
 
-							<td><a href="load-movie?pid=${o.movieId}"
-								class="action-btn btn-edit" title="Sửa"> <i
-									class="fas fa-edit"></i>
-							</a> <a href="#" onclick="showDeleteConfirm('${o.movieId}')"
+							<td><a href="#" onclick="showDeleteConfirm('${o.movieId}')"
 								class="action-btn btn-delete" title="Xóa"> <i
 									class="fas fa-trash"></i>
 							</a></td>
@@ -92,16 +97,15 @@
 				</tbody>
 			</table>
 
-	</div>
+		</div>
 
-	<script>
-		function showDeleteConfirm(id) {
-			if (confirm("Bạn có chắc chắn muốn xóa phim có ID: " + id
-					+ " không?")) {
-				window.location.href = "delete-movie?pid=" + id;
+		<script>
+			function showDeleteConfirm(id) {
+				if (confirm("Bạn có chắc chắn muốn xóa phim có ID: " + id
+						+ " không?")) {
+					window.location.href = "delete-movie?pid=" + id;
+				}
 			}
-		}
-	</script>
-
+		</script>
 </body>
 </html>

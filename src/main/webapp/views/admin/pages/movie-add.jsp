@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Thêm Phim Mới</title>
+    <link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/admin/pages/movie-add.css" />
 </head>
 <body>
     <div class="container">
