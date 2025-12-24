@@ -10,7 +10,7 @@
 <title>Vé xem phim - MovieGO!</title>
 
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/Ticket.css">
+	href="${pageContext.request.contextPath}/assets/css/user/pages/ticket.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>

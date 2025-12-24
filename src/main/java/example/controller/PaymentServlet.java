@@ -20,7 +20,7 @@ public class PaymentServlet extends HttpServlet {
 	private MovieDAO movieDAO;
 
 	// Thời gian timeout (phút)
-	private static final int BOOKING_TIMEOUT_MINUTES = 15;
+	private static final int BOOKING_TIMEOUT_MINUTES = 5;
 
 	@Override
 	public void init() throws ServletException {
@@ -30,7 +30,6 @@ public class PaymentServlet extends HttpServlet {
 		movieDAO = new MovieDAO();
 	}
 
-	// ================ DOGET ================
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -53,7 +52,6 @@ public class PaymentServlet extends HttpServlet {
 		}
 	}
 
-	// ================ DOPOST ================
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -125,14 +123,14 @@ public class PaymentServlet extends HttpServlet {
 		Showtime showtime = showtimeDAO.getShowtimeById(showtimeId);
 		if (showtime == null) {
 			request.setAttribute("errorMessage", "Suất chiếu không tồn tại.");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			return;
 		}
 
 		Movie movie = movieDAO.getMovieById(showtime.getMovieId());
 		if (movie == null) {
 			request.setAttribute("errorMessage", "Phim không tồn tại.");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			return;
 		}
 
@@ -147,7 +145,7 @@ public class PaymentServlet extends HttpServlet {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		request.setAttribute("bookingDate", sdf.format(new Date()));
 
-		request.getRequestDispatcher("/views/jsp/checkout.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/user/pages/checkout.jsp").forward(request, response);
 	}
 
 	// ================ PROCESS PAYMENT (THÊM TIMEOUT CHECK) ================
@@ -161,7 +159,7 @@ public class PaymentServlet extends HttpServlet {
 
 		if (bookingId == null || totalAmount == null || paymentMethod == null) {
 			request.setAttribute("errorMessage", "Thiếu thông tin thanh toán");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			return;
 		}
 
@@ -177,7 +175,7 @@ public class PaymentServlet extends HttpServlet {
 
 					request.setAttribute("errorMessage", "Không thể thanh toán: Phiên đặt vé đã hết hạn (quá "
 							+ BOOKING_TIMEOUT_MINUTES + " phút). Vui lòng chọn ghế lại.");
-					request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 					return;
 				}
 			}
@@ -208,7 +206,7 @@ public class PaymentServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/payment?action=success&bookingId=" + bookingId);
 			} else {
 				request.setAttribute("errorMessage", "Có lỗi xảy ra khi xử lý thanh toán!");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			}
 		} else if ("MOMO".equals(paymentMethod) || "VNPAY".equals(paymentMethod)) {
 			// Thanh toán online
@@ -225,11 +223,11 @@ public class PaymentServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/payment?action=success&bookingId=" + bookingId);
 			} else {
 				request.setAttribute("errorMessage", "Có lỗi xảy ra khi xử lý thanh toán!");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			}
 		} else {
 			request.setAttribute("errorMessage", "Phương thức thanh toán không hợp lệ!");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 		}
 	}
 
@@ -314,7 +312,7 @@ public class PaymentServlet extends HttpServlet {
 					request.setAttribute("selectedSeats", selectedSeats.toArray(new String[0]));
 
 					// Forward đến trang vé
-					request.getRequestDispatcher("/views/jsp/ticket.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/user/pages/ticket.jsp").forward(request, response);
 					return;
 				}
 			} catch (NumberFormatException e) {
@@ -323,7 +321,7 @@ public class PaymentServlet extends HttpServlet {
 		}
 
 		request.setAttribute("errorMessage", "Không thể xác nhận thanh toán!");
-		request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 	}
 
 	// ================ XỬ LÝ HỦY THANH TOÁN ================

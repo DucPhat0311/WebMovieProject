@@ -10,9 +10,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chọn ghế | MovieGO!</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/homepage_style.css" />
+	href="${pageContext.request.contextPath}/assets/css/user/pages/home.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/seatselection.css" />
+	href="${pageContext.request.contextPath}/assets/css/user/pages/seat.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/base.css" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <script>
@@ -162,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </head>
 <body>
-	
+	<jsp:include page="/views/user/common/header.jsp" />
 
 	<main class="seat-main-container">
 		<div class="seat-content-wrapper">
@@ -446,5 +452,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			</section>
 		</div>
 	</main>
+
+	<jsp:include page="/views/user/common/footer.jsp" />
+
 </body>
 </html>
