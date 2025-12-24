@@ -31,21 +31,21 @@ public class LoadMoreServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        response.setContentType("text/html;charset=UTF-8");
-        
-        String type = request.getParameter("type");
-        int existed = Integer.parseInt(request.getParameter("existed"));
-        
-        MovieDAO dao = new MovieDAO();
-        
-        List<Movie> list = dao.getNextMovies(type, 8, existed); 
-        
-        request.setAttribute("newList", list);
-        request.getRequestDispatcher("ajax-movie-card.jsp").forward(request, response);
-    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setContentType("text/html;charset=UTF-8");
+
+		String type = request.getParameter("type");
+		int existed = Integer.parseInt(request.getParameter("existed"));
+
+		MovieDAO dao = new MovieDAO();
+
+		List<Movie> list = dao.getNextMovies(type, 8, existed);
+
+		request.setAttribute("newList", list);
+		request.getRequestDispatcher("/views/user/components/_ajax-movie-card.jsp").forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

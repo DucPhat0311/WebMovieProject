@@ -32,6 +32,5 @@ public class MovieListServlet extends HttpServlet {
         request.setAttribute("listM", list);
         request.setAttribute("pageType", type); 
 
-        request.getRequestDispatcher("movies.jsp").forward(request, response);
-    }
+        request.getRequestDispatcher("/views/user/pages/movie-list.jsp").forward(request, response);    }
 }

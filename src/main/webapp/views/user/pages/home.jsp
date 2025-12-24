@@ -5,15 +5,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MovieGO!</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/homepage_style.css" />
-<!-- sửa tạm -->
+	href="${pageContext.request.contextPath}/assets/css/user/common/base.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/movie-card.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/pages/home.css" />
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+	<jsp:include page="/views/user/common/header.jsp" />
+
 	<section class="hero">
 		<div class="hero-content">
 			<h1>
@@ -33,7 +43,6 @@
 		</div>
 	</section>
 
-	<!-- QUICK BOOKING BAR -->
 	<section class="quick-booking">
 		<div class="booking-container">
 			<select>
@@ -129,5 +138,8 @@
 			</c:forEach>
 		</div>
 	</section>
+	
+	<jsp:include page="/views/user/common/footer.jsp" />
+	
 </body>
 </html>

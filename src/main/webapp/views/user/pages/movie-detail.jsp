@@ -8,21 +8,32 @@
 <head>
 <title>${movie.title}|MovieGO</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/movie_detail_style.css" />
-<!-- sửa tạm -->
+	href="${pageContext.request.contextPath}/assets/css/user/common/base.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/pages/movie-detail.css" />
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 </head>
 <body>
+
+	<jsp:include page="/views/user/common/header.jsp" />
+
 	<section class="movie-detail">
 		<div class="container">
 			<div class="movie-hero">
 				<div class="movie-poster">
-					<img src="${pageContext.request.contextPath}/assets/img/movies/${movie.posterUrl}"
-						alt="${movie.title}"> <!-- sua tam -->
-						<a style="display: block; text-align: center; margin-top: 10px; color: #ff3366; text-decoration: none;">
+					<img
+						src="${pageContext.request.contextPath}/assets/img/movies/${movie.posterUrl}"
+						alt="${movie.title}">
+					<!-- sua tam -->
+					<a
+						style="display: block; text-align: center; margin-top: 10px; color: #ff3366; text-decoration: none;">
 					</a>
 				</div>
 
@@ -190,6 +201,9 @@
 		</c:forEach>
 	</section>
 	</div>
+
+	<jsp:include page="/views/user/common/footer.jsp" />
+
 
 </body>
 </html>

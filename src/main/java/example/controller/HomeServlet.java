@@ -32,6 +32,6 @@ public class HomeServlet extends HttpServlet {
 		request.setAttribute("comingSoonList", comingSoonList);
 
 
-		request.getRequestDispatcher("homepage.jsp").forward(request, response);
+		request.getRequestDispatcher("/views/user/pages/home.jsp").forward(request, response);
 	}
 }
