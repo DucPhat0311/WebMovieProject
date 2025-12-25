@@ -57,7 +57,11 @@ public class LoginServlet extends HttpServlet {
 				session.removeAttribute("redirectAfterLogin");
 				response.sendRedirect(redirectUrl);
 			} else {
-				response.sendRedirect("home");
+				if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+					response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+				} else {
+					response.sendRedirect("home");
+				}
 			}
 		} else {
 			request.setAttribute("error", "Email hoặc mật khẩu không đúng");
