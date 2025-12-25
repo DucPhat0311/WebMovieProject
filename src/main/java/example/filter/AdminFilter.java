@@ -1,8 +1,6 @@
 package example.filter;
 
 import java.io.IOException;
-
-import javax.annotation.processing.Filer;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
