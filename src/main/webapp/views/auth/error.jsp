@@ -15,38 +15,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-	<!-- Header -->
-	<header>
-		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-		</div>
+	<jsp:include page="/views/user/common/header.jsp" />
 
-		<nav class="glass-nav">
-			<ul>
-				<li><a href="${pageContext.request.contextPath}/">Trang chủ</a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/movies?type=now">Phim</a></li>
-				<li><a href="#">Rạp</a></li>
-				<li><a href="#">Giới thiệu</a></li>
-			</ul>
-		</nav>
-
-		<div class="search-login">
-			<c:choose>
-				<c:when test="${not empty sessionScope.user}">
-					<div class="user-info">
-						<span>Xin chào, ${sessionScope.user.fullName}</span> <a
-							href="${pageContext.request.contextPath}/logout"
-							class="logout-btn">Đăng xuất</a>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/login"
-						class="login-btn">Đăng nhập</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</header>
 
 	<!-- Main Error Content -->
 	<main>
@@ -174,21 +144,7 @@
 		</div>
 	</main>
 
-	<!-- Footer -->
-	<footer>
-		<div class="container">
-			<div class="wrapper">
-				<div class="footer-widget">
-					<a href="${pageContext.request.contextPath}/">
-						<div class="logo">
-							<span class="movie">Movie</span><b><span class="go">GO!</span></b>
-						</div>
-					</a>
-					<p class="desc">MovieGO là nền tảng đặt vé xem phim trực tuyến
-						hàng đầu.</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+	    <jsp:include page="/views/user/common/footer.jsp" />
+
 </body>
 </html>
