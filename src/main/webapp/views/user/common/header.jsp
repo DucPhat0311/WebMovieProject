@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,19 +21,40 @@
 				<li><a href="#">Giới thiệu</a></li>
 			</ul>
 		</nav>
-		<!-- Thay thế button đăng nhập nếu đăng nhập thành công -->
+
 		<div class="search-login">
 			<input type="text" placeholder="Tìm kiếm" />
-			<!-- Kiểm tra nếu đã login -->
 			<c:choose>
 				<c:when test="${not empty sessionScope.user}">
-					<div class="user-info">
-						<span>Xin chào, ${sessionScope.user.fullName}</span> <a
-							href="logout" class="logout-btn">Đăng xuất</a>
+
+					<div class="user-dropdown">
+
+						<div class="user-info">
+							<i class="fas fa-user-circle avatar-icon"></i> <i
+								class="fas fa-caret-down" style="font-size: 12px;"></i> <span>${sessionScope.user.fullName}</span>
+						</div>
+
+						<div class="dropdown-content">
+
+							<c:if test="${sessionScope.user.role == 'admin'}">
+								<a href="${pageContext.request.contextPath}/admin/dashboard">
+									<i class="fas fa-cogs"></i> Trang quản trị
+								</a>
+							</c:if>
+
+							<hr style="margin: 0; border: 0; border-top: 1px solid #eee;">
+							<a href="${pageContext.request.contextPath}/logout"> <i
+								class="fas fa-sign-out-alt"></i> Đăng xuất
+							</a>
+						</div>
 					</div>
+
 				</c:when>
+
 				<c:otherwise>
-						<a href="login" class="login-btn">Đăng nhập</a>
+					<a href="login" class="login-btn"
+						style="color: white; text-decoration: none; font-weight: bold;">Đăng
+						nhập</a>
 				</c:otherwise>
 			</c:choose>
 		</div>
