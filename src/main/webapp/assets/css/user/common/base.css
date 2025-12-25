@@ -80,8 +80,8 @@ ul {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    border-radius: 30px; 
-    padding: 10px 25px;
+    border-radius: 10px; 
+    padding: 20px 25px;
     box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
 }
 

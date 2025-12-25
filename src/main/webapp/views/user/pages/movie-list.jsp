@@ -64,7 +64,6 @@
 								class="movie-title-link"> ${m.title} </a>
 						</h3>
 					</div>
-
 				</div>
 			</c:forEach>
 		</div>
