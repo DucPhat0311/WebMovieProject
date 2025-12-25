@@ -19,8 +19,8 @@ public class Constant {
     public static final String SEAT_STANDARD = "Standard";
     public static final String SEAT_VIP = "VIP";
     
-    public static final String Language_Dub = "Long tieng";
-    public static final String Language_Sub = "Phu de";
+    public static final String Language_Dub = "Lồng Tiếng";
+    public static final String Language_Sub = "Phụ Đề";
 
 
 }
