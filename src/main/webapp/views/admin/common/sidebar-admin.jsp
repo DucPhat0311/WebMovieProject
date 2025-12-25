@@ -36,8 +36,8 @@
 		</div>
 
 		<div class="sidebar-footer">
-			<a href="${pageContext.request.contextPath}/admin/logout"><i
-				class="fas fa-sign-out-alt"></i> Về trang chủ</a>
+			<a href="${pageContext.request.contextPath}/home"><i
+				class="fas fa-home"></i> Về trang chủ</a>
 		</div>
 
 	</div>
