@@ -111,7 +111,7 @@ public class PaymentServlet extends HttpServlet {
 
 					request.setAttribute("errorMessage", "Phiên đặt vé đã hết hạn (quá " + BOOKING_TIMEOUT_MINUTES
 							+ " phút). Vui lòng chọn ghế lại.");
-					request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 					return;
 				}
 
