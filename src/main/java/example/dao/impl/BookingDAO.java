@@ -324,4 +324,131 @@ public class BookingDAO {
 		}
 		return expiredBookings;
 	}
+
+	public List<Booking> getAllBookings() {
+	    List<Booking> bookings = new ArrayList<>();
+	    String sql = "SELECT * FROM booking ORDER BY created_at DESC";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+	            Booking booking = new Booking();
+	            booking.setBookingId(rs.getInt("booking_id"));
+	            booking.setUserId(rs.getInt("user_id"));
+	            booking.setShowtimeId(rs.getInt("showtime_id"));
+	            booking.setBookingDate(rs.getTimestamp("created_at"));
+	            booking.setTotalAmount(rs.getDouble("total_amount"));
+	            booking.setStatus(rs.getString("status"));
+	            booking.setCreatedAt(rs.getTimestamp("created_at"));
+	            bookings.add(booking);
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return bookings;
+	}
+	
+
+	// Thống kê doanh thu hôm nay
+	public int getTodayRevenue() {
+	    String sql = "SELECT COALESCE(SUM(total_amount), 0) as revenue FROM booking " +
+	                 "WHERE DATE(created_at) = CURDATE() AND status = 'success'";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("revenue");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+
+	// Thống kê số booking hôm nay
+	public int getTodayBookingsCount() {
+	    String sql = "SELECT COUNT(*) as count FROM booking WHERE DATE(created_at) = CURDATE()";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("count");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+
+	// Thống kê booking theo trạng thái
+	public int getBookingCountByStatus(String status) {
+	    String sql = "SELECT COUNT(*) as count FROM booking WHERE status = ? AND DATE(created_at) = CURDATE()";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setString(1, status);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("count");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+
+	// Thống kê tổng doanh thu
+	public int getTotalRevenue() {
+	    String sql = "SELECT COALESCE(SUM(total_amount), 0) as revenue FROM booking WHERE status = 'success'";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getInt("revenue");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return 0;
+	}
+
+	// Lấy booking hôm nay cho hoạt động gần đây
+	public List<Booking> getTodayBookings() {
+	    List<Booking> bookings = new ArrayList<>();
+	    String sql = "SELECT * FROM booking WHERE DATE(created_at) = CURDATE() " +
+	                 "ORDER BY created_at DESC LIMIT 5";
+	    
+	    try (Connection conn = DBConnection.getConnection(); 
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+	            Booking booking = new Booking();
+	            booking.setBookingId(rs.getInt("booking_id"));
+	            booking.setUserId(rs.getInt("user_id"));
+	            booking.setShowtimeId(rs.getInt("showtime_id"));
+	            booking.setBookingDate(rs.getTimestamp("created_at"));
+	            booking.setTotalAmount(rs.getDouble("total_amount"));
+	            booking.setStatus(rs.getString("status"));
+	            booking.setCreatedAt(rs.getTimestamp("created_at"));
+	            bookings.add(booking);
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return bookings;
+	}
 }
