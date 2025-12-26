@@ -35,7 +35,7 @@ public class MovieDAO {
 
 		return list;
 	}
-	
+
 	public List<Movie> get8NowShowingMovies() {
 		List<Movie> list = new ArrayList<>();
 
@@ -56,7 +56,6 @@ public class MovieDAO {
 		return list;
 	}
 
-
 	public List<Movie> getNowShowingMovies() {
 		List<Movie> list = new ArrayList<>();
 
@@ -76,7 +75,7 @@ public class MovieDAO {
 		}
 		return list;
 	}
-	
+
 	public List<Movie> get8ComingSoonMovies() {
 		List<Movie> list = new ArrayList<>();
 
@@ -221,66 +220,110 @@ public class MovieDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public List<Movie> getMoviesByPage(String type, int amount, int offset) {
-	    List<Movie> list = new ArrayList<>();
-	    String sql = "";
+		List<Movie> list = new ArrayList<>();
+		String sql = "";
 
-	    if ("now".equals(type)) {
-	        sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT ? OFFSET ?";
-	    } else if ("coming".equals(type)) {
-	        sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT ? OFFSET ?";
-	    }
+		if ("now".equals(type)) {
+			sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT ? OFFSET ?";
+		} else if ("coming".equals(type)) {
+			sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT ? OFFSET ?";
+		}
 
-	    try (Connection conn = new DBConnection().getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
+		try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-	        ps.setInt(1, amount); 
-	        ps.setInt(2, offset); 
+			ps.setInt(1, amount);
+			ps.setInt(2, offset);
 
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
-	            Movie m = new Movie();
-	            m.setMovieId(rs.getInt("movie_id"));
-	            m.setTitle(rs.getString("title"));
-	            m.setPosterUrl(rs.getString("poster_url"));
-	            m.setAgeWarning(rs.getString("age_warning")); 
-	            list.add(m);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return list;
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Movie m = new Movie();
+				m.setMovieId(rs.getInt("movie_id"));
+				m.setTitle(rs.getString("title"));
+				m.setPosterUrl(rs.getString("poster_url"));
+				m.setAgeWarning(rs.getString("age_warning"));
+				list.add(m);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
-	
-	public List<Movie> getNextMovies(String type, int amount, int offset) {
-	    List<Movie> list = new ArrayList<>();
-	    String sql = "";
-	    
-	    if ("now".equals(type)) {
-	        sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = 1 ORDER BY release_date DESC LIMIT ? OFFSET ?";
-	    } else {
-	        sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = 1 ORDER BY release_date ASC LIMIT ? OFFSET ?";
-	    }
 
-	    try (Connection conn = new DBConnection().getConnection();
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	         
-	        ps.setInt(1, amount);
-	        ps.setInt(2, offset); 
-	        
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
-	            Movie m = new Movie();
-	            m.setMovieId(rs.getInt("movie_id"));
-	            m.setTitle(rs.getString("title"));
-	            m.setPosterUrl(rs.getString("poster_url"));
-	            m.setAgeWarning(rs.getString("age_warning"));
-	            list.add(m);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return list;
+	public List<Movie> getNextMovies(String type, int amount, int offset) {
+		List<Movie> list = new ArrayList<>();
+		String sql = "";
+
+		if ("now".equals(type)) {
+			sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = 1 ORDER BY release_date DESC LIMIT ? OFFSET ?";
+		} else {
+			sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = 1 ORDER BY release_date ASC LIMIT ? OFFSET ?";
+		}
+
+		try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, amount);
+			ps.setInt(2, offset);
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Movie m = new Movie();
+				m.setMovieId(rs.getInt("movie_id"));
+				m.setTitle(rs.getString("title"));
+				m.setPosterUrl(rs.getString("poster_url"));
+				m.setAgeWarning(rs.getString("age_warning"));
+				list.add(m);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// Đếm tổng số phim đang chiếu
+	public int getTotalMoviesCount() {
+		String sql = "SELECT COUNT(*) as count FROM movie WHERE release_date <= CURDATE() AND is_active = TRUE";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	// Lấy top 3 phim có nhiều showtime nhất 
+	public List<Movie> getTopMovies(int limit) {
+		List<Movie> movies = new ArrayList<>();
+		String sql = "SELECT m.*, COUNT(s.showtime_id) as showtime_count FROM movie m "
+				+ "LEFT JOIN showtime s ON m.movie_id = s.movie_id "
+				+ "WHERE m.is_active = TRUE AND m.release_date <= CURDATE() "
+				+ "GROUP BY m.movie_id ORDER BY showtime_count DESC LIMIT ?";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, limit);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Movie movie = new Movie();
+				movie.setMovieId(rs.getInt("movie_id"));
+				movie.setTitle(rs.getString("title"));
+				movie.setPosterUrl(rs.getString("poster_url"));
+				movie.setDuration(rs.getInt("duration"));
+				movie.setReleaseDate(rs.getDate("release_date"));
+				// Có thể thêm các trường khác nếu cần
+				movies.add(movie);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return movies;
 	}
 }
