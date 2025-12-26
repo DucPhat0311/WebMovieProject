@@ -45,14 +45,14 @@ public class BookingServlet extends HttpServlet {
 
 		if (showtimeIdParam == null || showtimeIdParam.trim().isEmpty()) {
 			request.setAttribute("errorMessage", "Thiếu thông tin suất chiếu");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			return;
 		}
 
 		if (selectedSeats == null || selectedSeats.length == 0) {
 			request.setAttribute("seatError", "Vui lòng chọn ít nhất một ghế");
 			request.setAttribute("showtimeId", showtimeIdParam);
-			request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
 			return;
 		}
 
@@ -61,14 +61,14 @@ public class BookingServlet extends HttpServlet {
 
 			if (showtimeId <= 0) {
 				request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 				return;
 			}
 
 			if (selectedSeats.length > MAX_SEATS_PER_BOOKING) {
 				request.setAttribute("seatError", "Chỉ được chọn tối đa " + MAX_SEATS_PER_BOOKING + " ghế");
 				request.setAttribute("showtimeId", showtimeId);
-				request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
 				return;
 			}
 
@@ -77,13 +77,13 @@ public class BookingServlet extends HttpServlet {
 
 			if (showtime == null) {
 				request.setAttribute("errorMessage", "Suất chiếu không tồn tại");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 				return;
 			}
 
 			if (!showtime.isActive()) {
 				request.setAttribute("errorMessage", "Suất chiếu đã bị hủy");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 				return;
 			}
 
@@ -92,7 +92,7 @@ public class BookingServlet extends HttpServlet {
 			if (dbUser == null) {
 				session.invalidate();
 				request.setAttribute("errorMessage", "Tài khoản không tồn tại. Vui lòng đăng nhập lại");
-				request.getRequestDispatcher("/views/jsp/login.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 				return;
 			}
 
@@ -103,7 +103,7 @@ public class BookingServlet extends HttpServlet {
 				if (!isValidSeatCode(seatCode)) {
 					request.setAttribute("seatError", "Mã ghế '" + seatCode + "' không đúng định dạng (VD: A1, B12)");
 					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
 					return;
 				}
 
@@ -111,7 +111,7 @@ public class BookingServlet extends HttpServlet {
 				if (seat == null) {
 					request.setAttribute("seatError", "Ghế " + seatCode + " không tồn tại trong phòng chiếu");
 					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
 					return;
 				}
 
@@ -119,7 +119,7 @@ public class BookingServlet extends HttpServlet {
 				if (isBooked) {
 					request.setAttribute("seatError", "Ghế " + seatCode + " đã được đặt. Vui lòng chọn ghế khác");
 					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/jsp/seat-selection.jsp").forward(request, response);
+					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
 					return;
 				}
 			}
@@ -129,7 +129,7 @@ public class BookingServlet extends HttpServlet {
 
 			if (totalAmount <= 0) {
 				request.setAttribute("errorMessage", "Tổng tiền không hợp lệ");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 				return;
 			}
 
@@ -151,15 +151,15 @@ public class BookingServlet extends HttpServlet {
 
 			} else {
 				request.setAttribute("errorMessage", "Đặt vé thất bại. Vui lòng thử lại");
-				request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 			}
 
 		} catch (NumberFormatException e) {
 			request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ");
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 		} catch (Exception e) {
 			request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-			request.getRequestDispatcher("/views/jsp/error.jsp").forward(request, response);
+			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 		}
 	}
 

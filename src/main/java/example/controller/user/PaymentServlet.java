@@ -30,7 +30,7 @@ public class PaymentServlet extends HttpServlet {
 	private MovieDAO movieDAO;
 
 	// Thời gian timeout (phút)
-	private static final int BOOKING_TIMEOUT_MINUTES = 5;
+	private static final int BOOKING_TIMEOUT_MINUTES = 1;
 
 	@Override
 	public void init() throws ServletException {
