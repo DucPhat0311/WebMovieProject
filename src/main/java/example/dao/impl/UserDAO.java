@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import example.dao.core.DBConnection;
 import example.model.system.User;
@@ -98,29 +100,97 @@ public class UserDAO {
 		}
 		return null;
 	}
-	
+
 	public User findByEmail(String email) {
-	    User user = null;
-	    String sql = "SELECT * FROM user WHERE email = ?"; 
+		User user = null;
+		String sql = "SELECT * FROM user WHERE email = ?";
 
-	    try {
-	        Connection conn = new DBConnection().getConnection(); 
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        ps.setString(1, email);
-	        ResultSet rs = ps.executeQuery();
+		try {
+			Connection conn = new DBConnection().getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
 
-	        if (rs.next()) {
-	            user = new User();
-	            user.setUserId(rs.getInt("user_id"));
-	            user.setEmail(rs.getString("email"));
-	            user.setPassword(rs.getString("password"));
-	            user.setRole(rs.getString("role"));
-	            user.setFullName(rs.getString("full_name"));
-	        }
-	        conn.close();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return user;
+			if (rs.next()) {
+				user = new User();
+				user.setUserId(rs.getInt("user_id"));
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));
+				user.setRole(rs.getString("role"));
+				user.setFullName(rs.getString("full_name"));
+			}
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public List<User> getAllUsers() {
+		List<User> users = new ArrayList<>();
+		String sql = "SELECT * FROM user ORDER BY created_at DESC";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				User user = extractUserFromResultSet(rs);
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
+
+	public List<User> searchUsers(String keyword) {
+		List<User> users = new ArrayList<>();
+		String sql = "SELECT * FROM user WHERE email LIKE ? OR full_name LIKE ? OR phone LIKE ? ORDER BY created_at DESC";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			stmt.setString(3, "%" + keyword + "%");
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				User user = extractUserFromResultSet(rs);
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
+
+	public int getTotalUserCount() {
+		String sql = "SELECT COUNT(*) as total FROM user";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+		User user = new User();
+		user.setUserId(rs.getInt("user_id"));
+		user.setFullName(rs.getString("full_name"));
+		user.setEmail(rs.getString("email"));
+		user.setPhone(rs.getString("phone"));
+		user.setGender(rs.getString("gender"));
+		user.setRole(rs.getString("role"));
+		user.setCreatedAt(rs.getTimestamp("created_at"));
+		return user;
 	}
 }
