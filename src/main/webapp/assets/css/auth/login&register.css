@@ -43,13 +43,8 @@ body {
     letter-spacing: 1px;
 }
 
-.logo .movie {
-    color: #1a1a2e;
-}
-
-.logo .go {
-    color: #e94560;
-}
+.logo .movie { color: #1a1a2e; }
+.logo .go { color: #e94560; }
 
 .logo p {
     color: #666;
@@ -77,9 +72,7 @@ body {
     font-size: 0.95rem;
 }
 
-.required {
-    color: #e94560;
-}
+.required { color: #e94560; }
 
 .input-with-icon {
     position: relative;
@@ -87,17 +80,19 @@ body {
     align-items: center;
 }
 
+/* Icon bên trái (User, Lock, Email...) */
 .input-with-icon i:first-child {
     position: absolute;
     left: 15px;
     color: #666;
     font-size: 18px;
+    z-index: 1; /* Đảm bảo icon nằm trên */
 }
 
 .input-with-icon input,
 .input-with-icon select {
     width: 100%;
-    padding: 14px 14px 14px 45px;
+    padding: 14px 45px 14px 45px; /* Padding trái/phải 45px để tránh đè icon */
     border: 2px solid #ddd;
     border-radius: 10px;
     font-size: 1rem;
@@ -112,73 +107,21 @@ body {
     box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
 }
 
-.input-with-icon select {
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-}
-
-.password-toggle-wrapper {
-    position: relative;
-}
-
-.password-toggle-label {
+/* --- LOGIC MỚI: Nút ẩn hiện mật khẩu --- */
+.toggle-password {
     position: absolute;
     right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
     color: #666;
     font-size: 18px;
     z-index: 2;
-    background: white;
-    padding: 5px;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.3s ease;
+    transition: color 0.3s;
 }
 
-.password-toggle-label:hover {
+.toggle-password:hover {
     color: #e94560;
 }
-
-.password-toggle-checkbox {
-    display: none;
-}
-
-/* Hiển thị mật khẩu khi checkbox được checked */
-.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-field {
-    -webkit-text-security: none !important;
-    text-security: none !important;
-    letter-spacing: 1px;
-}
-
-/* Ẩn mật khẩu khi checkbox không checked */
-.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-field {
-    -webkit-text-security: disc !important;
-    text-security: disc !important;
-}
-
-/* Ẩn/hiện icon mắt */
-.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-toggle-label .fa-eye {
-    display: none;
-}
-
-.password-toggle-checkbox:checked ~ .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
-    display: inline;
-}
-
-.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-toggle-label .fa-eye {
-    display: inline;
-}
-
-.password-toggle-checkbox:not(:checked) ~ .password-toggle-wrapper .password-toggle-label .fa-eye-slash {
-    display: none;
-}
+/* --------------------------------------- */
 
 .form-row {
     display: flex;
@@ -213,14 +156,14 @@ body {
     accent-color: #e94560;
 }
 
-.remember-forgot a {
+.remember-forgot a, .terms a, .links a {
     color: #e94560;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
-.remember-forgot a:hover {
+.remember-forgot a:hover, .terms a:hover, .links a:hover {
     color: #1a1a2e;
     text-decoration: underline;
 }
@@ -236,7 +179,6 @@ body {
     gap: 10px;
     color: #555;
     cursor: pointer;
-    line-height: 1.5;
 }
 
 .terms input[type="checkbox"] {
@@ -245,16 +187,6 @@ body {
     height: 18px;
     accent-color: #e94560;
     flex-shrink: 0;
-}
-
-.terms a {
-    color: #e94560;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.terms a:hover {
-    text-decoration: underline;
 }
 
 .btn-primary {
@@ -268,7 +200,6 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-bottom: 25px;
 }
@@ -279,42 +210,14 @@ body {
     box-shadow: 0 7px 15px rgba(233, 69, 96, 0.3);
 }
 
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-.btn-primary:disabled {
-    background: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
 .links {
     text-align: center;
     color: #666;
     font-size: 0.95rem;
 }
 
-.links p {
-    margin-bottom: 15px;
-}
-
-.links a {
-    color: #e94560;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.links a:hover {
-    color: #1a1a2e;
-    text-decoration: underline;
-}
-
-.links i {
-    margin-right: 8px;
-}
+.links p { margin-bottom: 15px; }
+.links i { margin-right: 8px; }
 
 .alert {
     padding: 15px 20px;
@@ -324,18 +227,6 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 0.95rem;
-    animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .alert-error {
@@ -350,10 +241,6 @@ body {
     border-left: 4px solid #4caf50;
 }
 
-.alert i {
-    font-size: 1.2rem;
-}
-
 .field-error {
     color: #e94560;
     font-size: 0.85rem;
@@ -363,35 +250,11 @@ body {
     gap: 5px;
 }
 
-.field-error i {
-    font-size: 0.9rem;
-}
-
-input:invalid, select:invalid {
-    border-color: #f44336 !important;
-}
-
-input:valid, select:valid {
-    border-color: #4caf50 !important;
-}
+input:invalid, select:invalid { border-color: #f44336 !important; }
+input:valid, select:valid { border-color: #4caf50 !important; }
 
 @media (max-width: 576px) {
-    .auth-box {
-        padding: 30px 25px;
-    }
-    
-    .logo h1 {
-        font-size: 2.2rem;
-    }
-    
-    .form-row {
-        flex-direction: column;
-        gap: 25px;
-    }
-    
-    .remember-forgot {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-}
+    .auth-box { padding: 30px 25px; }
+    .form-row { flex-direction: column; gap: 25px; }
+    .remember-forgot { flex-direction: column; align-items: flex-start; gap: 15px; }
+}	
