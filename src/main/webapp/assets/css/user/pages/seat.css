@@ -336,10 +336,12 @@
 .seat-btn.available:hover:not(:disabled) {
     background: #37474f;
 }
-
 .seat-btn.selected {
-    background: var(--selected-color);
-    box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+    background-color: #ff3366!important; 
+    border-color:#ff3366!important;
+    color: white !important;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 .seat-btn.vip-seat {
@@ -360,9 +362,12 @@
 }
 
 .seat-btn.booked {
-    background: var(--booked-color);
+    background: var(--booked-color); 
+    color: white !important; 
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 0.9; 
+    border: 2px solid var(--booked-color);
+    position: relative;
 }
 
 .seat-btn:disabled {
