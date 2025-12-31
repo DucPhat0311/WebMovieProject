@@ -1,225 +1,254 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
-<html lang="vi" class="checkout-page">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh toán - MovieGO!</title>
-    
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/pages/checkout.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/components/timeout.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8">
+<title>Thanh toán - MovieGO!</title>
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/header.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/footer.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/pages/checkout.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
-    <jsp:include page="/views/user/common/header.jsp" />
+	<jsp:include page="/views/user/common/header.jsp" />
 
-    <c:if test="${not empty remainingSeconds}">
-        <div class="timer-floating" id="floatingTimer">
-            <div class="timer-content">
-                <i class="fas fa-clock"></i>
-                <span>Thanh toán trong:</span>
-                <span id="countdown">15:00</span>
-            </div>
-        </div>
-    </c:if>
-    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
-        <div class="loading-spinner"></div>
-        <div class="loading-message">Đang xử lý...</div>
-    </div>
+	<c:if test="${not empty remainingSeconds}">
+		<div class="timer-floating" id="timer">
+			<i class="fas fa-clock"></i> <span id="countdown">${remainingSeconds}</span>
+			giây còn lại
+		</div>
+	</c:if>
 
-    <div id="alertContainer"></div>
+	<div class="checkout-container">
+		<div class="checkout-header">
+			<h1 class="checkout-title">
+				<i class="fas fa-shopping-cart"></i> Thanh toán
+			</h1>
 
-    <div class="checkout-container">
-        <div class="checkout-layout">
-            <div class="checkout-left-column">
-                <div class="checkout-movie-card">
-                    <h2 class="checkout-section-title">
-                        <i class="fas fa-film"></i> Thông tin phim
-                    </h2>
-                    <div class="checkout-info-grid">
-                        <c:if test="${not empty movie}">
-                            <div class="checkout-info-row">
-                                <span class="checkout-info-label">Phim:</span> <span class="checkout-info-value">${movie.title}</span>
-                            </div>
-                        </c:if>
+			<c:if test="${not empty booking and booking.status == 'Pending'}">
+				<form action="${pageContext.request.contextPath}/cancel-booking"
+					method="post"
+					onsubmit="return confirm('Bạn có chắc chắn muốn hủy thanh toán? Ghế sẽ được giải phóng ngay lập tức.');">
+					<input type="hidden" name="bookingId" value="${booking.bookingId}">
+					<button type="submit" class="cancel-booking-btn">
+						<i class="fas fa-times-circle"></i> Hủy thanh toán
+					</button>
+				</form>
+			</c:if>
+		</div>
 
-                        <c:if test="${not empty showtime}">
-                            <div class="checkout-info-row">
-                                <span class="checkout-info-label">Suất chiếu:</span> <span class="checkout-info-value checkout-date">${showtime.showDate}</span>
-                            </div>
-                            <div class="checkout-info-row">
-                                <span class="checkout-info-label">Giờ chiếu:</span> <span class="checkout-info-value checkout-time">${showtime.startTime}</span>
-                            </div>
-                            <div class="checkout-info-row">
-                                <span class="checkout-info-label">Rạp:</span> <span class="checkout-info-value">${showtime.cinemaName}</span>
-                            </div>
-                            <div class="checkout-info-row">
-                                <span class="checkout-info-label">Phòng:</span> <span class="checkout-info-value">${showtime.roomId}</span>
-                            </div>
-                        </c:if>
-                    </div>
-                </div>
+		<div class="checkout-content">
+			<!-- LEFT -->
+			<div class="checkout-details">
 
-                <c:if test="${not empty selectedSeats}">
-                    <div class="checkout-seats-card">
-                        <h2 class="checkout-section-title">
-                            <i class="fas fa-chair"></i> Ghế đã chọn
-                        </h2>
-                        <div class="checkout-seat-display">
-                            <c:forEach var="seat" items="${selectedSeats}">
-                                <span class="checkout-seat-tag">${seat}</span>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </c:if>
-            </div>
+				<div class="info-card">
+					<h3>
+						<i class="fas fa-film"></i> Thông tin phim
+					</h3>
 
-            <div class="checkout-right-column">
-                <div class="checkout-total-cost">
-                    <h2 class="checkout-cost-title">Tóm tắt thanh toán</h2>
-                    <div class="checkout-cost-breakdown">
-                        <div class="checkout-cost-row">
-                            <span class="checkout-cost-label">Mã đặt vé:</span> <span class="checkout-cost-value">#${bookingId}</span>
-                        </div>
-                        <div class="checkout-cost-row">
-                            <span class="checkout-cost-label">Số ghế:</span> 
-                            <span class="checkout-cost-value"> 
-                                <c:if test="${not empty selectedSeats}">${fn:length(selectedSeats)}</c:if>
-                            </span>
-                        </div>
-                        <div class="checkout-cost-row total">
-                            <span class="checkout-cost-label">Tổng tiền:</span> <span class="checkout-cost-value">${totalAmount} VND</span>
-                        </div>
-                    </div>
-                </div>
+					<c:if test="${not empty showtime}">
+						<div class="info-row">
+							<span class="info-label">Rạp:</span> <span class="info-value">${showtime.cinemaName}</span>
+						</div>
+						<div class="info-row">
+							<span class="info-label">Ngày chiếu:</span> <span
+								class="info-value"> <fmt:formatDate
+									value="${showtime.showDate}" pattern="dd/MM/yyyy" />
+							</span>
+						</div>
+						<div class="info-row">
+							<span class="info-label">Giờ chiếu:</span> <span
+								class="info-value">${showtime.startTime}</span>
+						</div>
+						<div class="info-row">
+							<span class="info-label">Phòng:</span> <span class="info-value">${showtime.roomId}</span>
+						</div>
+						<c:if test="${not empty movie}">
+							<div class="info-row">
+								<span class="info-label">Phim:</span> <span class="info-value">${movie.title}</span>
+							</div>
+						</c:if>
+					</c:if>
+				</div>
 
-                <div class="checkout-payment-methods">
-                    <h2 class="checkout-section-title">
-                        <i class="fas fa-credit-card"></i> Phương thức thanh toán
-                    </h2>
+				<div class="info-card">
+					<h3>
+						<i class="fas fa-chair"></i> Ghế đã chọn
+					</h3>
+					<div class="selected-seats">
+						<c:forEach var="seat" items="${selectedSeats}">
+							<span class="seat-tag">${seat}</span>
+						</c:forEach>
+					</div>
+				</div>
+			</div>
 
-                    <form action="${pageContext.request.contextPath}/payment" method="post" id="paymentForm">
-                        <input type="hidden" name="action" value="process">
+			<!-- RIGHT -->
+			<div class="checkout-summary">
 
-                        <div class="checkout-methods-container">
-                            <div class="checkout-payment-method">
-                                <input type="radio" name="paymentMethod" value="CASH" id="cash" class="checkout-method-radio" checked> 
-                                <label for="cash" class="checkout-method-label">
-                                    <div class="checkout-method-icon cash"><i class="fas fa-money-bill-wave"></i></div> 
-                                    <span class="checkout-method-name">BankPro</span>
-                                </label>
-                            </div>
-                            <div class="checkout-payment-method">
-                                <input type="radio" name="paymentMethod" value="MOMO" id="momo" class="checkout-method-radio"> 
-                                <label for="momo" class="checkout-method-label">
-                                    <div class="checkout-method-icon momo"><i class="fas fa-mobile-alt"></i></div> 
-                                    <span class="checkout-method-name">Ví MoMo</span>
-                                </label>
-                            </div>
-                            <div class="checkout-payment-method">
-                                <input type="radio" name="paymentMethod" value="VNPAY" id="vnpay" class="checkout-method-radio"> 
-                                <label for="vnpay" class="checkout-method-label">
-                                    <div class="checkout-method-icon vnpay"><i class="fas fa-qrcode"></i></div> 
-                                    <span class="checkout-method-name">VNPay</span>
-                                </label>
-                            </div>
-                        </div>
+				<div class="info-card">
+					<h3>
+						<i class="fas fa-receipt"></i> Tóm tắt đơn hàng
+					</h3>
+					<c:if test="${not empty booking}">
+						<div class="info-row">
+							<span class="info-label">Mã đặt vé:</span> <span
+								class="info-value">#${booking.bookingId}</span>
+						</div>
+						<div class="info-row">
+							<span class="info-label">Số ghế:</span> <span class="info-value">${fn:length(selectedSeats)}</span>
+						</div>
+						<div class="info-row">
+							<span class="info-label">Trạng thái:</span> <span
+								class="info-value status-warning">${booking.status}</span>
+						</div>
+					</c:if>
+				</div>
 
-                        <div class="checkout-action-buttons">
-                            <button type="submit" class="checkout-pay-btn" id="submitBtn">
-                                <i class="fas fa-lock"></i> Xác nhận thanh toán
-                            </button>
-                            <a href="${pageContext.request.contextPath}/seat-selection?showtimeId=${showtime.showtimeId}" class="checkout-back-btn"> 
-                                <i class="fas fa-arrow-left"></i> Quay lại chọn ghế
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="total-section">
+					<div class="info-row">
+						<span class="info-label total-label">Tổng cộng:</span> <span
+							class="total-amount"> <fmt:formatNumber
+								value="${booking.totalAmount}" type="number" /> VND
+						</span>
+					</div>
+				</div>
 
-    <jsp:include page="/views/user/common/footer.jsp" />
+				<div class="payment-methods">
+					<h3>
+						<i class="fas fa-credit-card"></i> Phương thức thanh toán
+					</h3>
 
-    <script>
-    // Payment method selection UI logic
-    document.querySelectorAll('.checkout-method-radio').forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.querySelectorAll('.checkout-method-label').forEach(label => label.classList.remove('selected'));
-            if (this.checked) this.nextElementSibling.classList.add('selected');
-        });
-    });
-    // Trigger initial selection
-    document.querySelector('.checkout-method-radio:checked')?.dispatchEvent(new Event('change'));
+					<form action="${pageContext.request.contextPath}/checkout"
+						method="post" id="paymentForm">
+						<div class="payment-option">
+							<input type="radio" name="paymentMethod" value="CASH" id="cash"
+								checked> <label for="cash" class="cash">
+								<div class="payment-icon">
+									<i class="fas fa-money-bill-wave"></i>
+								</div> <span>Thanh toán tiền mặt</span>
+							</label>
+						</div>
 
-    // Form submission loading
-    document.getElementById('paymentForm')?.addEventListener('submit', function(e) {
-        const submitBtn = this.querySelector('.checkout-pay-btn');
-        document.getElementById('loadingOverlay').style.display = 'flex';
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-        submitBtn.disabled = true;
-    });
+						<div class="payment-option">
+							<input type="radio" name="paymentMethod" value="MOMO" id="momo">
+							<label for="momo" class="momo">
+								<div class="payment-icon">
+									<i class="fas fa-mobile-alt"></i>
+								</div> <span>Ví MoMo</span>
+							</label>
+						</div>
 
-    // ============ LOGIC TIMER ĐƠN GIẢN ============
-    <c:if test="${not empty remainingSeconds}">
-        const totalTime = ${remainingSeconds}; 
-        let timeLeft = totalTime;
-        let countdownInterval;
+						<div class="payment-option">
+							<input type="radio" name="paymentMethod" value="VNPAY" id="vnpay">
+							<label for="vnpay" class="vnpay">
+								<div class="payment-icon">
+									<i class="fas fa-qrcode"></i>
+								</div> <span>VNPay</span>
+							</label>
+						</div>
 
-        function updateCountdown() {
-            const timerElement = document.getElementById('floatingTimer');
-            const countdownElement = document.getElementById('countdown');
-            const submitBtn = document.getElementById('submitBtn');
+						<button type="submit" class="pay-button" id="payButton">
+							<i class="fas fa-lock"></i> Xác nhận thanh toán
+						</button>
+					</form>
 
-            if (timeLeft <= 0) {
-                clearInterval(countdownInterval);
-                
-                // Update UI hết giờ
-                countdownElement.textContent = '00:00';
-                timerElement.classList.add('expired'); // Chuyển màu đỏ
-                
-                // Khóa nút thanh toán
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-ban"></i> Đã hết thời gian';
-                submitBtn.style.backgroundColor = '#6c757d';
-                
-                // Thông báo và reload
-                showAlert('Hết thời gian giữ ghế!', 'error');
-                setTimeout(() => window.location.reload(), 3000);
-                return;
-            }
+					<form action="${pageContext.request.contextPath}/cancel-booking"
+						method="post" style="display: inline;">
+						<input type="hidden" name="bookingId"
+							value="${sessionScope.bookingId}"> <input type="hidden"
+							name="action" value="back_to_seat">
+						<button type="submit" class="back-link-btn"
+							style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline;">
+							<i class="fas fa-arrow-left"></i> Quay lại chọn ghế
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-            // Tính toán phút:giây
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            countdownElement.textContent = `\${minutes.toString().padStart(2, '0')}:\${seconds.toString().padStart(2, '0')}`;
+	<jsp:include page="/views/user/common/footer.jsp" />
 
-            // Cảnh báo khi còn ít thời gian (đổi màu vàng)
-            if (timeLeft < 300) { // Dưới 5 phút
-                timerElement.classList.add('warning');
-            }
-
-            timeLeft--;
-        }
-
-        // Chạy timer
-        updateCountdown();
-        countdownInterval = setInterval(updateCountdown, 1000);
-    </c:if>
-
-    // Alert đơn giản
-    function showAlert(message, type) {
-        const container = document.getElementById('alertContainer');
-        const div = document.createElement('div');
-        div.className = `alert-message \${type}`;
-        div.innerHTML = `<i class="fas fa-info-circle"></i> <span>\${message}</span>`;
-        container.appendChild(div);
-        setTimeout(() => div.remove(), 4000);
-    }
-    </script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const countdownElement = document.getElementById('countdown');
+			const payButton = document.getElementById('payButton');
+			const paymentForm = document.getElementById('paymentForm');
+			
+			if (countdownElement) {
+				let seconds = parseInt(countdownElement.textContent);
+				
+				console.log('Bắt đầu đếm ngược: ' + seconds + ' giây');
+				
+				const timerInterval = setInterval(function() {
+					seconds--;
+					countdownElement.textContent = seconds;
+					
+					// Cập nhật màu sắc
+					if (seconds <= 30) {
+						countdownElement.style.color = '#ff4757';
+						countdownElement.style.fontWeight = 'bold';
+					} else if (seconds <= 60) {
+						countdownElement.style.color = '#f39c12';
+					}
+					
+					// Kiểm tra hết giờ
+					if (seconds <= 0) {
+						clearInterval(timerInterval);
+						countdownElement.textContent = '0';
+						
+						// Hiển thị thông báo
+						alert('ĐÃ HẾT THỜI GIAN THANH TOÁN! Ghế sẽ được giải phóng tự động.');
+						
+						// Tự động chuyển hướng
+						setTimeout(function() {
+							window.location.href = '${pageContext.request.contextPath}/timeout';
+						}, 2000);
+						
+						// Vô hiệu hóa nút thanh toán
+						if (payButton) {
+							payButton.disabled = true;
+							payButton.style.opacity = '0.5';
+							payButton.style.cursor = 'not-allowed';
+							payButton.innerHTML = '<i class="fas fa-ban"></i> Đã hết thời gian';
+						}
+						
+						// Ngăn form submit
+						if (paymentForm) {
+							paymentForm.onsubmit = function(e) {
+								e.preventDefault();
+								alert('Đã hết thời gian thanh toán. Vui lòng chọn ghế mới.');
+								return false;
+							};
+						}
+					}
+				}, 1000);
+				
+				// Kiểm tra timeout mỗi 10 giây
+				setInterval(function() {
+					fetch('${pageContext.request.contextPath}/check-timeout?bookingId=${booking.bookingId}')
+						.then(response => response.json())
+						.then(data => {
+							if (data.expired) {
+								clearInterval(timerInterval);
+								window.location.href = '${pageContext.request.contextPath}/timeout';
+							}
+						})
+						.catch(error => console.error('Lỗi kiểm tra timeout:', error));
+				}, 10000);
+			}
+		});
+	</script>
 </body>
 </html>

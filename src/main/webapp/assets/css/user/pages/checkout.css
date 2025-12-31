@@ -1,335 +1,459 @@
+/* checkout.css - UPDATED TO MATCH HOMEPAGE STYLE */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-color: #ff3366;
+    --secondary-color: #6c5ce7;
+    --dark-bg: #0f172a;        /* Giống hero background home.css */
+    --light-bg: #1e293b;       /* Giống gradient home.css */
+    --text-color: #ffffff;
+    --text-muted: #94a3b8;     /* Lighter than original */
+    --success-color: #00cec9;
+    --warning-color: #fdcb6e;
+    --danger-color: #ff4757;   /* Giống timeout.css */
+    --available-color: #334155; /* Darker gray matching home.css */
+    --card-bg: rgba(30, 41, 59, 0.9);
+    --border-color: rgba(255, 255, 255, 0.15);
+}
 
-.checkout-page * {
+/* Base styles matching homepage */
+body {
+    background: var(--dark-bg);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border: 0;
-}
-
-.checkout-page {
-    color: #fff;
-    background: linear-gradient(rgba(13, 13, 31, 1), rgba(46, 43, 138, 0.9));
-    line-height: 1.5;
-    font-family: "Outfit", sans-serif;
-    overflow-x: hidden;
     min-height: 100vh;
+    position: relative;
 }
 
-.checkout-page a {
-    color: inherit;
+/* Background gradient like homepage */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+    z-index: -1;
+}
+
+a {
     text-decoration: none;
-}
-
-.checkout-page button {
-    cursor: pointer;
-    font-family: inherit;
-}
-
-.checkout-page img {
-    max-width: 100%;
-    height: auto;
-    display: block;
+    color: inherit;
 }
 
 .checkout-container {
-    max-width: 1400px;
-    margin: 0 auto;
     padding: 120px 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 80vh;
 }
 
-.checkout-layout {
+/* Header matching homepage hero section */
+.checkout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.checkout-title {
+    font-size: 32px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+}
+
+.checkout-title i {
+    color: #667eea; /* First color of gradient */
+}
+
+.checkout-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 @media (max-width: 1024px) {
-    .checkout-layout {
+    .checkout-content {
         grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    
-    .checkout-right-column {
-        order: -1;
-        position: static !important;
     }
 }
 
-.checkout-left-column {
+.checkout-details {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-.checkout-right-column {
-    background: rgba(25, 28, 34, 0.8);
-    border-radius: 15px;
-    padding: 30px;
-    height: fit-content;
-    position: sticky;
-    top: 140px;
-}
-
-.checkout-movie-card,
-.checkout-order-card,
-.checkout-seats-card {
-    background: rgba(25, 28, 34, 1);
-    border: 3px solid rgba(19, 23, 30, 1);
-    border-radius: 20px;
-    padding: 30px;
-}
-
-.checkout-section-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    color: #e6e6e6;
-}
-
-.checkout-info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.checkout-info-row:last-child {
-    border-bottom: none;
-}
-
-.checkout-info-label {
-    color: rgba(149, 152, 151, 1);
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.checkout-info-value {
-    color: rgba(177, 178, 179, 1);
-    font-weight: 700;
-    font-size: 16px;
-    text-align: right;
-}
-
-.checkout-time {
-    color: rgba(195, 86, 26, 1);
-    font-weight: 800;
-}
-
-.checkout-date {
-    color: rgba(173, 175, 175, 1);
-    font-weight: 700;
-}
-
-.checkout-payment-methods {
-    background: rgba(26, 29, 35, 1);
-    border: 2px solid rgba(42, 49, 60, 1);
-    border-radius: 10px;
+/* Cards matching homepage movie cards */
+.info-card, 
+.checkout-summary, 
+.payment-methods {
+    background: var(--card-bg);
+    border-radius: 16px; /* Softer than before */
     padding: 25px;
-    margin-bottom: 25px;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.checkout-methods-container {
+.info-card:hover,
+.checkout-summary:hover,
+.payment-methods:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.checkout-summary {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+/* Headers like homepage section headers */
+.info-card h3, 
+.checkout-summary h3, 
+.payment-methods h3 {
+    color: var(--text-color);
+    margin: 0 0 25px 0;
+    font-size: 18px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 12px;
-}
-
-.checkout-payment-method {
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
     position: relative;
 }
 
-.checkout-method-radio {
-    position: absolute;
-    opacity: 0;
-}
-
-.checkout-method-label {
-    display: flex;
-    align-items: center;
-    background: rgba(26, 28, 34, 1);
-    border: 1px solid rgba(42, 49, 61, 1);
-    border-radius: 8px;
-    padding: 18px 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-    min-height: 65px;
-}
-
-.checkout-method-radio:checked + .checkout-method-label,
-.checkout-method-label.selected {
-    border-color: #f84565;
-    background: rgba(248, 69, 101, 0.1);
-}
-
-.checkout-method-icon {
-    width: 50px;
-    height: 30px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    font-weight: 700;
-    font-size: 12px;
-    color: white;
-}
-
-.checkout-method-icon.vietqr {
-    background: linear-gradient(135deg, #d32f2f, #f44336);
-}
-
-.checkout-method-icon.vnpay {
-    background: linear-gradient(135deg, #0d47a1, #1976d2);
-}
-
-.checkout-method-icon.momo {
-    background: linear-gradient(135deg, #880e4f, #ad1457);
-}
-
-.checkout-method-icon.cash {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-.checkout-method-name {
-    color: rgba(151, 152, 154, 1);
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.checkout-total-cost {
-    background: rgba(26, 29, 35, 1);
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 25px;
-}
-
-.checkout-cost-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    color: rgba(166, 170, 169, 1);
-}
-
-.checkout-cost-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-}
-
-.checkout-cost-row.total {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    margin-top: 10px;
-    padding-top: 15px;
-    font-weight: 800;
-    font-size: 18px;
-}
-
-.checkout-cost-label {
-    color: rgba(135, 139, 140, 1);
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.checkout-cost-value {
-    color: rgba(185, 190, 192, 1);
-    font-weight: 700;
-    font-size: 14px;
-}
-
-.checkout-cost-row.total .checkout-cost-value {
-    color: #f84565;
+.info-card h3 i, 
+.checkout-summary h3 i, 
+.payment-methods h3 i {
+    color: #667eea;
     font-size: 20px;
 }
 
-.checkout-action-buttons {
+.info-row {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.checkout-pay-btn {
-    background: rgba(248, 69, 101, 1);
-    color: white;
-    border: none;
-    padding: 18px 40px;
-    border-radius: 25px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: center;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.checkout-pay-btn:hover {
-    background: #d63854;
-    transform: translateY(-2px);
+.info-row:last-child {
+    border-bottom: none;
 }
 
-.checkout-back-btn {
-    background: transparent;
-    color: rgba(148, 151, 155, 1);
-    border: none;
-    font-weight: 700;
+.info-label {
+    color: var(--text-muted);
     font-size: 14px;
-    cursor: pointer;
-    padding: 12px;
-    text-align: center;
-    transition: color 0.3s;
+    font-weight: 500;
 }
 
-.checkout-back-btn:hover {
-    color: #fff;
+.info-value {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 15px;
 }
 
-.checkout-seat-display {
+.info-value.status-warning {
+    color: var(--warning-color);
+    font-weight: bold;
+    padding: 4px 12px;
+    background: rgba(253, 203, 110, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(253, 203, 110, 0.3);
+}
+
+.selected-seats {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 5px;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.checkout-seat-tag {
-    background: rgba(248, 69, 101, 0.2);
-    color: #f84565;
-    padding: 6px 12px;
+/* Seat tags matching homepage buttons */
+.seat-tag {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    color: #667eea;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 14px;
     font-weight: 600;
-    border: 1px solid rgba(248, 69, 101, 0.5);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    transition: all 0.3s;
 }
 
+.seat-tag:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    transform: translateY(-2px);
+}
+
+.payment-option {
+    margin-bottom: 15px;
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+}
+
+.payment-option label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    background: var(--available-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    color: var(--text-color);
+}
+
+.payment-option label:hover {
+    background: #3c4b61;
+    transform: translateY(-2px);
+}
+
+.payment-option input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+}
+
+.payment-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cash .payment-icon { 
+    background: linear-gradient(135deg, #27ae60, #2ecc71); 
+}
+.momo .payment-icon { 
+    background: linear-gradient(135deg, #d82d8b, #ad1457); 
+}
+.vnpay .payment-icon { 
+    background: linear-gradient(135deg, #005ba3, #1976d2); 
+}
+
+.total-section {
+    margin: 25px 0;
+    padding: 25px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.total-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.total-amount {
+    font-size: 32px;
+    color: #667eea; /* First color of gradient */
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Pay button matching homepage explore-btn */
+.pay-button {
+    width: 100%;
+    padding: 18px;
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.pay-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.pay-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a5bc9 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+}
+
+.pay-button:hover::before {
+    left: 100%;
+}
+
+.pay-button:disabled {
+    background: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+}
+
+.back-link-btn {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted) !important;
+    transition: color 0.3s;
+    text-decoration: none !important;
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.back-link-btn:hover {
+    color: var(--text-color) !important;
+    background: rgba(255, 255, 255, 0.05);
+    text-decoration: none !important;
+}
+
+/* Cancel button matching homepage styles */
+.cancel-booking-btn {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(225, 112, 85, 0.2) 100%);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cancel-booking-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+}
+
+/* Timer matching homepage hero style */
+.timer-floating {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: var(--primary-gradient);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: pulse 2s infinite;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .checkout-container {
-        padding: 160px 0 40px;
+        padding: 100px 15px 40px;
     }
     
-    .checkout-info-row {
+    .checkout-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 5px;
+        gap: 15px;
     }
     
-    .checkout-info-value {
-        text-align: left;
+    .cancel-booking-btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
     
-    .checkout-method-label {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        min-height: auto;
+    .timer-floating {
+        top: 80px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        max-width: 300px;
+        justify-content: center;
+    }
+    
+    .total-amount {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-title {
+        font-size: 28px;
+    }
+    
+    .info-card, 
+    .checkout-summary, 
+    .payment-methods {
+        padding: 20px;
+    }
+    
+    .payment-option label {
         padding: 15px;
     }
     
-    .checkout-method-icon {
-        margin-right: 0;
+    .timer-floating {
+        padding: 12px 20px;
+        font-size: 14px;
     }
 }
