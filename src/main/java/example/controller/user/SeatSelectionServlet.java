@@ -7,6 +7,7 @@ import example.dao.impl.ShowtimeDAO;
 import example.model.movie.Movie;
 import example.model.schedule.Showtime;
 import example.model.system.User;
+import example.util.Constant;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,6 +80,8 @@ public class SeatSelectionServlet extends HttpServlet {
 			}
 
 			BookingDAO bookingDAO = new BookingDAO();
+			bookingDAO.cancelExpiredPendingBookings(Constant.BOOKING_TIMEOUT_MINUTES);
+
 			List<Integer> bookedSeatIds = bookingDAO.getBookedSeatIds(showtimeId);
 
 			SeatDAO seatDAO = new SeatDAO();
@@ -105,5 +108,11 @@ public class SeatSelectionServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
 			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 }
