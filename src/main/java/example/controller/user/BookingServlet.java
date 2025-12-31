@@ -1,186 +1,124 @@
 package example.controller.user;
 
 import example.dao.impl.BookingDAO;
-import example.dao.impl.SeatDAO;
 import example.dao.impl.ShowtimeDAO;
-import example.dao.impl.UserDAO;
-import example.model.cinema.Seat;
-import example.model.cinema.SeatType;
 import example.model.schedule.Showtime;
 import example.model.system.User;
 import example.model.transaction.Booking;
-import example.util.Constant;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebServlet("/booking")
 public class BookingServlet extends HttpServlet {
 
-	private static final Pattern SEAT_CODE_PATTERN = Pattern.compile("^[A-Z][1-9][0-9]?$");
-	private static final int MAX_SEATS_PER_BOOKING = 8;
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
+        // 1. Kiểm tra đăng nhập
+        if (user == null) {
+            // Lưu lại url để sau khi login quay lại đúng chỗ (nếu cần)
+            session.setAttribute("redirectUrl", request.getRequestURI() + "?" + request.getQueryString());
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
-		if (user == null) {
-			session.setAttribute("redirectAfterLogin", request.getRequestURI() + "?" + request.getQueryString());
-			response.sendRedirect(request.getContextPath() + "/login");
-			return;
-		}
+        try {
+            // 2. Lấy dữ liệu từ Form gửi lên
+            String showtimeIdStr = request.getParameter("showtimeId");
+            String[] selectedSeats = request.getParameterValues("selectedSeats"); // Mảng ghế: ["A1", "B5"...]
 
-		String showtimeIdParam = request.getParameter("showtimeId");
-		String[] selectedSeats = request.getParameterValues("selectedSeats");
+            // Validate cơ bản
+            if (showtimeIdStr == null || selectedSeats == null || selectedSeats.length == 0) {
+                request.setAttribute("errorMessage", "Vui lòng chọn ít nhất 1 ghế!");
+                request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+                return;
+            }
 
-		if (showtimeIdParam == null || showtimeIdParam.trim().isEmpty()) {
-			request.setAttribute("errorMessage", "Thiếu thông tin suất chiếu");
-			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-			return;
-		}
+            int showtimeId = Integer.parseInt(showtimeIdStr);
+            List<String> seatCodeList = new ArrayList<>(Arrays.asList(selectedSeats));
 
-		if (selectedSeats == null || selectedSeats.length == 0) {
-			request.setAttribute("seatError", "Vui lòng chọn ít nhất một ghế");
-			request.setAttribute("showtimeId", showtimeIdParam);
-			request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
-			return;
-		}
+            // 3. Lấy thông tin Suất chiếu (Showtime) -> ĐỂ LẤY ĐÚNG ROOM ID
+            ShowtimeDAO showtimeDAO = new ShowtimeDAO();
+            Showtime showtime = showtimeDAO.getShowtimeById(showtimeId);
 
-		try {
-			int showtimeId = Integer.parseInt(showtimeIdParam);
+            if (showtime == null) {
+                request.setAttribute("errorMessage", "Suất chiếu không tồn tại!");
+                request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+                return;
+            }
 
-			if (showtimeId <= 0) {
-				request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-				return;
-			}
+            // 4. Tính tổng tiền sơ bộ (để lưu vào Booking)
+            double totalAmount = 0;
+            double basePrice = showtime.getBasePrice();
+            double vipSurcharge = 15000; // Phụ thu VIP cố định
 
-			if (selectedSeats.length > MAX_SEATS_PER_BOOKING) {
-				request.setAttribute("seatError", "Chỉ được chọn tối đa " + MAX_SEATS_PER_BOOKING + " ghế");
-				request.setAttribute("showtimeId", showtimeId);
-				request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
-				return;
-			}
+            for (String seatCode : seatCodeList) {
+                // Logic check VIP: Nếu hàng ghế là E, F, G, H
+                char row = seatCode.charAt(0);
+                if (row == 'E' || row == 'F' || row == 'G' || row == 'H') {
+                    totalAmount += (basePrice + vipSurcharge);
+                } else {
+                    totalAmount += basePrice;
+                }
+            }
 
-			ShowtimeDAO showtimeDAO = new ShowtimeDAO();
-			Showtime showtime = showtimeDAO.getShowtimeById(showtimeId);
+            // 5. Tạo đối tượng Booking
+            Booking booking = new Booking();
+            booking.setUserId(user.getUserId());
+            booking.setShowtimeId(showtimeId);
+            booking.setTotalAmount(totalAmount);
+            booking.setStatus("PENDING");
 
-			if (showtime == null) {
-				request.setAttribute("errorMessage", "Suất chiếu không tồn tại");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-				return;
-			}
+            // 6. Gọi DAO để lưu vào DB
+            BookingDAO bookingDAO = new BookingDAO();
+            
+            // --- [QUAN TRỌNG] SỬA LỖI TẠI ĐÂY ---
+            // Truyền showtime.getRoomId() thay vì số 1
+            int bookingId = bookingDAO.createBookingWithSeats(booking, seatCodeList, showtime.getRoomId());
+            // ------------------------------------
 
-			if (!showtime.isActive()) {
-				request.setAttribute("errorMessage", "Suất chiếu đã bị hủy");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-				return;
-			}
+            if (bookingId > 0) {
+                // THÀNH CÔNG: Lưu thông tin vào Session để trang Checkout dùng
+                booking.setBookingId(bookingId);
+                
+                session.setAttribute("bookingId", bookingId);
+                session.setAttribute("booking", booking);
+                session.setAttribute("showtimeId", showtimeId);
+                session.setAttribute("selectedSeats", seatCodeList);
+                session.setAttribute("totalAmount", totalAmount);
 
-			UserDAO userDAO = new UserDAO();
-			User dbUser = userDAO.getUserById(user.getUserId());
-			if (dbUser == null) {
-				session.invalidate();
-				request.setAttribute("errorMessage", "Tài khoản không tồn tại. Vui lòng đăng nhập lại");
-				request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
-				return;
-			}
+                // Redirect sang trang thanh toán
+                response.sendRedirect(request.getContextPath() + "/checkout");
 
-			SeatDAO seatDAO = new SeatDAO();
-			BookingDAO bookingDAO = new BookingDAO();
+            } else if (bookingId == -1) {
+                // THẤT BẠI: Có ghế đã bị người khác đặt trước đó 1 tích tắc
+                String errorUrl = request.getContextPath() + "/seat-selection?showtimeId=" + showtimeId + "&error=ghe_da_duoc_dat";
+                response.sendRedirect(errorUrl);
+                
+            } else {
+                // Lỗi hệ thống khác
+                request.setAttribute("errorMessage", "Đặt vé thất bại do lỗi hệ thống.");
+                request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+            }
 
-			for (String seatCode : selectedSeats) {
-				if (!isValidSeatCode(seatCode)) {
-					request.setAttribute("seatError", "Mã ghế '" + seatCode + "' không đúng định dạng (VD: A1, B12)");
-					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
-					return;
-				}
-
-				Seat seat = seatDAO.getSeatByCode(seatCode, showtime.getRoomId());
-				if (seat == null) {
-					request.setAttribute("seatError", "Ghế " + seatCode + " không tồn tại trong phòng chiếu");
-					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
-					return;
-				}
-
-				boolean isBooked = bookingDAO.isSeatBooked(seat.getSeatId(), showtimeId);
-				if (isBooked) {
-					request.setAttribute("seatError", "Ghế " + seatCode + " đã được đặt. Vui lòng chọn ghế khác");
-					request.setAttribute("showtimeId", showtimeId);
-					request.getRequestDispatcher("/views/user/pages/seat.jsp").forward(request, response);
-					return;
-				}
-			}
-
-			double totalAmount = calculateTotalPriceAccurate(selectedSeats, showtime.getBasePrice(),
-					showtime.getRoomId(), seatDAO);
-
-			if (totalAmount <= 0) {
-				request.setAttribute("errorMessage", "Tổng tiền không hợp lệ");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-				return;
-			}
-
-			Booking booking = new Booking();
-			booking.setUserId(user.getUserId());
-			booking.setShowtimeId(showtimeId);
-			booking.setBookingDate(new Timestamp(new Date().getTime()));
-			booking.setTotalAmount(totalAmount);
-			booking.setStatus(Constant.BOOKING_PENDING);
-
-			int bookingId = bookingDAO.createBooking(booking, selectedSeats, showtime.getRoomId());
-
-			if (bookingId > 0) {
-				session.setAttribute("bookingId", bookingId);
-				session.setAttribute("totalAmount", totalAmount);
-				session.setAttribute("showtimeId", showtimeId);
-				session.setAttribute("selectedSeats", selectedSeats); 
-				response.sendRedirect(request.getContextPath() + "/payment");
-
-			} else {
-				request.setAttribute("errorMessage", "Đặt vé thất bại. Vui lòng thử lại");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-			}
-
-		} catch (NumberFormatException e) {
-			request.setAttribute("errorMessage", "ID suất chiếu không hợp lệ");
-			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-		} catch (Exception e) {
-			request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
-		}
-	}
-
-	private boolean isValidSeatCode(String seatCode) {
-		return seatCode != null && SEAT_CODE_PATTERN.matcher(seatCode).matches();
-	}
-
-	private double calculateTotalPriceAccurate(String[] selectedSeats, double basePrice, int roomId, SeatDAO seatDAO) {
-		double total = 0;
-		for (String seatCode : selectedSeats) {
-			Seat seat = seatDAO.getSeatByCode(seatCode, roomId);
-			if (seat != null) {
-				// Tính giá cho từng ghế
-				SeatType seatType = seatDAO.getSeatTypeById(seat.getSeatTypeId());
-				double seatPrice = basePrice;
-				if (seatType != null) {
-					seatPrice += seatType.getSurcharge();
-				}
-				total += seatPrice;
-			}
-		}
-		return total;
-	}
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/home");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi: " + e.getMessage());
+            request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+        }
+    }
 }
