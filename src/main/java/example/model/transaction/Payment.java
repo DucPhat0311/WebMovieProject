@@ -1,14 +1,14 @@
 package example.model.transaction;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Payment {
 	private int paymentId;
 	private int bookingId;
 	private double amount;
-	private String paymentMethod; // Momo, VNPay, BankPro
-	private String status; // Pending, Success, Failed
-	private LocalDateTime paymentDate;
+	private String paymentMethod;
+	private String status;
+	private Date paymentDate;
 
 	public Payment() {
 	}
@@ -16,12 +16,21 @@ public class Payment {
 	public Payment(int bookingId, double amount, String paymentMethod, String status) {
 		this.bookingId = bookingId;
 		this.amount = amount;
-		this.paymentMethod = paymentMethod;
+		this.setPaymentMethod(paymentMethod);
 		this.status = status;
-		this.paymentDate = LocalDateTime.now();
+		this.paymentDate = new Date();
 	}
 
-	// Getters and Setters
+	public Payment(int paymentId, int bookingId, double amount, String paymentMethod, String status, Date paymentDate) {
+		this.paymentId = paymentId;
+		this.bookingId = bookingId;
+		this.amount = amount;
+		this.setPaymentMethod(paymentMethod);
+		this.status = status;
+		this.paymentDate = paymentDate;
+	}
+
+	// Getters và Setters
 	public int getPaymentId() {
 		return paymentId;
 	}
@@ -51,13 +60,12 @@ public class Payment {
 	}
 
 	public void setPaymentMethod(String paymentMethod) {
-		// Chuyển đổi từ MOMO/VNPAY/CASH sang format database
 		if ("MOMO".equalsIgnoreCase(paymentMethod)) {
 			this.paymentMethod = "Momo";
 		} else if ("VNPAY".equalsIgnoreCase(paymentMethod)) {
 			this.paymentMethod = "VNPay";
 		} else if ("CASH".equalsIgnoreCase(paymentMethod)) {
-			this.paymentMethod = "BankPro"; // Sử dụng BankPro cho tiền mặt
+			this.paymentMethod = "BankPro";
 		} else {
 			this.paymentMethod = paymentMethod;
 		}
@@ -71,11 +79,17 @@ public class Payment {
 		this.status = status;
 	}
 
-	public LocalDateTime getPaymentDate() {
+	public Date getPaymentDate() {
 		return paymentDate;
 	}
 
-	public void setPaymentDate(LocalDateTime paymentDate) {
+	public void setPaymentDate(Date paymentDate) {
 		this.paymentDate = paymentDate;
+	}
+
+	public void setPaymentDate(java.time.LocalDateTime localDateTime) {
+		if (localDateTime != null) {
+			this.paymentDate = java.sql.Timestamp.valueOf(localDateTime);
+		}
 	}
 }

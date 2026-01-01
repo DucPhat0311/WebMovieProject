@@ -22,6 +22,11 @@
 	</jsp:include>
 
 	<div class="main-content">
+		<c:if test="${not empty error}">
+			<div class="alert alert-danger">
+				<i class="fas fa-exclamation-circle"></i> ${error}
+			</div>
+		</c:if>
 		<!-- Dashboard Container -->
 		<div class="dashboard-container">
 
