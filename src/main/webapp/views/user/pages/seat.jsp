@@ -10,12 +10,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chọn ghế | MovieGO!</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/pages/home.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/pages/seat.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/common/base.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/pages/home.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/pages/seat.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/footer.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/base.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -124,10 +130,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	<main class="seat-main-container">
 		<div class="seat-content-wrapper">
-			
+
 			<div class="showtime-info-card">
 				<div class="movie-header">
-					<img src="${movie.posterUrl}" alt="${movie.title}" class="movie-thumbnail" />
+					<img
+						src="${pageContext.request.contextPath}/assets/img/movies/${movie.posterUrl}"
+						alt="${movie.title}" class="movie-thumbnail" />
+
 					<div class="movie-header-info">
 						<h2>${movie.title}</h2>
 						<div class="movie-meta">
@@ -141,39 +150,44 @@ document.addEventListener('DOMContentLoaded', function() {
 						<i class="fas fa-map-marker-alt"></i> <span>${showtime.cinemaName}</span>
 					</div>
 					<div class="info-row">
-						<i class="fas fa-calendar"></i> <span><fmt:formatDate value="${showtime.showDate}" pattern="dd/MM/yyyy"/></span>
+						<i class="fas fa-calendar"></i> <span><fmt:formatDate
+								value="${showtime.showDate}" pattern="dd/MM/yyyy" /></span>
 					</div>
 					<div class="info-row">
 						<i class="fas fa-clock"></i> <span>${showtime.startTime}</span>
 					</div>
 					<div class="info-row">
-						<i class="fas fa-tag"></i> 
-						<span><fmt:formatNumber value="${showtime.basePrice}" type="number"/> VND</span>
+						<i class="fas fa-tag"></i> <span><fmt:formatNumber
+								value="${showtime.basePrice}" type="number" /> VND</span>
 					</div>
 				</div>
 			</div>
 
 			<section class="seat-selection">
-				<h1 class="section-title"><i class="fas fa-chair"></i> Chọn ghế</h1>
-				
+				<h1 class="section-title">
+					<i class="fas fa-chair"></i> Chọn ghế
+				</h1>
+
 				<div class="screen-container">
 					<div class="screen"></div>
 					<p class="screen-label">MÀN HÌNH</p>
 				</div>
 
-				<form id="seatForm" action="${pageContext.request.contextPath}/booking" method="post">
-					<input type="hidden" name="showtimeId" value="${showtime.showtimeId}">
+				<form id="seatForm"
+					action="${pageContext.request.contextPath}/booking" method="post">
+					<input type="hidden" name="showtimeId"
+						value="${showtime.showtimeId}">
 
 					<div class="seats-container">
 						<div class="seats-grid">
 							<c:set var="rowLetters" value="A,B,C,D,E,F,G,H" />
-							
+
 							<c:forEach items="${fn:split(rowLetters, ',')}" var="row">
 								<div class="seat-row">
 									<div class="row-label">${row}</div>
 									<div class="seat-buttons">
 										<c:forEach begin="1" end="9" var="col">
-											
+
 											<c:set var="currentSeat" value="" />
 											<c:forEach items="${allSeats}" var="s">
 												<c:if test="${s.seatRow == row && s.seatNumber == col}">
@@ -189,84 +203,84 @@ document.addEventListener('DOMContentLoaded', function() {
 													</c:if>
 												</c:forEach>
 											</c:if>
-											
+
 											<c:choose>
 												<c:when test="${isBooked}">
-													<label class="seat-btn booked">
-														${col}
-													</label>
+													<label class="seat-btn booked"> ${col} </label>
 												</c:when>
 												<c:otherwise>
 													<c:set var="seatCode" value="${row}${col}" />
-													<c:set var="isVip" value="${row == 'E' || row == 'F' || row == 'G' || row == 'H'}" />
-													
+													<c:set var="isVip"
+														value="${row == 'E' || row == 'F' || row == 'G' || row == 'H'}" />
+
 													<c:set var="isSelected" value="false" />
-													<c:if test="${not empty param.selectedSeats && fn:contains(param.selectedSeats, seatCode)}">
+													<c:if
+														test="${not empty param.selectedSeats && fn:contains(param.selectedSeats, seatCode)}">
 														<c:set var="isSelected" value="true" />
 													</c:if>
 
-													<label class="seat-btn ${isSelected ? 'selected' : 'available'} ${isVip ? 'vip-seat' : ''}">
-														<input type="checkbox" name="selectedSeats" 
-															   value="${seatCode}" 
-															   ${isSelected ? 'checked' : ''} 
-															   style="display:none;">
-														${col}
+													<label
+														class="seat-btn ${isSelected ? 'selected' : 'available'} ${isVip ? 'vip-seat' : ''}">
+														<input type="checkbox" name="selectedSeats"
+														value="${seatCode}" ${isSelected ? 'checked' : ''}
+														style="display: none;"> ${col}
 													</label>
 												</c:otherwise>
 											</c:choose>
-											
+
 										</c:forEach>
 									</div>
 								</div>
 							</c:forEach>
 						</div>
-						
+
 						<div class="seat-legend">
 							<div class="legend-title">Chú thích ghế</div>
 							<div class="legend-items">
 								<div class="seat-type available">
-									<span class="seat"></span>
-									<span class="seat-label">Ghế thường</span>
+									<span class="seat"></span> <span class="seat-label">Ghế
+										thường</span>
 								</div>
 								<div class="seat-type vip">
-									<span class="seat"></span>
-									<span class="seat-label">Ghế VIP</span>
+									<span class="seat"></span> <span class="seat-label">Ghế
+										VIP</span>
 								</div>
 								<div class="seat-type selected">
-									<span class="seat"></span>
-									<span class="seat-label">Đang chọn</span>
+									<span class="seat"></span> <span class="seat-label">Đang
+										chọn</span>
 								</div>
 								<div class="seat-type booked">
-									<span class="seat"></span>
-									<span class="seat-label">Đã đặt</span>
+									<span class="seat"></span> <span class="seat-label">Đã
+										đặt</span>
 								</div>
 							</div>
 						</div>
-						</div>
+					</div>
 
 					<div class="booking-summary">
 						<div class="summary-row">
-							<span class="summary-label">Ghế đã chọn:</span> 
-							<span class="summary-value" id="selectedSeatsList">
-								${not empty param.selectedSeats ? param.selectedSeats : 'Chưa chọn ghế nào'}
+							<span class="summary-label">Ghế đã chọn:</span> <span
+								class="summary-value" id="selectedSeatsList"> ${not empty param.selectedSeats ? param.selectedSeats : 'Chưa chọn ghế nào'}
 							</span>
 						</div>
 						<div class="summary-row">
-							<span class="summary-label">Số lượng:</span> 
-							<span class="summary-value" id="seatCount">0 ghế</span>
+							<span class="summary-label">Số lượng:</span> <span
+								class="summary-value" id="seatCount">0 ghế</span>
 						</div>
 						<div class="summary-row total">
-							<span class="summary-label">Tổng tiền:</span> 
-							<span class="summary-value price-total" id="totalPrice">0 VND</span>
+							<span class="summary-label">Tổng tiền:</span> <span
+								class="summary-value price-total" id="totalPrice">0 VND</span>
 						</div>
-						
+
 						<div class="action-buttons">
-							<a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="back-to-movie-btn">
-								<i class="fas fa-arrow-left"></i> Quay lại
+							<a
+								href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}"
+								class="back-to-movie-btn"> <i class="fas fa-arrow-left"></i>
+								Quay lại
 							</a>
 							<button type="submit" class="checkout-btn disabled" disabled>
-								<span class="btn-text">Tiếp tục thanh toán</span> 
-								<i class="fas fa-arrow-right arrow-icon"></i>
+								<span class="btn-text">Tiếp tục thanh toán</span> <i
+									class="fas fa-arrow-right arrow-icon"></i>
 							</button>
 						</div>
 					</div>
