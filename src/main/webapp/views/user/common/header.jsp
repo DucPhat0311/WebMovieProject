@@ -10,7 +10,10 @@
 <body>
 	<header>
 		<div class="logo">
-			<span class="movie">Movie</span><b><span class="go">GO!</span></b>
+			<a href="${pageContext.request.contextPath}/"
+				style="text-decoration: none; cursor: pointer;"> <span
+				class="movie">Movie</span><b><span class="go">GO!</span></b>
+			</a>
 		</div>
 
 		<nav class="glass-nav">
