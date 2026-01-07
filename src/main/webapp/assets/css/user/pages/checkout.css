@@ -1,42 +1,27 @@
-/* checkout.css - UPDATED TO MATCH HOMEPAGE STYLE */
 :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --primary-color: #ff3366;
     --secondary-color: #6c5ce7;
-    --dark-bg: #0f172a;        /* Giống hero background home.css */
-    --light-bg: #1e293b;       /* Giống gradient home.css */
+    --dark-bg: #0f0f1e;
+    --light-bg: #1a1a2e;
     --text-color: #ffffff;
-    --text-muted: #94a3b8;     /* Lighter than original */
+    --text-muted: #a0a0c0;
     --success-color: #00cec9;
     --warning-color: #fdcb6e;
-    --danger-color: #ff4757;   /* Giống timeout.css */
-    --available-color: #334155; /* Darker gray matching home.css */
-    --card-bg: rgba(30, 41, 59, 0.9);
-    --border-color: rgba(255, 255, 255, 0.15);
+    --danger-color: #e17055;
+    --available-color: #2d3436;
+    --selected-color: #ff3366;
+    --booked-color: #636e72;
+    --vip-color: #fdcb6e;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --primary-gradient: linear-gradient(135deg, #ff3366 0%, #ff758c 100%);
+    --screen-color: linear-gradient(180deg, rgba(255,51,102,0.3) 0%, rgba(255,51,102,0.1) 100%);
 }
 
-/* Base styles matching homepage */
 body {
     background: var(--dark-bg);
     color: var(--text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    min-height: 100vh;
-    position: relative;
-}
-
-/* Background gradient like homepage */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
-    z-index: -1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
 a {
@@ -45,13 +30,11 @@ a {
 }
 
 .checkout-container {
-    padding: 120px 20px 60px;
+    padding: 140px 20px 60px;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 80vh;
 }
 
-/* Header matching homepage hero section */
 .checkout-header {
     display: flex;
     justify-content: space-between;
@@ -69,15 +52,13 @@ a {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 700;
+    color: var(--primary-color);
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
 .checkout-title i {
-    color: #667eea; /* First color of gradient */
+    color: var(--primary-color);
 }
 
 .checkout-content {
@@ -98,17 +79,15 @@ a {
     gap: 30px;
 }
 
-/* Cards matching homepage movie cards */
-.info-card, 
-.checkout-summary, 
+.info-card,
+.checkout-summary,
 .payment-methods {
-    background: var(--card-bg);
-    border-radius: 16px; /* Softer than before */
-    padding: 25px;
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #1a1a2e;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .info-card:hover,
@@ -116,6 +95,8 @@ a {
 .payment-methods:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 51, 102, 0.3);
+    background: #1e1e35;
 }
 
 .checkout-summary {
@@ -124,9 +105,8 @@ a {
     height: fit-content;
 }
 
-/* Headers like homepage section headers */
-.info-card h3, 
-.checkout-summary h3, 
+.info-card h3,
+.checkout-summary h3,
 .payment-methods h3 {
     color: var(--text-color);
     margin: 0 0 25px 0;
@@ -139,10 +119,10 @@ a {
     position: relative;
 }
 
-.info-card h3 i, 
-.checkout-summary h3 i, 
+.info-card h3 i,
+.checkout-summary h3 i,
 .payment-methods h3 i {
-    color: #667eea;
+    color: var(--primary-color);
     font-size: 20px;
 }
 
@@ -160,14 +140,11 @@ a {
 
 .info-label {
     color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 500;
 }
 
 .info-value {
     color: var(--text-color);
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 500;
 }
 
 .info-value.status-warning {
@@ -179,6 +156,24 @@ a {
     border: 1px solid rgba(253, 203, 110, 0.3);
 }
 
+.info-value.status-confirmed {
+    color: var(--success-color);
+    font-weight: bold;
+    padding: 4px 12px;
+    background: rgba(0, 206, 201, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 206, 201, 0.3);
+}
+
+.info-value.status-cancelled {
+    color: var(--danger-color);
+    font-weight: bold;
+    padding: 4px 12px;
+    background: rgba(225, 112, 85, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(225, 112, 85, 0.3);
+}
+
 .selected-seats {
     display: flex;
     flex-wrap: wrap;
@@ -186,21 +181,21 @@ a {
     margin-top: 10px;
 }
 
-/* Seat tags matching homepage buttons */
 .seat-tag {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-    color: #667eea;
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.2) 0%, rgba(255, 117, 140, 0.2) 100%);
+    color: var(--primary-color);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 14px;
     font-weight: 600;
-    border: 1px solid rgba(102, 126, 234, 0.3);
+    border: 1px solid rgba(255, 51, 102, 0.3);
     transition: all 0.3s;
 }
 
 .seat-tag:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.3) 0%, rgba(255, 117, 140, 0.3) 100%);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 51, 102, 0.2);
 }
 
 .payment-option {
@@ -229,10 +224,10 @@ a {
     transform: translateY(-2px);
 }
 
-.payment-option input[type="radio"]:checked + label {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    border-color: #667eea;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+.payment-option input[type="radio"]:checked+label {
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.15) 0%, rgba(255, 117, 140, 0.15) 100%);
+    border-color: var(--primary-color);
+    box-shadow: 0 5px 15px rgba(255, 51, 102, 0.2);
 }
 
 .payment-icon {
@@ -247,22 +242,24 @@ a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.cash .payment-icon { 
-    background: linear-gradient(135deg, #27ae60, #2ecc71); 
+.cash .payment-icon {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
 }
-.momo .payment-icon { 
-    background: linear-gradient(135deg, #d82d8b, #ad1457); 
+
+.momo .payment-icon {
+    background: linear-gradient(135deg, #d82d8b, #ad1457);
 }
-.vnpay .payment-icon { 
-    background: linear-gradient(135deg, #005ba3, #1976d2); 
+
+.vnpay .payment-icon {
+    background: linear-gradient(135deg, #005ba3, #1976d2);
 }
 
 .total-section {
     margin: 25px 0;
     padding: 25px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.1) 0%, rgba(255, 117, 140, 0.1) 100%);
     border-radius: 15px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .total-label {
@@ -273,31 +270,25 @@ a {
 
 .total-amount {
     font-size: 32px;
-    color: #667eea; /* First color of gradient */
+    color: var(--primary-color);
     font-weight: 800;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Pay button matching homepage explore-btn */
 .pay-button {
     width: 100%;
     padding: 18px;
-    background: var(--primary-gradient);
+    background: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 25px;
-    font-size: 16px;
+    border-radius: 30px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 25px;
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 16px;
 }
 
 .pay-button::before {
@@ -311,10 +302,10 @@ a {
     transition: 0.5s;
 }
 
-.pay-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #5a6fd8 0%, #6a5bc9 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+.pay-button:hover {
+    background: #ff1a52;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(255, 51, 102, 0.4);
 }
 
 .pay-button:hover::before {
@@ -332,26 +323,40 @@ a {
     margin-top: 20px;
     width: 100%;
     text-align: center;
-    font-size: 14px;
-    color: var(--text-muted) !important;
-    transition: color 0.3s;
-    text-decoration: none !important;
+    font-size: 15px;
+    color: #FFFFFF !important;
+    transition: all 0.3s;
+    text-decoration: none;
     display: block;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);  
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    font-weight: 600;  
+}
+
+.back-link-btn i {
+    margin-right: 10px;
+    color: var(--primary-color); 
+    transition: transform 0.3s;
 }
 
 .back-link-btn:hover {
-    color: var(--text-color) !important;
-    background: rgba(255, 255, 255, 0.05);
-    text-decoration: none !important;
+    color: #FFFFFF !important;  
+    background: rgba(255, 51, 102, 0.25);  
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
 }
 
-/* Cancel button matching homepage styles */
+.back-link-btn:hover i {
+    transform: translateX(-5px);
+}
+
 .cancel-booking-btn {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(225, 112, 85, 0.2) 100%);
-    color: var(--danger-color);
-    border: 1px solid var(--danger-color);
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.2) 0%, rgba(255, 117, 140, 0.2) 100%);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
     padding: 12px 24px;
     border-radius: 25px;
     font-size: 14px;
@@ -364,51 +369,107 @@ a {
 }
 
 .cancel-booking-btn:hover {
-    background: var(--danger-color);
+    background: var(--primary-gradient);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
 }
 
-/* Timer matching homepage hero style */
 .timer-floating {
     position: fixed;
-    top: 100px;
+    top: 120px;
     right: 20px;
-    background: var(--primary-gradient);
+    background: linear-gradient(135deg, #d92a5d 0%, #ff3366 100%);
     color: white;
     padding: 14px 24px;
     border-radius: 30px;
     font-weight: bold;
-    z-index: 1000;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    z-index: 999;
+    box-shadow: 0 10px 30px rgba(217, 42, 93, 0.5);
     display: flex;
     align-items: center;
     gap: 12px;
     animation: pulse 2s infinite;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
+    font-size: 16px;
+}
+
+.timer-floating i {
+    font-size: 18px;
+    color: #fff;
+}
+
+.timer-floating .timer-number {
+    font-size: 18px;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 4px 10px;
+    border-radius: 10px;
+    margin: 0 5px;
+    min-width: 40px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @keyframes pulse {
-    0% { 
-        transform: scale(1); 
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    0% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(217, 42, 93, 0.5);
     }
-    50% { 
-        transform: scale(1.05); 
-        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 12px 35px rgba(217, 42, 93, 0.6);
     }
-    100% { 
-        transform: scale(1); 
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    100% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(217, 42, 93, 0.5);
     }
 }
 
-/* Responsive adjustments */
+.alert {
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideIn 0.3s ease;
+}
+
+.alert-error {
+    background: rgba(225, 112, 85, 0.2);
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background: rgba(0, 206, 201, 0.2);
+    border: 1px solid var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-warning {
+    background: rgba(253, 203, 110, 0.2);
+    border: 1px solid var(--warning-color);
+    color: var(--warning-color);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 768px) {
     .checkout-container {
-        padding: 100px 15px 40px;
+        padding: 120px 15px 40px;
     }
     
     .checkout-header {
@@ -424,16 +485,39 @@ a {
     }
     
     .timer-floating {
-        top: 80px;
+        top: 90px;
         right: 50%;
         transform: translateX(50%);
         width: 90%;
         max-width: 300px;
         justify-content: center;
+        font-size: 14px;
+        padding: 12px 20px;
+    }
+    
+    .timer-floating .timer-number {
+        font-size: 16px;
+        min-width: 35px;
     }
     
     .total-amount {
         font-size: 28px;
+    }
+    
+    .info-card,
+    .checkout-summary,
+    .payment-methods {
+        padding: 20px;
+    }
+    
+    .pay-button {
+        padding: 16px;
+        font-size: 15px;
+    }
+    
+    .back-link-btn {
+        padding: 14px;
+        font-size: 15px;
     }
 }
 
@@ -442,18 +526,29 @@ a {
         font-size: 28px;
     }
     
-    .info-card, 
-    .checkout-summary, 
-    .payment-methods {
-        padding: 20px;
-    }
-    
     .payment-option label {
         padding: 15px;
+        font-size: 14px;
+    }
+    
+    .seat-tag {
+        padding: 6px 12px;
+        font-size: 12px;
     }
     
     .timer-floating {
-        padding: 12px 20px;
+        padding: 10px 16px;
+        font-size: 12px;
+        top: 85px;
+    }
+    
+    .timer-floating .timer-number {
         font-size: 14px;
+        min-width: 30px;
+        padding: 3px 8px;
+    }
+    
+    .total-amount {
+        font-size: 24px;
     }
 }
