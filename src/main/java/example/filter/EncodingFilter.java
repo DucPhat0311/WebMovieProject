@@ -1,5 +1,7 @@
 package example.filter;
 
+import example.util.Validator;
+
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,8 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter({ "*.jsp", "/home", "/", "/login", "/register", "/movie-detail", "/movie-list", "/seat-selection",
-		"/booking", "/checkout", "/ticket", "/cancel-booking", "/timeout", "/error", "/admin/*" })
+@WebFilter("/*")
 public class EncodingFilter implements Filter {
 
 	@Override
@@ -26,20 +27,55 @@ public class EncodingFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		// Set UTF-8 encoding
 		httpRequest.setCharacterEncoding("UTF-8");
 		httpResponse.setCharacterEncoding("UTF-8");
-		httpResponse.setContentType("text/html; charset=UTF-8");
 
-		// Cache control headers
+		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+
+		if (path.startsWith("/assets/") || path.endsWith(".css") || path.endsWith(".js") || path.endsWith(".jpg")
+				|| path.endsWith(".png") || path.endsWith(".jpeg")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
 		httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		httpResponse.setHeader("Pragma", "no-cache");
 		httpResponse.setDateHeader("Expires", 0);
 
-		chain.doFilter(httpRequest, httpResponse);
+		//  Wrap request để SANITIZE input (chống XSS)
+		SanitizeRequestWrapper wrappedRequest = new SanitizeRequestWrapper(httpRequest);
+
+		chain.doFilter(wrappedRequest, httpResponse);
 	}
 
 	@Override
 	public void destroy() {
+	}
+
+	// Inner class để wrap request và sanitize parameters
+	private static class SanitizeRequestWrapper extends javax.servlet.http.HttpServletRequestWrapper {
+
+		public SanitizeRequestWrapper(HttpServletRequest request) {
+			super(request);
+		}
+
+		@Override
+		public String getParameter(String name) {
+			String value = super.getParameter(name);
+			return Validator.sanitize(value);
+		}
+
+		@Override
+		public String[] getParameterValues(String name) {
+			String[] values = super.getParameterValues(name);
+			if (values == null)
+				return null;
+
+			String[] sanitizedValues = new String[values.length];
+			for (int i = 0; i < values.length; i++) {
+				sanitizedValues[i] = Validator.sanitize(values[i]);
+			}
+			return sanitizedValues;
+		}
 	}
 }
