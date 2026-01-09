@@ -37,9 +37,6 @@
 			</div>
 
 			<div class="toolbar">
-				<a href="${root}/admin/add-showtime" class="btn-add"> <i
-					class="fas fa-plus"></i> Tạo Lịch Chiếu
-				</a>
 
 				<form action="${root}/admin/manage-showtimes" method="get">
 					<div class="search-box">
