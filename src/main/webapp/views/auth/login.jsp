@@ -19,6 +19,7 @@
             
             <h2>Đăng nhập</h2>
             
+            <!-- Thông báo lỗi/success -->
             <c:if test="${not empty error}">
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i> ${error}
@@ -31,14 +32,37 @@
                 </div>
             </c:if>
             
+            <!-- Form đăng nhập -->
             <form action="${pageContext.request.contextPath}/login" method="post">
                 <div class="form-group">
                     <label for="email">Email <span class="required">*</span></label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
+                        <%
+                            String rememberedEmail = "";
+                            Cookie[] cookies = request.getCookies();
+                            if (cookies != null) {
+                                for (Cookie cookie : cookies) {
+                                    if ("rememberedEmail".equals(cookie.getName())) {
+                                        rememberedEmail = cookie.getValue();
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            // Ưu tiên: param từ form trước > cookie > empty
+                            String emailParam = request.getParameter("email");
+                            String emailValue = "";
+                            
+                            if (emailParam != null && !emailParam.trim().isEmpty()) {
+                                emailValue = emailParam;
+                            } else if (!rememberedEmail.isEmpty()) {
+                                emailValue = rememberedEmail;
+                            }
+                        %>
                         <input type="email" id="email" name="email" 
                                placeholder="Nhập email của bạn" required
-                               value="${param.email}">
+                               value="<%= emailValue %>">
                     </div>
                     <c:if test="${not empty emailError}">
                         <div class="field-error">
@@ -64,7 +88,8 @@
                 
                 <div class="remember-forgot">
                     <label>
-                        <input type="checkbox" name="remember" value="true" ${param.remember == 'true' ? 'checked' : ''}>
+                        <input type="checkbox" name="rememberMe" value="true" 
+                               <%= !rememberedEmail.isEmpty() ? "checked" : "" %>>
                         Ghi nhớ đăng nhập
                     </label>
                     <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
@@ -91,6 +116,15 @@
                 icon.classList.replace("fa-eye-slash", "fa-eye");
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            if (emailInput.value.trim() !== '' && passwordInput.value === '') {
+                passwordInput.focus();
+            }
+        });
     </script>
 </body>
 </html>
