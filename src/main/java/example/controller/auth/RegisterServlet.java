@@ -2,27 +2,49 @@ package example.controller.auth;
 
 import example.dao.impl.UserDAO;
 import example.model.system.User;
+import example.util.Validator;
+import example.util.SecurityUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		String csrfToken = UUID.randomUUID().toString();
+		request.getSession().setAttribute("csrfToken", csrfToken);
+		request.setAttribute("csrfToken", csrfToken);
+
 		request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		String sessionToken = (String) request.getSession().getAttribute("csrfToken");
+		String requestToken = request.getParameter("csrfToken");
+
+		if (sessionToken == null || !sessionToken.equals(requestToken)) {
+			request.setAttribute("error", "Phiên làm việc không hợp lệ, vui lòng thử lại");
+			request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
+			return;
+		}
+
+		request.getSession().removeAttribute("csrfToken");
+
+		// Lấy parameters
 		String fullName = request.getParameter("fullName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -41,7 +63,7 @@ public class RegisterServlet extends HttpServlet {
 
 		if (email == null || email.trim().isEmpty()) {
 			errors.put("emailError", "Email không được để trống");
-		} else if (!isValidEmail(email)) {
+		} else if (!Validator.isValidEmail(email)) {
 			errors.put("emailError", "Email không đúng định dạng");
 		} else {
 			UserDAO userDAO = new UserDAO();
@@ -63,8 +85,8 @@ public class RegisterServlet extends HttpServlet {
 		}
 
 		if (phone != null && !phone.trim().isEmpty()) {
-			if (!phone.matches("[0-9]{10,11}")) {
-				errors.put("phoneError", "Số điện thoại phải có 10-11 chữ số");
+			if (!Validator.isValidPhone(phone)) {
+				errors.put("phoneError", "Số điện thoại không hợp lệ");
 			}
 		}
 
@@ -92,18 +114,20 @@ public class RegisterServlet extends HttpServlet {
 		User user = new User();
 		user.setFullName(fullName);
 		user.setEmail(email);
-		
-		String hashedPassword = example.util.SecurityUtil.hashPassword(password);
+
+		String hashedPassword = SecurityUtil.hashPassword(password);
 		user.setPassword(hashedPassword);
-		
+
 		user.setPhone(phone);
 		user.setGender(gender);
 
 		boolean success = userDAO.register(user);
 
 		if (success) {
-			request.setAttribute("success", "Đăng ký thành công! Vui lòng đăng nhập");
-			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+			HttpSession session = request.getSession();
+			session.setAttribute("lastRegisteredEmail", email);
+			response.sendRedirect(request.getContextPath() + "/login");
+			return;
 		} else {
 			request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại");
 			request.setAttribute("fullName", fullName);
@@ -112,10 +136,5 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("gender", gender);
 			request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
 		}
-	}
-
-	private boolean isValidEmail(String email) {
-		String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-		return email.matches(emailRegex);
 	}
 }

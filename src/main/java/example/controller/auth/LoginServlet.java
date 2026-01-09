@@ -3,6 +3,7 @@ package example.controller.auth;
 import example.dao.impl.UserDAO;
 import example.model.system.User;
 import example.util.SecurityUtil;
+import example.util.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,17 +11,44 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		String csrfToken = UUID.randomUUID().toString();
+		request.getSession().setAttribute("csrfToken", csrfToken);
+		request.setAttribute("csrfToken", csrfToken);
+		
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			String lastRegisteredEmail = (String) session.getAttribute("lastRegisteredEmail");
+			if (lastRegisteredEmail != null && !lastRegisteredEmail.trim().isEmpty()) {
+				request.setAttribute("email", lastRegisteredEmail);
+				session.removeAttribute("lastRegisteredEmail");
+			}
+		}
+
 		request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		String sessionToken = (String) request.getSession().getAttribute("csrfToken");
+		String requestToken = request.getParameter("csrfToken");
+
+		if (sessionToken == null || !sessionToken.equals(requestToken)) {
+			request.setAttribute("error", "Phiên làm việc không hợp lệ, vui lòng thử lại");
+			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
+			return;
+		}
+
+		// Xóa token đã dùng
+		request.getSession().removeAttribute("csrfToken");
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -30,6 +58,8 @@ public class LoginServlet extends HttpServlet {
 
 		if (email == null || email.trim().isEmpty()) {
 			errors.put("emailError", "Email không được để trống");
+		} else if (!Validator.isValidEmail(email)) {
+			errors.put("emailError", "Email không đúng định dạng");
 		}
 
 		if (password == null || password.trim().isEmpty()) {
@@ -59,7 +89,6 @@ public class LoginServlet extends HttpServlet {
 			session.setMaxInactiveInterval(30 * 60); // 30 phút
 
 			if ("on".equals(rememberMe)) {
-
 				// 1. Cookie email
 				Cookie emailCookie = new Cookie("rememberedEmail", email);
 				emailCookie.setMaxAge(30 * 24 * 60 * 60); // 30 ngày
@@ -71,7 +100,6 @@ public class LoginServlet extends HttpServlet {
 				nameCookie.setMaxAge(30 * 24 * 60 * 60);
 				nameCookie.setPath("/");
 				response.addCookie(nameCookie);
-
 			} else {
 				// Xóa cookies cũ nếu có
 				clearRememberCookies(request, response);
