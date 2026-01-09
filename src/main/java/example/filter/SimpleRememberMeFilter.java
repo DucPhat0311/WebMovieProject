@@ -21,14 +21,20 @@ public class SimpleRememberMeFilter implements Filter {
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+		String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+
+		if (path.startsWith("/assets/") || path.endsWith(".css") || path.endsWith(".js")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
 		HttpSession session = httpRequest.getSession(false);
 
-		// Chỉ xử lý nếu chưa có user trong session
 		if (session == null || session.getAttribute("user") == null) {
 			Cookie[] cookies = httpRequest.getCookies();
 			String rememberedEmail = null;
 
-			// Tìm cookie email
 			if (cookies != null) {
 				for (Cookie cookie : cookies) {
 					if ("rememberedEmail".equals(cookie.getName())) {
@@ -37,7 +43,6 @@ public class SimpleRememberMeFilter implements Filter {
 					}
 				}
 
-				// Nếu có cookie email, tự động login
 				if (rememberedEmail != null && !rememberedEmail.trim().isEmpty()) {
 
 					try {
@@ -45,13 +50,10 @@ public class SimpleRememberMeFilter implements Filter {
 						User user = userDAO.findByEmail(rememberedEmail);
 
 						if (user != null) {
-
-							// Tạo session mới (KHÔNG thêm message)
 							HttpSession newSession = httpRequest.getSession();
 							newSession.setAttribute("user", user);
 							newSession.setMaxInactiveInterval(30 * 60);
 
-							// Gia hạn cookies (optional)
 							Cookie emailCookie = new Cookie("rememberedEmail", rememberedEmail);
 							emailCookie.setMaxAge(30 * 24 * 60 * 60);
 							emailCookie.setPath("/");
@@ -69,7 +71,7 @@ public class SimpleRememberMeFilter implements Filter {
 							if (redirectUrl != null && !redirectUrl.isEmpty()) {
 								newSession.removeAttribute("redirectAfterLogin");
 								httpResponse.sendRedirect(redirectUrl);
-								return; // Quan trọng: return để không tiếp tục chain
+								return;
 							}
 						} else {
 							clearInvalidCookies(httpResponse);
