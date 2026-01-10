@@ -103,13 +103,5 @@
 			</div>
 		</div>
 	</div>
-
-	<script>
-		function confirmDelete(id) {
-			if (confirm("Bạn có chắc chắn muốn xóa lịch chiếu này không?")) {
-				window.location.href = "${root}/admin/delete-showtime?id=" + id;
-			}
-		}
-	</script>
 </body>
 </html>

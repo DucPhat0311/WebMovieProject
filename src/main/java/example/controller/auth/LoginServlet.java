@@ -46,22 +46,6 @@ public class LoginServlet extends HttpServlet {
 
 		UserDAO userDAO = new UserDAO();
 		User user = userDAO.findByEmail(email);
-		
-		// --- Debug ---
-		System.out.println("DEBUG LOGIN:");
-		System.out.println("1. Email nhập vào: " + email);
-		System.out.println("2. Password nhập vào: " + password);
-		
-		if (user == null) {
-		    System.out.println("3. KẾT QUẢ: User bị NULL (Lỗi do DAO hoặc không tìm thấy Email)");
-		} else {
-		    System.out.println("3. User tìm thấy: " + user.getFullName());
-		    System.out.println("4. Hash trong DB: [" + user.getPassword() + "]");
-		    System.out.println("   -> Độ dài hash: " + (user.getPassword() != null ? user.getPassword().length() : 0));
-		    
-		    boolean check = example.util.SecurityUtil.checkPassword(password, user.getPassword());
-		    System.out.println("5. Kết quả check BCrypt: " + check);
-		}
 
 		boolean loginSuccess = false;
 
@@ -74,14 +58,13 @@ public class LoginServlet extends HttpServlet {
 		if (loginSuccess) {
 			HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            session.setMaxInactiveInterval(30 * 60);
 
             String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
             if (redirectUrl != null && !redirectUrl.isEmpty()) {
                 session.removeAttribute("redirectAfterLogin");
                 response.sendRedirect(redirectUrl);
             } else {
-                if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                if ("admin".equalsIgnoreCase(user.getRole())) {
                     response.sendRedirect(request.getContextPath() + "/admin/dashboard");
                 } else {
                     response.sendRedirect("home");

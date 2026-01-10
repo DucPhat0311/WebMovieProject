@@ -24,8 +24,6 @@ public class MovieListServlet extends HttpServlet {
         
         String type = request.getParameter("type");
         
-        if (type == null) type = "now"; 
-
         MovieDAO dao = new MovieDAO();
         List<Movie> list = dao.getNextMovies(type, 8, 0);
 

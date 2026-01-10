@@ -56,11 +56,9 @@ public class AddMovieServlet extends HttpServlet {
             if (part != null && part.getSize() > 0) {
                 fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
                 
-                // Ghi file vào ổ cứng server
+                // Ghi file từ RAM vào ổ cứng server
                 part.write(uploadFilePath + File.separator + fileName);
-            } else {
-                fileName = "no-image.jpg"; // Ảnh mặc định nếu không upload
-            }
+            } 
 
             // --- 2. LẤY DỮ LIỆU FORM ---
             String title = request.getParameter("title");
@@ -68,7 +66,7 @@ public class AddMovieServlet extends HttpServlet {
             String ageWarning = request.getParameter("ageWarning");
             String trailerUrl = request.getParameter("trailerUrl");
             
-            // Xử lý số nguyên
+            // Xử lý từ String trong ô nhập dữ liệu sang int trong database
             int duration = 0;
             try {
                 duration = Integer.parseInt(request.getParameter("duration"));

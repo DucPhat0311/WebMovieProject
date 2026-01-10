@@ -21,7 +21,7 @@ input[type=text], input[type=number], input[type=date], textarea {
 }
 
 .btn-submit {
-	background: #4CAF50;
+	background: #ff3366;
 	color: white;
 	padding: 10px 20px;
 	border: none;
@@ -30,5 +30,5 @@ input[type=text], input[type=number], input[type=date], textarea {
 }
 
 .btn-submit:hover {
-	background: #45a049;
+	background: #ff3366;
 }

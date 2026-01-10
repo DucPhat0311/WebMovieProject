@@ -98,14 +98,5 @@
 			</table>
 
 		</div>
-
-		<script>
-			function showDeleteConfirm(id) {
-				if (confirm("Bạn có chắc chắn muốn xóa phim có ID: " + id
-						+ " không?")) {
-					window.location.href = "delete-movie?pid=" + id;
-				}
-			}
-		</script>
 </body>
 </html>
