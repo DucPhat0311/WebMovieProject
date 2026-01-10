@@ -26,16 +26,9 @@ public class CancelBookingServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 
-		// 1. Kiểm tra đăng nhập
-		if (user == null) {
-			response.sendRedirect(request.getContextPath() + "/login");
-			return;
-		}
-
 		// 2. Lấy thông tin booking và hành động (action)
 		String bookingIdStr = request.getParameter("bookingId");
-		String action = request.getParameter("action"); // Nhận tham số action từ form (ví dụ: "back_to_seat")
-
+		String action = request.getParameter("action"); // Nhận tham số action từ form 
 		// Lấy showtimeId từ session để biết quay lại phim nào
 		Integer showtimeId = (Integer) session.getAttribute("showtimeId");
 

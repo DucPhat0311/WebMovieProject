@@ -164,9 +164,6 @@
 						<a href="${pageContext.request.contextPath}/"
 							class="ticket-btn home"> <i class="fas fa-home"></i> Trang
 							chủ
-						</a> <a href="${pageContext.request.contextPath}/user/bookings"
-							class="ticket-btn bookings"> <i class="fas fa-ticket-alt"></i>
-							Vé của tôi
 						</a>
 					</div>
 
@@ -178,7 +175,6 @@
 		</div>
 	</div>
 
-	<%-- THÊM FOOTER --%>
 	<jsp:include page="/views/user/common/footer.jsp" />
 
 	<!-- JavaScript -->
