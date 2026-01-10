@@ -28,17 +28,6 @@ public class SeatSelectionServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 
-		if (user == null) {
-			String redirectUrl = request.getRequestURL().toString();
-			String queryString = request.getQueryString();
-			if (queryString != null && !queryString.isEmpty()) {
-				redirectUrl += "?" + queryString;
-			}
-			session.setAttribute("redirectAfterLogin", redirectUrl);
-			response.sendRedirect(request.getContextPath() + "/login");
-			return;
-		}
-
 		String showtimeIdParam = request.getParameter("showtimeId");
 		if (showtimeIdParam == null || showtimeIdParam.trim().isEmpty()) {
 			request.setAttribute("errorMessage", "Thiếu thông tin suất chiếu");

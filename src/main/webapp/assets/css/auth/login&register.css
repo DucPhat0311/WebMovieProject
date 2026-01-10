@@ -258,3 +258,22 @@ input:valid, select:valid { border-color: #4caf50 !important; }
     .form-row { flex-direction: column; gap: 25px; }
     .remember-forgot { flex-direction: column; align-items: flex-start; gap: 15px; }
 }	
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alert {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Highlight input email khi được auto-fill */
+.input-with-icon input[type="email"]:not(:placeholder-shown) {
+    background-color: #f9f9f9;
+    border-color: #4caf50;
+}
+
+/* Checkbox remember me khi được checked */
+.remember-forgot input[type="checkbox"]:checked {
+    accent-color: #4caf50;
+}
