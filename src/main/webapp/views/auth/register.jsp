@@ -91,7 +91,7 @@
 						<div class="input-with-icon">
 							<i class="fas fa-lock"></i> <input type="password"
 								id="confirmPassword" name="confirmPassword"
-								placeholder="Nhập lại mật khẩu" required> <i
+								placeholder="Nhập lại mật khẩu" required minlength="6"> <i
 								class="fas fa-eye toggle-password"
 								onclick="togglePwd('confirmPassword', this)"></i>
 						</div>

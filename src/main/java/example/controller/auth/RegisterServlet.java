@@ -38,10 +38,15 @@ public class RegisterServlet extends HttpServlet {
 
 		if (sessionToken == null || !sessionToken.equals(requestToken)) {
 			request.setAttribute("error", "Phiên làm việc không hợp lệ, vui lòng thử lại");
+			// Tạo token mới trước khi forward
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
 			return;
 		}
 
+		// Xóa token đã dùng
 		request.getSession().removeAttribute("csrfToken");
 
 		// Lấy parameters
@@ -82,6 +87,8 @@ public class RegisterServlet extends HttpServlet {
 			errors.put("confirmPasswordError", "Vui lòng xác nhận mật khẩu");
 		} else if (!confirmPassword.equals(password)) {
 			errors.put("confirmPasswordError", "Mật khẩu xác nhận không khớp");
+		} else if (confirmPassword.length() < 6) {
+			errors.put("confirmPasswordError", "Mật khẩu xác nhận phải có ít nhất 6 ký tự");
 		}
 
 		if (phone != null && !phone.trim().isEmpty()) {
@@ -106,6 +113,10 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("gender", gender);
 			request.setAttribute("agreeTerms", agreeTerms);
 			errors.forEach(request::setAttribute);
+			// Tạo token mới cho lần thử tiếp theo
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
 			return;
 		}
@@ -134,6 +145,10 @@ public class RegisterServlet extends HttpServlet {
 			request.setAttribute("email", email);
 			request.setAttribute("phone", phone);
 			request.setAttribute("gender", gender);
+			// Tạo token mới cho lần thử tiếp theo
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/register.jsp").forward(request, response);
 		}
 	}
