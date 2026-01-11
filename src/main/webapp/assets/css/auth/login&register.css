@@ -251,7 +251,15 @@ body {
 }
 
 input:invalid, select:invalid { border-color: #f44336 !important; }
-input:valid, select:valid { border-color: #4caf50 !important; }
+.input-with-icon input[required]:valid,
+.input-with-icon select[required]:valid {
+    border-color: #4caf50 !important;
+}
+
+.input-with-icon input:not(:placeholder-shown):invalid,
+.input-with-icon select:invalid {
+    border-color: #f44336 !important;
+}
 
 @media (max-width: 576px) {
     .auth-box { padding: 30px 25px; }
@@ -275,5 +283,5 @@ input:valid, select:valid { border-color: #4caf50 !important; }
 
 /* Checkbox remember me khi được checked */
 .remember-forgot input[type="checkbox"]:checked {
-    accent-color: #4caf50;
+    accent-color: #e94560;
 }
