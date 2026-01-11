@@ -93,7 +93,7 @@ nav {
 .tabs h2 {
 	font-size: 20px;
 	letter-spacing: 1px;
-	border-left: 4px solid #ff2d55;
+	border-left: 4px solid #ff3366;
 	padding-left: 10px;
 }
 
@@ -106,13 +106,13 @@ nav {
 }
 
 .tab-menu span.active {
-	color: #ff2d55;
-	border-bottom: 2px solid #ff2d55;
+	color: #ff3366;
+	border-bottom: 2px solid #ff3366;
 	padding-bottom: 4px;
 }
 
 .tab-menu span:hover {
-	color: #ff2d55;
+	color: #ff3366;
 }
 
 .user-dropdown {
@@ -159,7 +159,7 @@ nav {
 
 .dropdown-content a:hover {
 	background-color: #f1f1f1;
-	color: #ff2d55;
+	color: #ff3366;
 }
 
 .user-dropdown:hover .dropdown-content {
