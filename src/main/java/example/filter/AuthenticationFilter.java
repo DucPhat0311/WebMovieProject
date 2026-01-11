@@ -49,7 +49,6 @@ public class AuthenticationFilter implements Filter {
 			return;
 		}
 
-		System.out.println("User authenticated: " + user.getEmail());
 		chain.doFilter(request, response);
 	}
 

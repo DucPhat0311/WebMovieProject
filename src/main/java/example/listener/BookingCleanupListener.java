@@ -21,6 +21,7 @@ public class BookingCleanupListener implements ServletContextListener {
 
 		BookingDAO bookingDAO = new BookingDAO();
 		scheduler = Executors.newSingleThreadScheduledExecutor();
+
 		scheduler.scheduleAtFixedRate(() -> {
 			try {
 				bookingDAO.cancelExpiredPendingBookings(Constant.BOOKING_TIMEOUT_MINUTES);
