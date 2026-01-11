@@ -20,7 +20,7 @@ import java.util.List;
 @WebServlet("/checkout")
 public class CheckoutServlet extends HttpServlet {
 
-	private static final int TIMEOUT_MINUTES = 1; // 1 phút cho test
+	 private static final int TIMEOUT_MINUTES = Constant.BOOKING_TIMEOUT_MINUTES;
 
 	private BookingDAO bookingDAO;
 	private PaymentDAO paymentDAO;
