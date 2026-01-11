@@ -17,18 +17,26 @@ import example.model.movie.Movie;
  */
 @WebServlet("/movie-list")
 public class MovieListServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        String type = request.getParameter("type");
-        
-        MovieDAO dao = new MovieDAO();
-        List<Movie> list = dao.getNextMovies(type, 8, 0);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.setAttribute("listM", list);
-        request.setAttribute("pageType", type); 
+		String type = request.getParameter("type");
 
-        request.getRequestDispatcher("/views/user/pages/movie-list.jsp").forward(request, response);    }
+		MovieDAO dao = new MovieDAO();
+		
+		List<Movie> list;
+
+		if ("coming".equals(type)) {
+			list = dao.get8ComingSoonMovies();
+			request.setAttribute("pageType", "coming"); 
+		} else {
+			list = dao.get8NowShowingMovies();
+			request.setAttribute("pageType", "now");
+		}
+		
+		request.setAttribute("listM", list);
+		request.getRequestDispatcher("/views/user/pages/movie-list.jsp").forward(request, response);
+	}
 }

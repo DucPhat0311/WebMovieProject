@@ -40,8 +40,13 @@ public class LoadMoreServlet extends HttpServlet {
 		int existed = Integer.parseInt(request.getParameter("existed"));
 
 		MovieDAO dao = new MovieDAO();
+		List<Movie> list;
 
-		List<Movie> list = dao.getNextMovies(type, 8, existed);
+		if ("coming".equals(type)) {
+			list = dao.getNextCommingSoonMovies(8, existed);
+		} else {
+			list = dao.getNextNowMovies(8, existed);
+		}
 
 		request.setAttribute("newList", list);
 		request.getRequestDispatcher("/views/user/components/_ajax-movie-card.jsp").forward(request, response);

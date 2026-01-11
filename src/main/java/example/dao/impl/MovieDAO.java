@@ -221,15 +221,11 @@ public class MovieDAO {
 		}
 	}
 
-	public List<Movie> getMoviesByPage(String type, int amount, int offset) {
+	public List<Movie> getNextNowMovies(int amount, int offset) {
 		List<Movie> list = new ArrayList<>();
 		String sql = "";
 
-		if ("now".equals(type)) {
-			sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT ? OFFSET ?";
-		} else if ("coming".equals(type)) {
-			sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT ? OFFSET ?";
-		}
+		sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = 1 ORDER BY release_date DESC LIMIT ? OFFSET ?";
 
 		try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -250,16 +246,12 @@ public class MovieDAO {
 		}
 		return list;
 	}
-
-	public List<Movie> getNextMovies(String type, int amount, int offset) {
+	
+	public List<Movie> getNextCommingSoonMovies(int amount, int offset) {
 		List<Movie> list = new ArrayList<>();
 		String sql = "";
 
-		if ("now".equals(type)) {
-			sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = 1 ORDER BY release_date DESC LIMIT ? OFFSET ?";
-		} else {
-			sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = 1 ORDER BY release_date ASC LIMIT ? OFFSET ?";
-		}
+		sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = 1 ORDER BY release_date ASC LIMIT ? OFFSET ?";
 
 		try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -297,7 +289,7 @@ public class MovieDAO {
 		return 0;
 	}
 
-	// Lấy top 3 phim có nhiều showtime nhất 
+	// Lấy top 3 phim có nhiều showtime nhất
 	public List<Movie> getTopMovies(int limit) {
 		List<Movie> movies = new ArrayList<>();
 		String sql = "SELECT m.*, COUNT(s.showtime_id) as showtime_count FROM movie m "
