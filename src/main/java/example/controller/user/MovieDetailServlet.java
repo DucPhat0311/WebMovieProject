@@ -27,39 +27,29 @@ public class MovieDetailServlet extends HttpServlet {
 			MovieDAO movieDAO = new MovieDAO();
 			ShowtimeDAO showtimeDAO = new ShowtimeDAO();
 
-			// lấy thông tin chi tiết phim
 			Movie movie = movieDAO.getMovieById(movieId);
-			if (movie == null) {
-				response.sendRedirect("home"); // id sai ==> về trang chủ
-				return;
-			}
+			
 
-			// lấy danh sách các ngày có lịch chiếu
 			List<Date> showDates = showtimeDAO.getShowDates(movieId);
 
-			// logic chọn ngày
 			Date selectedDate = null;
 			String dateParamater = request.getParameter("date");
 
 			if (dateParamater != null) {
-				// Nếu user bấm chọn ngày -> Lấy ngày đó
 				selectedDate = Date.valueOf(dateParamater);
 			} else if (!showDates.isEmpty()) {
-				// Nếu user mới vào trang -> Mặc định lấy ngày đầu tiên có lịch
 				selectedDate = showDates.get(0);
 			}
 
-			// Lấy danh sách suất chiếu của NGÀY ĐÃ CHỌN
 			List<Showtime> showtimes = null;
 			if (selectedDate != null) {
 				showtimes = showtimeDAO.getShowtimesByDate(movieId, selectedDate);
 			}
 
-			// đẩy dữ liệu sang JSP
 			request.setAttribute("movie", movie);
-			request.setAttribute("showDates", showDates); // danh sách các ngày
-			request.setAttribute("selectedDate", selectedDate); // Ngày đang dc click vào
-			request.setAttribute("showtimes", showtimes); // Danh sách giờ chiếu
+			request.setAttribute("showDates", showDates); 
+			request.setAttribute("selectedDate", selectedDate); 
+			request.setAttribute("showtimes", showtimes); 
 
 			request.getRequestDispatcher("/views/user/pages/movie-detail.jsp").forward(request, response);
 		} catch (Exception e) {

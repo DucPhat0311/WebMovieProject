@@ -309,7 +309,6 @@ public class MovieDAO {
 				movie.setPosterUrl(rs.getString("poster_url"));
 				movie.setDuration(rs.getInt("duration"));
 				movie.setReleaseDate(rs.getDate("release_date"));
-				// Có thể thêm các trường khác nếu cần
 				movies.add(movie);
 			}
 

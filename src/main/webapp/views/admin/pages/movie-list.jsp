@@ -66,7 +66,7 @@
 							<td>#${o.movieId}</td>
 
 							<td><img
-								src="${pageContext.request.contextPath}/assets/img/movies/movie${o.movieId}.jpg"
+								src="${pageContext.request.contextPath}/assets/img/movies/${o.posterUrl}"
 								class="poster-img" alt="${o.title}"
 								onerror="this.src='https://via.placeholder.com/150?text=No+Image';" />
 							</td>

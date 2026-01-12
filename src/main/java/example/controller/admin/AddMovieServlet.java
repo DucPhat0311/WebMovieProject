@@ -19,9 +19,9 @@ import example.model.movie.Movie;
 
 @WebServlet("/admin/add-movie")
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-    maxFileSize = 1024 * 1024 * 10,      // 10MB
-    maxRequestSize = 1024 * 1024 * 50    // 50MB
+    fileSizeThreshold = 1024 * 1024 * 2, 
+    maxFileSize = 1024 * 1024 * 10,      
+    maxRequestSize = 1024 * 1024 * 50    
 )
 public class AddMovieServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class AddMovieServlet extends HttpServlet {
                 part.write(uploadFilePath + File.separator + fileName);
             } 
 
-            // --- 2. LẤY DỮ LIỆU FORM ---
+            // --- lấy dữ liệu từ form ---
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String ageWarning = request.getParameter("ageWarning");
@@ -74,7 +74,7 @@ public class AddMovieServlet extends HttpServlet {
 
             // Xử lý ngày tháng 
             String dateStr = request.getParameter("releaseDate");
-            Date sqlDate = new Date(System.currentTimeMillis()); // Mặc định là hôm nay
+            Date sqlDate = new Date(System.currentTimeMillis()); 
             if(dateStr != null && !dateStr.isEmpty()){
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date utilDate = sdf.parse(dateStr);

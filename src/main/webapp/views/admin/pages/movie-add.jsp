@@ -13,8 +13,8 @@
 
 		<form method="post" action="add-movie" enctype="multipart/form-data">
 
-			<label>Tên phim:</label> <input type="text" name="title" required
-				placeholder="Ví dụ: Avengers: Endgame" /> <label>Mô tả:</label>
+			<label>Tên phim:</label> <input type="text" name="title" required />
+			<label>Mô tả:</label>
 			<textarea name="description" rows="4"></textarea>
 
 			<label>Thời lượng (phút):</label> <input type="number"
