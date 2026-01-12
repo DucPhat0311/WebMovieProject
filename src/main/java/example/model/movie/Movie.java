@@ -22,21 +22,6 @@ public class Movie {
 	public Movie() {
 	}
 
-	// Dùng cho INSERT (Tạo phim mới) 
-	// Không có movieId (vì tự tăng)
-	public Movie(String title, String description, int duration, Date releaseDate, String ageWarning, String posterUrl,
-			String trailerUrl) {
-		this.title = title;
-		this.description = description;
-		this.duration = duration;
-		this.releaseDate = releaseDate;
-		this.ageWarning = ageWarning;
-		this.posterUrl = posterUrl;
-		this.trailerUrl = trailerUrl;
-
-		this.isActive = true;
-	}
-
 	// Dùng cho SELECT (Lấy từ DB lên)
 	// Phải nhận ĐẦY ĐỦ tham số, không được gán mặc định sai lệch dữ liệu gốc
 	public Movie(int movieId, String title, String description, int duration, Date releaseDate, String ageWarning,
