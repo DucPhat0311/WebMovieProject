@@ -139,7 +139,7 @@
 								checked> <label for="cash" class="cash">
 								<div class="payment-icon">
 									<i class="fas fa-money-bill-wave"></i>
-								</div> <span>Thanh toán tiền mặt</span>
+								</div> <span>BankPro</span>
 							</label>
 						</div>
 

@@ -10,10 +10,11 @@ import example.util.Constant;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class BookingDAO {
 
-	// ================ 1. TẠO BOOKING MỚI (CÓ CHECK TRÙNG GHẾ) ================
+	// TẠO BOOKING MỚI (CÓ CHECK TRÙNG GHẾ & TÍNH TIỀN SECURE)
 	public int createBookingWithSeats(Booking booking, List<String> seatCodes, int roomId) {
 		Connection conn = null;
 		PreparedStatement psCheck = null;
@@ -25,14 +26,13 @@ public class BookingDAO {
 			conn = DBConnection.getConnection();
 			conn.setAutoCommit(false); // Bắt đầu Transaction
 
-			// Bước 1: Check concurrency - Tìm ghế trùng (Cả PENDING và SUCCESS đều tính là
-			// đã đặt)
+			// --- BƯỚC 1: Check concurrency - Tìm ghế trùng ---
 			StringBuilder sqlCheck = new StringBuilder();
 			sqlCheck.append("SELECT s.seat_row, s.seat_number FROM bookingdetail bd ");
 			sqlCheck.append("JOIN booking b ON bd.booking_id = b.booking_id ");
 			sqlCheck.append("JOIN seat s ON bd.seat_id = s.seat_id ");
 			sqlCheck.append("WHERE b.showtime_id = ? ");
-			sqlCheck.append("AND b.status IN (?, ?) "); // Quan trọng: Check cả 2 trạng thái
+			sqlCheck.append("AND b.status IN (?, ?) "); // Check cả PENDING và SUCCESS
 
 			sqlCheck.append("AND CONCAT(s.seat_row, s.seat_number) IN (");
 			for (int i = 0; i < seatCodes.size(); i++) {
@@ -57,12 +57,32 @@ public class BookingDAO {
 				return -1; // Có ghế đã bị người khác đặt
 			}
 
-			// Bước 2: Insert Booking
+			double basePrice = getBasePriceByShowtimeId(conn, booking.getShowtimeId());
+			double realTotalAmount = 0;
+			SeatDAO seatDAO = new SeatDAO();
+
+			List<SeatPriceDTO> seatDetailsToInsert = new ArrayList<>();
+
+			for (String code : seatCodes) {
+				Seat seat = seatDAO.getSeatByCode(code, roomId);
+
+				if (seat == null) {
+					conn.rollback();
+					return 0;
+				}
+
+				double seatPrice = calculateSeatPrice(seat, basePrice);
+				realTotalAmount += seatPrice;
+
+				seatDetailsToInsert.add(new SeatPriceDTO(seat.getSeatId(), seatPrice));
+			}
+
+			// --- BƯỚC 3: Insert Booking ---
 			String sqlBooking = "INSERT INTO booking (user_id, showtime_id, total_amount, status, created_at) VALUES (?, ?, ?, ?, ?)";
 			psBooking = conn.prepareStatement(sqlBooking, Statement.RETURN_GENERATED_KEYS);
 			psBooking.setInt(1, booking.getUserId());
 			psBooking.setInt(2, booking.getShowtimeId());
-			psBooking.setDouble(3, booking.getTotalAmount());
+			psBooking.setDouble(3, realTotalAmount);
 			psBooking.setString(4, Constant.BOOKING_PENDING);
 			psBooking.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
 
@@ -82,22 +102,15 @@ public class BookingDAO {
 				}
 			}
 
-			// Bước 3: Insert Booking Detail (Từng ghế)
+			// --- BƯỚC 4: Insert Booking Detail ---
 			String sqlDetail = "INSERT INTO bookingdetail (booking_id, seat_id, price) VALUES (?, ?, ?)";
 			psDetail = conn.prepareStatement(sqlDetail);
 
-			SeatDAO seatDAO = new SeatDAO();
-			double basePrice = getBasePriceByShowtimeId(booking.getShowtimeId());
-
-			for (String code : seatCodes) {
-				Seat seat = seatDAO.getSeatByCode(code, roomId);
-				if (seat != null) {
-					double realPrice = calculateSeatPrice(seat, basePrice);
-					psDetail.setInt(1, bookingId);
-					psDetail.setInt(2, seat.getSeatId());
-					psDetail.setDouble(3, realPrice);
-					psDetail.addBatch();
-				}
+			for (SeatPriceDTO dto : seatDetailsToInsert) {
+				psDetail.setInt(1, bookingId);
+				psDetail.setInt(2, dto.seatId);
+				psDetail.setDouble(3, dto.price);
+				psDetail.addBatch();
 			}
 
 			psDetail.executeBatch();
@@ -119,11 +132,9 @@ public class BookingDAO {
 		}
 	}
 
-	// ================ 2. LẤY ID GHẾ ĐÃ ĐẶT (CHO GIAO DIỆN CHỌN GHẾ)
-	// ================
+	// LẤY ID GHẾ ĐÃ ĐẶT
 	public List<Integer> getBookedSeatIds(int showtimeId) {
 		List<Integer> bookedSeatIds = new ArrayList<>();
-		// Lấy tất cả ghế thuộc booking PENDING hoặc SUCCESS
 		String sql = "SELECT bd.seat_id FROM bookingdetail bd " + "JOIN booking b ON bd.booking_id = b.booking_id "
 				+ "WHERE b.showtime_id = ? AND b.status IN (?, ?)";
 
@@ -143,8 +154,6 @@ public class BookingDAO {
 		return bookedSeatIds;
 	}
 
-	// ================ 3. LẤY TÊN GHẾ ĐÃ CHỌN (CHO IN VÉ - TicketServlet)
-	// ================
 	public List<String> getSelectedSeats(int bookingId) {
 		List<String> seats = new ArrayList<>();
 		String sql = "SELECT s.seat_row, s.seat_number FROM bookingdetail bd "
@@ -155,7 +164,6 @@ public class BookingDAO {
 			ps.setInt(1, bookingId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				// Ghép thành chuỗi (ví dụ: A1, B5)
 				seats.add(rs.getString("seat_row") + rs.getInt("seat_number"));
 			}
 		} catch (SQLException e) {
@@ -164,9 +172,8 @@ public class BookingDAO {
 		return seats;
 	}
 
-	// ================ 4. CÁC HÀM XỬ LÝ CHECKOUT / TIMEOUT ================
+	// CÁC HÀM XỬ LÝ CHECKOUT / TIMEOUT
 
-	// Lấy thời gian tạo booking
 	public java.sql.Timestamp getBookingCreatedTime(Integer bookingId) {
 		String sql = "SELECT created_at FROM booking WHERE booking_id = ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -181,7 +188,6 @@ public class BookingDAO {
 		return null;
 	}
 
-	// Kiểm tra booking có hết hạn chưa
 	public boolean isBookingExpired(Integer bookingId, int timeoutMinutes) {
 		java.sql.Timestamp createdAt = getBookingCreatedTime(bookingId);
 		if (createdAt == null)
@@ -194,12 +200,10 @@ public class BookingDAO {
 		return diffMinutes >= timeoutMinutes;
 	}
 
-	// Hủy booking (dùng cho nút Hủy hoặc Timeout)
 	public boolean cancelBookingAndReleaseSeats(Integer bookingId) {
 		return updateBookingStatus(bookingId, Constant.BOOKING_CANCELLED);
 	}
 
-	// Cập nhật trạng thái (Dùng cho Payment Success hoặc Cancel)
 	public boolean updateBookingStatus(int bookingId, String status) {
 		String sql = "UPDATE booking SET status = ? WHERE booking_id = ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -212,7 +216,6 @@ public class BookingDAO {
 		return false;
 	}
 
-	// Auto cleanup (Dùng cho SeatSelectionServlet để dọn dẹp data rác)
 	public int cancelExpiredPendingBookings(int timeoutMinutes) {
 		String sql = "UPDATE booking SET status = ? WHERE status = ? AND created_at < ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -226,8 +229,6 @@ public class BookingDAO {
 		}
 		return 0;
 	}
-
-	// ================ 5. CÁC HÀM UTILS / GETTER KHÁC ================
 
 	public boolean isSeatBooked(int seatId, int showtimeId) {
 		String sql = "SELECT COUNT(*) FROM booking b " + "JOIN bookingdetail bd ON b.booking_id = bd.booking_id "
@@ -273,15 +274,27 @@ public class BookingDAO {
 		return (seatType != null) ? basePrice + seatType.getSurcharge() : basePrice;
 	}
 
-	private double getBasePriceByShowtimeId(int showtimeId) {
+	private double getBasePriceByShowtimeId(Connection conn, int showtimeId) throws SQLException {
 		String sql = "SELECT base_price FROM showtime WHERE showtime_id = ?";
-		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+		boolean isNewConnection = (conn == null);
+		Connection localConn = isNewConnection ? DBConnection.getConnection() : conn;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = localConn.prepareStatement(sql);
 			ps.setInt(1, showtimeId);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
+			rs = ps.executeQuery();
+			if (rs.next()) {
 				return rs.getDouble("base_price");
-		} catch (SQLException e) {
-			e.printStackTrace();
+			}
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (ps != null)
+				ps.close();
+			if (isNewConnection && localConn != null)
+				localConn.close();
 		}
 		return 0;
 	}
@@ -315,6 +328,8 @@ public class BookingDAO {
 		}
 	}
 
+	//  DANH SÁCH & TÌM KIẾM
+
 	public List<Booking> getAllBookings() {
 		List<Booking> bookings = new ArrayList<>();
 		String sql = "SELECT b.*, u.full_name, u.email, u.phone, m.title, "
@@ -324,14 +339,10 @@ public class BookingDAO {
 				+ "JOIN cinema c ON r.cinema_id = c.cinema_id " + "ORDER BY b.created_at DESC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-				Booking booking = extractBookingFromResultSet(rs);
-				bookings.add(booking);
+				bookings.add(extractBookingFromResultSet(rs));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -347,15 +358,11 @@ public class BookingDAO {
 				+ "JOIN cinema c ON r.cinema_id = c.cinema_id " + "WHERE b.status = ? " + "ORDER BY b.created_at DESC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setString(1, status);
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-				Booking booking = extractBookingFromResultSet(rs);
-				bookings.add(booking);
+				bookings.add(extractBookingFromResultSet(rs));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -373,19 +380,16 @@ public class BookingDAO {
 				+ "ORDER BY b.created_at DESC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-			ps.setString(1, "%" + keyword + "%");
-			ps.setString(2, "%" + keyword + "%");
-			ps.setString(3, "%" + keyword + "%");
-			ps.setString(4, "%" + keyword + "%");
+			String kw = "%" + keyword + "%";
+			ps.setString(1, kw);
+			ps.setString(2, kw);
+			ps.setString(3, kw);
+			ps.setString(4, kw);
 
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-				Booking booking = extractBookingFromResultSet(rs);
-				bookings.add(booking);
+				bookings.add(extractBookingFromResultSet(rs));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -402,17 +406,12 @@ public class BookingDAO {
 				+ "ORDER BY b.created_at DESC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setDate(1, new java.sql.Date(fromDate.getTime()));
 			ps.setDate(2, new java.sql.Date(toDate.getTime()));
-
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-				Booking booking = extractBookingFromResultSet(rs);
-				bookings.add(booking);
+				bookings.add(extractBookingFromResultSet(rs));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -421,23 +420,18 @@ public class BookingDAO {
 
 	public int getTotalSeatsByBooking(int bookingId) {
 		String sql = "SELECT COUNT(*) as total_seats FROM bookingdetail WHERE booking_id = ?";
-
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setInt(1, bookingId);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				return rs.getInt("total_seats");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
 
-	// Helper method để extract booking từ ResultSet
 	private Booking extractBookingFromResultSet(ResultSet rs) throws SQLException {
 		Booking booking = new Booking();
 		booking.setBookingId(rs.getInt("booking_id"));
@@ -448,27 +442,23 @@ public class BookingDAO {
 		booking.setStatus(rs.getString("status"));
 		booking.setCreatedAt(rs.getTimestamp("created_at"));
 
-		// Set thông tin user
 		User user = new User();
 		user.setFullName(rs.getString("full_name"));
 		user.setEmail(rs.getString("email"));
 		user.setPhone(rs.getString("phone"));
-		// Cần thêm setter cho user trong Booking model
 
 		return booking;
 	}
 
-	// ================ THỐNG KÊ DASHBOARD ================
+	// THỐNG KÊ DASHBOARD
 
 	public double getTodayRevenue() {
 		String sql = "SELECT COALESCE(SUM(total_amount), 0) as revenue " + "FROM booking "
 				+ "WHERE DATE(created_at) = CURDATE() AND status = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setString(1, Constant.BOOKING_SUCCESS);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				return rs.getDouble("revenue");
 			}
@@ -480,12 +470,9 @@ public class BookingDAO {
 
 	public double getTotalRevenue() {
 		String sql = "SELECT COALESCE(SUM(total_amount), 0) as total_revenue " + "FROM booking " + "WHERE status = ?";
-
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setString(1, Constant.BOOKING_SUCCESS);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				return rs.getDouble("total_revenue");
 			}
@@ -496,12 +483,9 @@ public class BookingDAO {
 	}
 
 	public int getTodayBookingsCount() {
-		String sql = "SELECT COUNT(*) as count " + "FROM booking " + "WHERE DATE(created_at) = CURDATE()";
-
+		String sql = "SELECT COUNT(*) as count FROM booking WHERE DATE(created_at) = CURDATE()";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				return rs.getInt("count");
 			}
@@ -512,14 +496,10 @@ public class BookingDAO {
 	}
 
 	public int getBookingCountByStatus(String status) {
-		String sql = "SELECT COUNT(*) as count " + "FROM booking "
-				+ "WHERE status = ? AND DATE(created_at) = CURDATE()";
-
+		String sql = "SELECT COUNT(*) as count FROM booking WHERE status = ? AND DATE(created_at) = CURDATE()";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setString(1, status);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				return rs.getInt("count");
 			}
@@ -531,13 +511,9 @@ public class BookingDAO {
 
 	public List<Booking> getTodayBookings() {
 		List<Booking> bookings = new ArrayList<>();
-		String sql = "SELECT * FROM booking " + "WHERE DATE(created_at) = CURDATE() " + "ORDER BY created_at DESC "
-				+ "LIMIT 10";
-
+		String sql = "SELECT * FROM booking WHERE DATE(created_at) = CURDATE() ORDER BY created_at DESC LIMIT 10";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
 				Booking booking = new Booking();
 				booking.setBookingId(rs.getInt("booking_id"));
@@ -552,5 +528,15 @@ public class BookingDAO {
 			e.printStackTrace();
 		}
 		return bookings;
+	}
+
+	private static class SeatPriceDTO {
+		int seatId;
+		double price;
+
+		SeatPriceDTO(int seatId, double price) {
+			this.seatId = seatId;
+			this.price = price;
+		}
 	}
 }

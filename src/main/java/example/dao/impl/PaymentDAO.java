@@ -8,21 +8,20 @@ import java.util.Date;
 public class PaymentDAO {
     
     public boolean createPayment(Payment payment) {
-        String sql = "INSERT INTO payment (booking_id, method, status, amount, paid_at) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO payment (booking_id, method, status, amount, paid_at) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
             ps.setInt(1, payment.getBookingId());
             ps.setString(2, payment.getPaymentMethod());
-            ps.setString(3, payment.getStatus());
+            ps.setString(3, payment.getStatus()); 
             ps.setDouble(4, payment.getAmount());
             
             if (payment.getPaymentDate() != null) {
                 ps.setTimestamp(5, new Timestamp(payment.getPaymentDate().getTime()));
             } else {
-                ps.setTimestamp(5, null);
+                ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
             }
             
             return ps.executeUpdate() > 0;
@@ -33,7 +32,6 @@ public class PaymentDAO {
         return false;
     }
     
-    // Lấy payment theo booking_id
     public Payment getPaymentByBookingId(int bookingId) {
         String sql = "SELECT * FROM payment WHERE booking_id = ?";
         
@@ -55,7 +53,6 @@ public class PaymentDAO {
                 if (paidAt != null) {
                     payment.setPaymentDate(new Date(paidAt.getTime()));
                 }
-                
                 return payment;
             }
         } catch (SQLException e) {

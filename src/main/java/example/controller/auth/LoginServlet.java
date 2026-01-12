@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
 		String csrfToken = UUID.randomUUID().toString();
 		request.getSession().setAttribute("csrfToken", csrfToken);
 		request.setAttribute("csrfToken", csrfToken);
-		
+
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			String lastRegisteredEmail = (String) session.getAttribute("lastRegisteredEmail");
@@ -43,6 +43,10 @@ public class LoginServlet extends HttpServlet {
 
 		if (sessionToken == null || !sessionToken.equals(requestToken)) {
 			request.setAttribute("error", "Phiên làm việc không hợp lệ, vui lòng thử lại");
+			// Tạo token mới trước khi forward
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 			return;
 		}
@@ -70,6 +74,10 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("error", "Vui lòng kiểm tra lại thông tin");
 			errors.forEach(request::setAttribute);
 			request.setAttribute("email", email);
+			// Tạo token mới cho lần thử tiếp theo
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 			return;
 		}
@@ -119,6 +127,10 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			request.setAttribute("error", "Email hoặc mật khẩu không đúng");
 			request.setAttribute("email", email);
+			// Tạo token mới cho lần thử tiếp theo
+			String newCsrfToken = UUID.randomUUID().toString();
+			request.getSession().setAttribute("csrfToken", newCsrfToken);
+			request.setAttribute("csrfToken", newCsrfToken);
 			request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
 		}
 	}
