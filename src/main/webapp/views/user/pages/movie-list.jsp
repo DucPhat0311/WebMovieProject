@@ -100,7 +100,6 @@
 						success : function(data) {
 							if (data.trim() === "") {
 								document.getElementById("btn-loadMore").style.display = "none";
-								alert("Đã hiển thị hết phim!");
 							} else {
 								$("#content-grid").append(data);
 							}

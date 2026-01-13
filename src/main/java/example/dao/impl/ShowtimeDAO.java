@@ -164,51 +164,5 @@ public class ShowtimeDAO {
 		}
 		return 0;
 	}
-	
-	public boolean checkShowtimeOverlap(int roomId, Date showDate, Time newStart, Time newEnd) {
-	    String sql = "SELECT COUNT(*) FROM Showtime WHERE room_id = ? AND show_date = ? AND is_active = TRUE " +
-	                 "AND ((start_time < ? AND end_time > ?) OR (start_time >= ? AND start_time < ?))";
-	                
-
-	    try (Connection conn = DBConnection.getConnection(); 
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        
-	        ps.setInt(1, roomId);
-	        ps.setDate(2, showDate);
-	        ps.setTime(3, newEnd);   
-	        ps.setTime(4, newStart); 
-	        ps.setTime(5, newStart);
-	        ps.setTime(6, newEnd);
-	        
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next()) {
-	            return rs.getInt(1) > 0; //> 0 là bị trùng
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
-
-	public boolean addShowtime(Showtime st) {
-	    String sql = "INSERT INTO Showtime(movie_id, room_id, show_date, start_time, end_time, base_price, option_type, is_active) " +
-	                 "VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)";
-	    try (Connection conn = DBConnection.getConnection(); 
-	         PreparedStatement ps = conn.prepareStatement(sql)) {
-	        
-	        ps.setInt(1, st.getMovieId());
-	        ps.setInt(2, st.getRoomId());
-	        ps.setDate(3, st.getShowDate());
-	        ps.setTime(4, st.getStartTime());
-	        ps.setTime(5, st.getEndTime());
-	        ps.setDouble(6, st.getBasePrice());
-	        ps.setString(7, st.getOptionType());
-	        
-	        return ps.executeUpdate() > 0;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
 
 }

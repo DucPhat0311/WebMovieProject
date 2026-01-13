@@ -93,7 +93,7 @@ public class LoginServlet extends HttpServlet {
 
 		if (loginSuccess) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
+          	session.setAttribute("user", user);
 			session.setMaxInactiveInterval(30 * 60); // 30 phút
 
 			if ("on".equals(rememberMe)) {

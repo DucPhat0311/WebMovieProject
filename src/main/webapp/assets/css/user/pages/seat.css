@@ -564,11 +564,10 @@
     cursor: pointer;
     transition: all 0.3s;
     opacity: 1;
-    box-shadow: 0 5px 20px rgba(255, 51, 102, 0.3);
 }
 
 .checkout-btn:hover {
-    background: #ff1a52;
+    background: #ff3366;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
 }

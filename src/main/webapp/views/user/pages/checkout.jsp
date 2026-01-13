@@ -23,7 +23,6 @@
 
 <body>
 
-
 	<jsp:include page="/views/user/common/header.jsp" />
 
 	<c:if test="${not empty remainingSeconds}">

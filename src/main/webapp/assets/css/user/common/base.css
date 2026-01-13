@@ -51,7 +51,7 @@ ul {
 	margin-top: 25px;
 	align-items: center;
 	gap: 8px;
-	background: #ff3152;
+	background: #ff3366;
 	color: white;
 	font-weight: 600;
 	padding: 14px 28px;
@@ -63,13 +63,13 @@ ul {
 }
 
 .explore-btn:hover {
-	background: #ff4f6a;
+	background: #ff3366;
 	box-shadow: 0 0 20px rgba(255, 79, 106, 0.6);
 	transform: translateY(-2px);
 }
 
 .buy-btn {
-    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    background: #ff3366;
     color: white;
     border: none;
     font-size: 16px;
@@ -86,7 +86,7 @@ ul {
 }
 
 .buy-btn:hover {
-    background: linear-gradient(90deg, #ff3a1a, #ff2f5d);
+    background: #ff3366;
     transform: scale(1.05);
 }
 

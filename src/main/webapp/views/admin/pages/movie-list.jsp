@@ -66,7 +66,7 @@
 							<td>#${o.movieId}</td>
 
 							<td><img
-								src="${pageContext.request.contextPath}/assets/img/movies/movie${o.movieId}.jpg"
+								src="${pageContext.request.contextPath}/assets/img/movies/${o.posterUrl}"
 								class="poster-img" alt="${o.title}"
 								onerror="this.src='https://via.placeholder.com/150?text=No+Image';" />
 							</td>
@@ -98,14 +98,5 @@
 			</table>
 
 		</div>
-
-		<script>
-			function showDeleteConfirm(id) {
-				if (confirm("Bạn có chắc chắn muốn xóa phim có ID: " + id
-						+ " không?")) {
-					window.location.href = "delete-movie?pid=" + id;
-				}
-			}
-		</script>
 </body>
 </html>

@@ -37,23 +37,22 @@ public class AdminFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 
-		System.out.println("AdminFilter đang chặn request tới: " + request.getRequestURI());
-		
 		HttpSession session = request.getSession();
 
 		User user = (User) session.getAttribute("user");
 
+		// không biết là ai thì về trang login
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
 		}
 
+		// là user không phải admin nên bị đá ra trang 403
 		if (!Constant.ROLE_ADMIN.equalsIgnoreCase(user.getRole())) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		chain.doFilter(request, response);
-
 
 	}
 

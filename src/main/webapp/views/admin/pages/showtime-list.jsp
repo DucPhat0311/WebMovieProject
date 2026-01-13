@@ -37,9 +37,6 @@
 			</div>
 
 			<div class="toolbar">
-				<a href="${root}/admin/add-showtime" class="btn-add"> <i
-					class="fas fa-plus"></i> Tạo Lịch Chiếu
-				</a>
 
 				<form action="${root}/admin/manage-showtimes" method="get">
 					<div class="search-box">
@@ -106,13 +103,5 @@
 			</div>
 		</div>
 	</div>
-
-	<script>
-		function confirmDelete(id) {
-			if (confirm("Bạn có chắc chắn muốn xóa lịch chiếu này không?")) {
-				window.location.href = "${root}/admin/delete-showtime?id=" + id;
-			}
-		}
-	</script>
 </body>
 </html>
