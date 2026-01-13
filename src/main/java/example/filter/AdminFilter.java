@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import example.model.system.User;
+import example.util.Constant;
 
 /**
  * Servlet implementation class AdminFilter
@@ -47,7 +48,7 @@ public class AdminFilter implements Filter {
 			return;
 		}
 
-		if (!user.getRole().equalsIgnoreCase("admin")) {
+		if (!Constant.ROLE_ADMIN.equalsIgnoreCase(user.getRole())) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}

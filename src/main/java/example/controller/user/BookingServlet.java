@@ -25,7 +25,6 @@ public class BookingServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        // Check Login
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;

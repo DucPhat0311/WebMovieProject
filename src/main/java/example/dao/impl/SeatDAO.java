@@ -15,13 +15,13 @@ public class SeatDAO {
 		String sql = "SELECT s.* FROM seat s WHERE s.room_id = ? ORDER BY s.seat_row, s.seat_number";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, roomId);
-			ResultSet rs = ps.executeQuery();
 
-			while (rs.next()) {
-				Seat seat = new Seat(rs.getInt("seat_id"), rs.getInt("room_id"), rs.getInt("seat_type_id"),
-						rs.getString("seat_row"), rs.getInt("seat_number"));
-				seats.add(seat);
+			ps.setInt(1, roomId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Seat seat = mapResultSetToSeat(rs);
+					seats.add(seat);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -30,31 +30,37 @@ public class SeatDAO {
 	}
 
 	public Seat getSeatById(int seatId) {
-		Seat seat = null;
 		String sql = "SELECT * FROM seat WHERE seat_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, seatId);
-			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-				seat = new Seat(rs.getInt("seat_id"), rs.getInt("room_id"), rs.getInt("seat_type_id"),
-						rs.getString("seat_row"), rs.getInt("seat_number"));
+			ps.setInt(1, seatId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return mapResultSetToSeat(rs);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return seat;
+		return null;
 	}
 
 	public Seat getSeatByCode(String seatCode, int roomId) {
-		if (seatCode == null || seatCode.length() < 2)
+		if (seatCode == null || seatCode.length() < 2) {
 			return null;
+		}
 
-		String row = seatCode.substring(0, 1);
-		int number = 0;
+		String row = seatCode.replaceAll("[0-9]", "");
+		String numberStr = seatCode.replaceAll("[^0-9]", "");
+
+		if (row.isEmpty() || numberStr.isEmpty()) {
+			return null;
+		}
+
+		int number;
 		try {
-			number = Integer.parseInt(seatCode.substring(1));
+			number = Integer.parseInt(numberStr);
 		} catch (NumberFormatException e) {
 			return null;
 		}
@@ -66,10 +72,10 @@ public class SeatDAO {
 			ps.setInt(2, number);
 			ps.setInt(3, roomId);
 
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				return new Seat(rs.getInt("seat_id"), rs.getInt("room_id"), rs.getInt("seat_type_id"),
-						rs.getString("seat_row"), rs.getInt("seat_number"));
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return mapResultSetToSeat(rs);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,19 +84,24 @@ public class SeatDAO {
 	}
 
 	public SeatType getSeatTypeById(int seatTypeId) {
-		SeatType seatType = null;
 		String sql = "SELECT * FROM seattype WHERE seat_type_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, seatTypeId);
-			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
-				seatType = new SeatType(rs.getInt("seat_type_id"), rs.getString("name"), rs.getDouble("surcharge"));
+			ps.setInt(1, seatTypeId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return new SeatType(rs.getInt("seat_type_id"), rs.getString("name"), rs.getDouble("surcharge"));
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return seatType;
+		return null;
+	}
+
+	private Seat mapResultSetToSeat(ResultSet rs) throws SQLException {
+		return new Seat(rs.getInt("seat_id"), rs.getInt("room_id"), rs.getInt("seat_type_id"), rs.getString("seat_row"),
+				rs.getInt("seat_number"));
 	}
 }
