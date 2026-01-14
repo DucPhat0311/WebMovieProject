@@ -17,7 +17,6 @@
 //            config.setJdbcUrl("jdbc:mysql://mysql-c80eef2-ducphat0311-1c2c.i.aivencloud.com:24156/movie?useSSL=true&trustServerCertificate=true&serverTimezone=UTC&characterEncoding=UTF-8");
 //            config.setUsername("avnadmin");
 //            
-//            config.setPassword("AVNS_31OTEohMfFf4UiwQqCR"); 
 //            
 //            config.setDriverClassName("com.mysql.cj.jdbc.Driver");
 //
