@@ -25,9 +25,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // === 1. FIX LỖI GIÁ TIỀN ===
-    // Dùng JSTL format số nguyên ngay từ server để tránh lỗi parse JS
-    // pattern="0" sẽ đảm bảo ra số 70000 thay vì 70,000 hay 70000.0
+    
     <fmt:formatNumber var="cleanBasePrice" value="${showtime.basePrice}" pattern="0" />
     
     const BASE_PRICE = ${cleanBasePrice}; 

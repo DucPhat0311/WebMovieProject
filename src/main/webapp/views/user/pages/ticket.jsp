@@ -177,15 +177,5 @@
 
 	<jsp:include page="/views/user/common/footer.jsp" />
 
-	<!-- JavaScript -->
-	<script>
-		function downloadTicket() {
-			alert('Chức năng tải vé sẽ được cập nhật sau!');
-		}
-
-		window.addEventListener('afterprint', function() {
-			alert('In vé thành công! Hãy mang vé đến quầy soát vé.');
-		});
-	</script>
 </body>
 </html>
