@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet("/checkout")
@@ -57,6 +56,7 @@ public class CheckoutServlet extends HttpServlet {
 			return;
 		}
 
+		// Kiểm tra booking đã hết hạn chưa
 		if (bookingDAO.isBookingExpired(bookingId, Constant.BOOKING_TIMEOUT_MINUTES)) {
 			bookingDAO.cancelBookingAndReleaseSeats(bookingId);
 			session.removeAttribute("bookingId");
@@ -67,8 +67,12 @@ public class CheckoutServlet extends HttpServlet {
 
 		Timestamp createdAt = bookingDAO.getBookingCreatedTime(bookingId);
 		long expiryTimeMillis = createdAt.getTime() + (Constant.BOOKING_TIMEOUT_MINUTES * 60 * 1000);
-		long remainingSeconds = Math.max(0, (expiryTimeMillis - System.currentTimeMillis()) / 1000);
 
+		// Thêm server time để client đồng bộ
+		long serverTime = System.currentTimeMillis();
+		long remainingSeconds = Math.max(0, (expiryTimeMillis - serverTime) / 1000);
+
+		request.setAttribute("serverTime", serverTime);
 		request.setAttribute("remainingSeconds", remainingSeconds);
 		request.setAttribute("expiryTimeMillis", expiryTimeMillis);
 

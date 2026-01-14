@@ -216,13 +216,41 @@ public class BookingDAO {
 	}
 
 	public void cancelExpiredPendingBookings(int timeoutMinutes) {
-		String sql = "UPDATE booking SET status = ? WHERE status = ? AND created_at < (NOW() - INTERVAL ? MINUTE)";
-		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, Constant.BOOKING_CANCELLED);
-			ps.setString(2, Constant.BOOKING_PENDING);
-			ps.setInt(3, timeoutMinutes);
-			ps.executeUpdate();
+
+		String selectSql = "SELECT booking_id, created_at FROM booking WHERE status = ?";
+		String updateSql = "UPDATE booking SET status = ? WHERE booking_id = ?";
+
+		try (Connection conn = DBConnection.getConnection();
+				PreparedStatement psSelect = conn.prepareStatement(selectSql);
+				PreparedStatement psUpdate = conn.prepareStatement(updateSql)) {
+
+			psSelect.setString(1, Constant.BOOKING_PENDING);
+			ResultSet rs = psSelect.executeQuery();
+
+			int cancelledCount = 0;
+			long timeoutMillis = timeoutMinutes * 60 * 1000L;
+			long currentTime = System.currentTimeMillis();
+
+			while (rs.next()) {
+				int bookingId = rs.getInt("booking_id");
+				Timestamp createdAt = rs.getTimestamp("created_at");
+
+				long elapsedMillis = currentTime - createdAt.getTime();
+
+				if (elapsedMillis >= timeoutMillis) {
+					psUpdate.setString(1, Constant.BOOKING_CANCELLED);
+					psUpdate.setInt(2, bookingId);
+					psUpdate.executeUpdate();
+					cancelledCount++;
+				}
+			}
+
+			if (cancelledCount > 0) {
+				System.out.println("[" + new java.util.Date() + "] Đã hủy " + cancelledCount + " booking quá hạn");
+			}
+
 		} catch (SQLException e) {
+			System.err.println("Lỗi khi dọn dẹp booking quá hạn: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
