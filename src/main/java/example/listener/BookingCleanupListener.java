@@ -28,7 +28,7 @@ public class BookingCleanupListener implements ServletContextListener {
 			} catch (Exception e) {
 				System.err.println("Lỗi trong quá trình dọn dẹp booking: " + e.getMessage());
 			}
-		}, 0, 30, TimeUnit.SECONDS);
+		}, 0, 60, TimeUnit.SECONDS);
 	}
 
 	@Override

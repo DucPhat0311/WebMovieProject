@@ -109,7 +109,6 @@
 		function openTrailer() {
 			var modal = document.getElementById("trailerModal");
 			var iframe = document.getElementById("youtubeVideo");
-			// Lấy link từ data-src gán vào src để chạy video
 			iframe.src = iframe.getAttribute("data-src");
 			modal.style.display = "flex";
 		}
@@ -117,7 +116,6 @@
 		function closeTrailer() {
 			var modal = document.getElementById("trailerModal");
 			var iframe = document.getElementById("youtubeVideo");
-			// Xóa src để tắt tiếng video ngay lập tức
 			iframe.src = "";
 			modal.style.display = "none";
 		}

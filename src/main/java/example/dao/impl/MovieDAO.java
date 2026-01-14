@@ -17,7 +17,7 @@ public class MovieDAO {
 	public List<Movie> getAllMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM Movie";
+		String sql = "SELECT * FROM movie";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ResultSet rs = ps.executeQuery();
@@ -39,7 +39,7 @@ public class MovieDAO {
 	public List<Movie> get8NowShowingMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT 8";
+		String sql = "SELECT * FROM movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC LIMIT 8";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -59,7 +59,7 @@ public class MovieDAO {
 	public List<Movie> getNowShowingMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM Movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC";
+		String sql = "SELECT * FROM movie WHERE release_date <= CURDATE() AND is_active = TRUE ORDER BY release_date DESC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -79,7 +79,7 @@ public class MovieDAO {
 	public List<Movie> get8ComingSoonMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT 8";
+		String sql = "SELECT * FROM movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC LIMIT 8";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -99,7 +99,7 @@ public class MovieDAO {
 	public List<Movie> getComingSoonMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM Movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC";
+		String sql = "SELECT * FROM movie WHERE release_date > CURDATE() AND is_active = TRUE ORDER BY release_date ASC";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -117,7 +117,7 @@ public class MovieDAO {
 	}
 
 	public Movie getMovieById(int id) {
-		String sql = "SELECT * FROM Movie WHERE movie_id = ?";
+		String sql = "SELECT * FROM movie WHERE movie_id = ?";
 		Movie movie = null;
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -140,7 +140,7 @@ public class MovieDAO {
 	public List<Genre> getGenresByMovieId(int movieId) {
 		List<Genre> list = new ArrayList<>();
 
-		String sql = "SELECT g.* FROM Genre g " + "JOIN MovieGenre mg ON g.genre_id = mg.genre_id "
+		String sql = "SELECT g.* FROM genre g " + "JOIN MovieGenre mg ON g.genre_id = mg.genre_id "
 				+ "WHERE mg.movie_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -162,7 +162,7 @@ public class MovieDAO {
 	public List<Artist> getActorsByMovieId(int movieId) {
 		List<Artist> list = new ArrayList<>();
 
-		String sql = "SELECT a.* FROM Artist a " + "JOIN Actor ac ON a.artist_id = ac.artist_id "
+		String sql = "SELECT a.* FROM artist a " + "JOIN Actor ac ON a.artist_id = ac.artist_id "
 				+ "WHERE ac.movie_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -183,7 +183,7 @@ public class MovieDAO {
 	public List<Artist> getDirectorsByMovieId(int movieId) {
 		List<Artist> list = new ArrayList<>();
 
-		String sql = "SELECT a.* FROM Artist a " + "JOIN Director d ON a.artist_id = d.artist_id "
+		String sql = "SELECT a.* FROM artist a " + "JOIN Director d ON a.artist_id = d.artist_id "
 				+ "WHERE d.movie_id = ?";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -202,7 +202,7 @@ public class MovieDAO {
 	}
 
 	public void insertMovie(Movie m) {
-		String sql = "INSERT INTO Movie (title, description, duration, release_date, age_warning, poster_url, trailer_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO movie (title, description, duration, release_date, age_warning, poster_url, trailer_url, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (Connection conn = new DBConnection().getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 

@@ -68,8 +68,6 @@ public class ShowtimeDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			DBConnection.closeConnection(conn);
 		}
 		return list;
 	}
