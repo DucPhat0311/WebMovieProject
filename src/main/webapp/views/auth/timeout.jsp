@@ -9,6 +9,8 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/auth/error.css">
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/user/common/base.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/auth/timeout.css">
 <link rel="stylesheet"
