@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="vi_VN"/>
+
 
 <!DOCTYPE html>
 <html>
@@ -139,7 +141,7 @@
 						class="date-btn ${isActive}" style="text-decoration: none;"> <span
 						class="day"><fmt:formatDate value="${d}" pattern="dd/MM" /></span>
 						<span class="weekday"><fmt:formatDate value="${d}"
-								pattern="E" /></span>
+								pattern="EEEE" /></span>
 					</a>
 				</c:forEach>
 			</div>
