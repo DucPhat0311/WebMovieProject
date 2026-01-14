@@ -6,7 +6,7 @@ public class Constant {
 	public static final String BOOKING_CANCELLED = "Cancelled";
 
 	// them moi ne
-	public static final int BOOKING_TIMEOUT_MINUTES = 1;
+	public static final int BOOKING_TIMEOUT_MINUTES = 2;
 
 	public static final String PAYMENT_PENDING = "Pending";
 	public static final String PAYMENT_SUCCESS = "Success";
