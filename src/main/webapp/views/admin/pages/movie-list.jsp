@@ -98,5 +98,13 @@
 			</table>
 
 		</div>
-</body>
+
+		<script>
+								function showDeleteConfirm(id) {
+							
+			if (confirm("Xóa nha???????")) {
+					window.location.href = "delete-movie?id=" + id;
+				}
+			}
+		</script></body>
 </html>

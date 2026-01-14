@@ -17,7 +17,7 @@ public class MovieDAO {
 	public List<Movie> getAllMovies() {
 		List<Movie> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM movie";
+		String sql = "SELECT * FROM movie WHERE is_active=1";
 
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ResultSet rs = ps.executeQuery();
@@ -219,6 +219,20 @@ public class MovieDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void deleteMovie(int movieId) {
+	    String sql = "UPDATE movie SET is_active = 0 WHERE movie_id = ?";
+	    
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        
+	        ps.setInt(1, movieId);
+	        ps.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	public List<Movie> getNextNowMovies(int amount, int offset) {
