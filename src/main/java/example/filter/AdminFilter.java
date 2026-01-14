@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import example.model.system.User;
+import example.util.Constant;
 
 /**
  * Servlet implementation class AdminFilter
@@ -35,7 +36,7 @@ public class AdminFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		
+
 		HttpSession session = request.getSession();
 
 		User user = (User) session.getAttribute("user");
@@ -47,12 +48,11 @@ public class AdminFilter implements Filter {
 		}
 
 		// là user không phải admin nên bị đá ra trang 403
-		if (!user.getRole().equalsIgnoreCase("admin")) {
+		if (!Constant.ROLE_ADMIN.equalsIgnoreCase(user.getRole())) {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		chain.doFilter(request, response);
-
 
 	}
 

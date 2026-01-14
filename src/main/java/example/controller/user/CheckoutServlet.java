@@ -37,8 +37,11 @@ public class CheckoutServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			response.sendRedirect(request.getContextPath() + "/login");
+			return;
+		}
 
-		// 1. Lấy thông tin booking từ session
 		Integer bookingId = (Integer) session.getAttribute("bookingId");
 		if (bookingId == null) {
 			request.setAttribute("errorMessage", "Không tìm thấy thông tin đặt vé");
@@ -46,7 +49,6 @@ public class CheckoutServlet extends HttpServlet {
 			return;
 		}
 
-		// 2. Check timeout
 		Booking booking = bookingDAO.getBookingById(bookingId);
 		if (booking == null) {
 			session.removeAttribute("bookingId");
@@ -63,7 +65,6 @@ public class CheckoutServlet extends HttpServlet {
 			return;
 		}
 
-		// 3. Tính thời gian còn lại để hiển thị
 		Timestamp createdAt = bookingDAO.getBookingCreatedTime(bookingId);
 		long expiryTimeMillis = createdAt.getTime() + (Constant.BOOKING_TIMEOUT_MINUTES * 60 * 1000);
 		long remainingSeconds = Math.max(0, (expiryTimeMillis - System.currentTimeMillis()) / 1000);
@@ -71,7 +72,6 @@ public class CheckoutServlet extends HttpServlet {
 		request.setAttribute("remainingSeconds", remainingSeconds);
 		request.setAttribute("expiryTimeMillis", expiryTimeMillis);
 
-		// 4. Lấy thông tin hiển thị
 		Showtime showtime = showtimeDAO.getShowtimeById(booking.getShowtimeId());
 		request.setAttribute("showtime", showtime);
 		request.setAttribute("booking", booking);
@@ -89,38 +89,32 @@ public class CheckoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		Integer bookingId = (Integer) session.getAttribute("bookingId");
-		String paymentMethod = request.getParameter("paymentMethod");
+		User user = (User) session.getAttribute("user");
 
-		if (bookingId == null || paymentMethod == null) {
-			request.setAttribute("errorMessage", "Thiếu thông tin thanh toán");
-			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+		Integer bookingId = (Integer) session.getAttribute("bookingId");
+		if (bookingId == null) {
+			response.sendRedirect(request.getContextPath() + "/home");
 			return;
 		}
 
 		try {
-			// Check timeout lần cuối
-			if (bookingDAO.isBookingExpired(bookingId, Constant.BOOKING_TIMEOUT_MINUTES)) {
-				bookingDAO.cancelBookingAndReleaseSeats(bookingId);
-				session.removeAttribute("bookingId");
-				request.setAttribute("errorMessage", "Giao dịch thất bại do hết thời gian.");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+			String paymentMethod = request.getParameter("paymentMethod");
+			Booking booking = bookingDAO.getBookingById(bookingId);
+
+			if (booking == null) {
+				handleError(request, response, "Đơn hàng không tồn tại.");
 				return;
 			}
 
-			Booking booking = bookingDAO.getBookingById(bookingId);
-
-			// Tạo Payment
 			Payment payment = new Payment();
 			payment.setBookingId(bookingId);
 			payment.setAmount(booking.getTotalAmount());
 			payment.setPaymentMethod(paymentMethod);
 			payment.setStatus(Constant.PAYMENT_SUCCESS);
-			payment.setPaymentDate(new Date());
 
-			if (paymentDAO.createPayment(payment)) {
-				bookingDAO.updateBookingStatus(bookingId, Constant.BOOKING_SUCCESS);
+			boolean success = bookingDAO.completeCheckout(bookingId, payment);
 
+			if (success) {
 				session.removeAttribute("bookingId");
 				session.removeAttribute("totalAmount");
 				session.removeAttribute("showtimeId");
@@ -128,14 +122,19 @@ public class CheckoutServlet extends HttpServlet {
 
 				response.sendRedirect(request.getContextPath() + "/ticket?bookingId=" + bookingId);
 			} else {
-				request.setAttribute("errorMessage", "Thanh toán thất bại");
-				request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+				session.removeAttribute("bookingId");
+				handleError(request, response, "Giao dịch thất bại hoặc vé đã hết hạn giữ chỗ. Vui lòng đặt lại.");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "Lỗi: " + e.getMessage());
-			request.getRequestDispatcher("/views/auth/error.jsp").forward(request, response);
+			handleError(request, response, "Lỗi hệ thống khi thanh toán.");
 		}
+	}
+
+	private void handleError(HttpServletRequest req, HttpServletResponse resp, String msg)
+			throws ServletException, IOException {
+		req.setAttribute("errorMessage", msg);
+		req.getRequestDispatcher("/views/auth/error.jsp").forward(req, resp);
 	}
 }

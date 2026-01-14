@@ -10,7 +10,7 @@ public class SeatType {
 	public SeatType() {}
 	
 	public SeatType(String name, double surcharge) {
-		this.name = Constant.SEAT_STANDARD;
+		this.name = name;
 		this.surcharge = surcharge;
 	} 
 
@@ -44,6 +44,9 @@ public class SeatType {
 	public void setSurcharge(double surcharge) {
 		this.surcharge = surcharge;
 	} 
+	public boolean isVip() {
+	    return Constant.SEAT_VIP.equalsIgnoreCase(this.name);
+	}
 	
 	
     

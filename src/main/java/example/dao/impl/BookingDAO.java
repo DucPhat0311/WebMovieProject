@@ -5,6 +5,7 @@ import example.model.cinema.Seat;
 import example.model.cinema.SeatType;
 import example.model.system.User;
 import example.model.transaction.Booking;
+import example.model.transaction.Payment;
 import example.util.Constant;
 
 import java.sql.*;
@@ -157,10 +158,8 @@ public class BookingDAO {
 	public List<String> getSelectedSeats(int bookingId) {
 		List<String> seats = new ArrayList<>();
 		String sql = "SELECT s.seat_row, s.seat_number FROM bookingdetail bd "
-				+ "JOIN seat s ON bd.seat_id = s.seat_id " + "WHERE bd.booking_id = ?";
-
+				+ "JOIN seat s ON bd.seat_id = s.seat_id WHERE bd.booking_id = ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
 			ps.setInt(1, bookingId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -216,18 +215,16 @@ public class BookingDAO {
 		return false;
 	}
 
-	public int cancelExpiredPendingBookings(int timeoutMinutes) {
-		String sql = "UPDATE booking SET status = ? WHERE status = ? AND created_at < ?";
+	public void cancelExpiredPendingBookings(int timeoutMinutes) {
+		String sql = "UPDATE booking SET status = ? WHERE status = ? AND created_at < (NOW() - INTERVAL ? MINUTE)";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-			long limitTime = System.currentTimeMillis() - (timeoutMinutes * 60 * 1000L);
 			ps.setString(1, Constant.BOOKING_CANCELLED);
 			ps.setString(2, Constant.BOOKING_PENDING);
-			ps.setTimestamp(3, new Timestamp(limitTime));
-			return ps.executeUpdate();
+			ps.setInt(3, timeoutMinutes);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 	public boolean isSeatBooked(int seatId, int showtimeId) {
@@ -248,24 +245,90 @@ public class BookingDAO {
 	}
 
 	public Booking getBookingById(int bookingId) {
+		Booking booking = null;
 		String sql = "SELECT * FROM booking WHERE booking_id = ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, bookingId);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				Booking booking = new Booking();
+				booking = new Booking();
 				booking.setBookingId(rs.getInt("booking_id"));
 				booking.setUserId(rs.getInt("user_id"));
 				booking.setShowtimeId(rs.getInt("showtime_id"));
 				booking.setTotalAmount(rs.getDouble("total_amount"));
 				booking.setStatus(rs.getString("status"));
 				booking.setCreatedAt(rs.getTimestamp("created_at"));
-				return booking;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return booking;
+	}
+
+	public boolean completeCheckout(int bookingId, Payment payment) {
+		Connection conn = null;
+		PreparedStatement psPayment = null;
+		PreparedStatement psUpdateBooking = null;
+
+		String sqlPayment = "INSERT INTO payment (booking_id, method, status, amount, paid_at) VALUES (?, ?, ?, ?, ?)";
+
+		String sqlUpdate = "UPDATE booking SET status = ? WHERE booking_id = ? AND status = ?";
+
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false); // 1. Bắt đầu Transaction
+
+			// Bước 1: Insert Payment
+			psPayment = conn.prepareStatement(sqlPayment);
+			psPayment.setInt(1, bookingId);
+			psPayment.setString(2, payment.getPaymentMethod());
+			psPayment.setString(3, payment.getStatus());
+			psPayment.setDouble(4, payment.getAmount());
+			psPayment.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+			psPayment.executeUpdate();
+
+			// Bước 2: Update Booking Status
+			psUpdateBooking = conn.prepareStatement(sqlUpdate);
+			psUpdateBooking.setString(1, Constant.BOOKING_SUCCESS);
+			psUpdateBooking.setInt(2, bookingId);
+			psUpdateBooking.setString(3, Constant.BOOKING_PENDING);
+
+			int rowsUpdated = psUpdateBooking.executeUpdate();
+
+			if (rowsUpdated > 0) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+				return false;
+			}
+
+		} catch (SQLException e) {
+			try {
+				if (conn != null)
+					conn.rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				if (psPayment != null)
+					psPayment.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (psUpdateBooking != null)
+					psUpdateBooking.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	private double calculateSeatPrice(Seat seat, double basePrice) {
@@ -328,7 +391,7 @@ public class BookingDAO {
 		}
 	}
 
-	//  DANH SÁCH & TÌM KIẾM
+	// DANH SÁCH & TÌM KIẾM
 
 	public List<Booking> getAllBookings() {
 		List<Booking> bookings = new ArrayList<>();
