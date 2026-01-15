@@ -43,6 +43,8 @@ public class AdminFilter implements Filter {
 
 		// không biết là ai thì về trang login
 		if (user == null) {
+			String requestURI = request.getRequestURI(); 
+		    session.setAttribute("redirectUrl", requestURI);
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
 		}

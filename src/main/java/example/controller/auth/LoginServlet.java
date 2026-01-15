@@ -95,6 +95,8 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
           	session.setAttribute("user", user);
 			session.setMaxInactiveInterval(30 * 60); // 30 phút
+			
+				
 
 			if ("on".equals(rememberMe)) {
 				// 1. Cookie email
@@ -113,9 +115,10 @@ public class LoginServlet extends HttpServlet {
 				clearRememberCookies(request, response);
 			}
 
-			String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+			String redirectUrl = (String) session.getAttribute("redirectUrl");
 			if (redirectUrl != null && !redirectUrl.isEmpty()) {
-				session.removeAttribute("redirectAfterLogin");
+				session.removeAttribute("redirectUrl");
+				// quay lại trang mà ai đó cố vào	
 				response.sendRedirect(redirectUrl);
 			} else {
 				if ("ADMIN".equalsIgnoreCase(user.getRole())) {

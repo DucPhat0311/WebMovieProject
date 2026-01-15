@@ -83,7 +83,6 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script>
 		function loadMore() {
-			// Lấy loại phim từ biến server gửi sang (dùng EL)
 			var type = '${pageType}';
 
 			// Đếm số phim đang có trên màn hình

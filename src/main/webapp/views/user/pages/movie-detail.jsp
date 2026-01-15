@@ -137,7 +137,7 @@
 					<c:set var="isActive"
 						value="${d.toString() == selectedDate.toString() ? 'active' : ''}" />
 
-					<a href="movie-detail?id=${movie.movieId}&date=${d}#booking-area"
+					<a href="movie-detail?id=${movie.movieId}&date=${d}"
 						class="date-btn ${isActive}" style="text-decoration: none;"> <span
 						class="day"><fmt:formatDate value="${d}" pattern="dd/MM" /></span>
 						<span class="weekday"><fmt:formatDate value="${d}"
